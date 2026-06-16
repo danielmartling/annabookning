@@ -1,3 +1,7 @@
+.venv
+package-lock.json
+
+
 # Logs
 logs
 *.log
@@ -142,4 +146,3 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-.venv

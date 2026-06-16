@@ -1,0 +1,26 @@
+{
+  "name": "annabookning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server/server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node ./src/server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielmartling/annabookning.git"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/danielmartling/annabookning/issues"
+  },
+  "homepage": "https://github.com/danielmartling/annabookning#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
