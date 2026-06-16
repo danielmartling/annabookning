@@ -1,0 +1,29 @@
+site_name: Anna Bookning docs
+
+docs_dir: ./src
+site_dir: ../../docs
+
+repo_url: https://github.com/danielmartling/annabookning
+
+nav:
+  - Hem: index.md
+
+theme:
+  name: material
+  logo: img/Scoutsymbolen_white.png
+  favicon: img/favicon.ico
+  language: sv
+
+markdown_extensions:
+  - toc:
+      baselevel: 1
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - glightbox
+  - search
