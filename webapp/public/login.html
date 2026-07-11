@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Anna Bookning</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/scripts.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+</head>
+
+<style>
+    html,
+    body {
+        height: 100vh;
+    }
+
+    .hero-body {
+        background-image: url('/img/lillgarn.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<body>
+
+    <section class="hero is-fullheight">
+        <div class="hero-head">
+            <header class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="/">
+                            <img src="/icons/hollyrosa.svg" class="svg-icon"><b>Anna Bookning</b>
+                        </a>
+                        <span class="navbar-burger" data-target="navbarMenuHeroC">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenuHeroC" class="navbar-menu">
+                        <div class="navbar-end">
+                            <!-- <a class="navbar-item is-active"> Home </a> -->
+                            <!-- <a class="navbar-item"> Examples </a> -->
+                            <a class="navbar-item" href="/docs/">
+                                <span class="iconify navbar-icon"
+                                    data-icon="mdi-book-open-blank-variant-outline"></span>&nbsp;Documentation
+                            </a>
+                            <a class="navbar-item" href="https://github.com/danielmartling/annabookning">
+                                <span class="iconify navbar-icon" data-icon="mdi-github"></span>&nbsp;Github
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="hero-body">
+            <div class="container" style="max-width: 500px;">
+
+                <div class="box">
+                    <div class="content has-text-centered">
+                        <p class="title">Anna Bookning</p>
+                        <p class="subtitle">Program Booking System</p>
+                    </div>
+
+                    <div class="container" id="notification-container">
+                        <div id="warning-box" class="notification is-danger is-hidden">
+                            <button class="delete" onclick="hideWarning()"></button>
+                            <span id="warning-message"></span>
+                        </div>
+
+                        <div id="success-box" class="notification is-success is-hidden">
+                            <button class="delete" onclick="hideSuccess()"></button>
+                            <span id="success-message"></span>
+                        </div>
+
+                        <div id="message-box" class="notification is-primary is-hidden">
+                            <button class="delete" onclick="hideMessage()"></button>
+                            <span id="message-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <blockquote>
+                            <p style="margin-bottom: 0px;"><b>Guests:</b></p>
+                            <p>E-mail bokning(at)vassaro.se for help.</p>
+                            <p style="margin-bottom: 0px;"><b>Staff members:</b></p>
+                            <p>Talk to the program patrol leader or Storgårn for help.</p>
+                        </blockquote>
+                    </div>
+
+                    <form class="notification" id="login-form">
+                        <div class="field">
+                            <label class="label">
+                                <p class="subtitle is-3">Log in</>
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label class="label">Username or booking number</label>
+                            <div class="control">
+                                <input class="input" type="text" name="username" placeholder="'kjell' or '1234'"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" name="password" placeholder="******" required>
+                            </div>
+                        </div>
+                        <button class="button is-link" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-foot">
+            <nav class="tabs is-boxed is-fullwidth">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <a>
+                                <span class="iconify" data-icon="mdi-cookie-alert"></span>&nbsp;
+                                We use cookies to make this site work. They are removed when you log out.
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/danielmartling/bokningssystem">&copy;&nbsp;Github
+                                contributors</a>
+                        </li>
+                        <li>
+                            <a href="https://vassaro.se"><img src="/icons/vassaro.svg" class="svg-icon"
+                                    style="height: 26px;">&nbsp;Vässarö website</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- <div class="hero-foot has-text-centered is-flex-align-items-flex-end mt-auto">
+            <div class="content has-text-centered">
+                <p>
+                    <span class="iconify" data-icon="mdi-cookie-alert"></span>&nbsp;
+                    We use cookies to make this site work. They are removed when you log out.
+                </p>
+                <p>
+                    &copy; <a href="https://github.com/danielmartling/bokningssystem">Github contributors</a>
+                </p>
+            </div>
+        </div> -->
+    </section>
+
+
+
+
+
+
+
+
+</body>
+
+<script>
+
+    message = new URLSearchParams(window.location.search).get("message");
+    if (message == "logout") {
+        showSuccess("You are logged out. Welcome back soon!");
+    } else if (message == "notloggedin") {
+        showWarning("To access this site, you have to be logged in...")
+    }
+
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        await api.login(form.username.value.trim().toLowerCase(), form.password.value.trim());
+        // try {
+        //     const response = await fetch('/api/login', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({
+        //             username: form.username.value.trim().toLowerCase(),
+        //             password: form.password.value.trim()
+        //         })
+        //     });
+
+        //     const data = await response.json();
+
+        //     if (!response.ok) {
+        //         showWarning(data.error || `Server responded with ${response.status}`);
+        //         return;
+        //     }
+
+        //     window.location = "/?message=login";
+        // } catch (error) {
+        //     showWarning("Unexpected error: " + error.message);
+        // }
+    });
+
+</script>
+
+</html>

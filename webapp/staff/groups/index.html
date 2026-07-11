@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Groups | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/vendor/BulmaDatePicker.js"></script>
+    <link href="/vendor/BulmaDatePicker.css" rel="stylesheet">
+
+    <script src="/js/scripts.js"></script>
+
+
+</head>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <div class="section">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class="is-active"><a href="/staff/groups" aria-current="page">All groups</a></li>
+                </ul>
+            </nav>
+
+            <div class="block">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">View all visiting groups</h1>
+            </div>
+
+            <div class="columns is-mobile is-multiline is-vcentered">
+                Knappar
+            </div>
+            <div class="table-container">
+                <div id="groupsList"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer class="footer" id="common-footer"></footer>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+        init();
+    });
+
+    async function init() {
+
+    }
+</script>
