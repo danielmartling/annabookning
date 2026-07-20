@@ -1,3 +1,4 @@
+// /src/server/db/models/activity.js
 import { DataTypes } from "sequelize";
 
 export default (sequelize) =>

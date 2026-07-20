@@ -1,3 +1,4 @@
+// /src/server/db/models/group.js
 import { DataTypes } from "sequelize";
 
 export default (sequelize) =>

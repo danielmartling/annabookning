@@ -1,4 +1,4 @@
-"use strict"
+// /src/server/db/sequelize.js
 
 import { Sequelize, DataTypes } from 'sequelize';
 import { types } from 'pg';

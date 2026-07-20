@@ -1,3 +1,4 @@
+// /src/server/db/models/activitycategory.js
 import { DataTypes } from "sequelize";
 
 export default (sequelize) =>

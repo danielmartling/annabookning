@@ -1,3 +1,4 @@
+// /src/server/db/models/booking.js
 import { DataTypes } from "sequelize";
 
 export default (sequelize) =>

@@ -1,3 +1,4 @@
+// /src/server/db/models/activitytag.js
 import { DataTypes } from "sequelize";
 
 export default (sequelize) =>

@@ -1,4 +1,4 @@
-// src/server/db/models/index.js
+// /src/server/db/models/index.js
 
 import { sequelize } from "../sequelize.js";
 

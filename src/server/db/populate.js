@@ -1,3 +1,6 @@
+// /src/server/db/populate.js
+// If such a user does not exist in the db, it will be inserted here from enviroment variables.
+
 import bcrypt from "bcrypt";
 import { User } from "./models/index.js";
 
