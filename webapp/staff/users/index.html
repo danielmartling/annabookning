@@ -5,15 +5,12 @@
     <meta charset="utf-8">
     <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Groups | Anna Bookning</title>
+    <title>Users | Anna Bookning</title>
 
     <link rel="stylesheet" href="/css/main.css">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
-
-    <script type="module" src="/vendor/BulmaDatePicker.js"></script>
-    <link href="/vendor/BulmaDatePicker.css" rel="stylesheet">
 
     <script src="/js/scripts.js"></script>
     <script type="module" src="/js/api/index.js"></script>
@@ -30,13 +27,13 @@
 
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li class="is-active"><a href="/staff/groups" aria-current="page">All groups</a></li>
+                <li class="is-active"><a href="/staff/users" aria-current="page">Users</a></li>
             </ul>
         </nav>
 
         <div class="block">
             <div class="container" id="notification-container"></div>
-            <h1 id="pagetitle" class="title">View all visiting groups</h1>
+            <h1 id="pagetitle" class="title">View all users</h1>
         </div>
 
         <div class="columns is-mobile is-multiline is-vcentered">
@@ -47,19 +44,19 @@
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>DOA</th>
-                        <th>DOD</th>
-                        <th colspan="2">Tags</th>
-                        <th>Participants</th>
+                        <th>User name</th>
+                        <th>Display name</th>
+                        <th>Role</th>
+                        <th>Permission</th>
+                        <th>Last login</th>
+                        <th>Created at</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="groupsTable"></tbody>
+                <tbody id="usersTable"></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="10"><i>To be added...</i></td>
+                        <td colspan="8"><i>To be added...</i></td>
                     </tr>
                 </tfoot>
             </table>
@@ -78,25 +75,24 @@
         init();
     });
 
-    let groups;
-    groupsTable = document.getElementById("groupsTable");
+    let users;
+    usersTable = document.getElementById("usersTable");
 
     async function init() {
-        groups = await api.getAllGroups();
+        users = await api.getAllUsers();
 
-        groups.forEach(group => {
+        users.forEach(user => {
             const row = document.createElement('tr');
-            row.id = `row-${group.booking_number}`;
-            row.style.cursor = "pointer";
+            row.id = `row-${user.user_id}`;
+            // row.style.cursor = "pointer";
             row.innerHTML = `
-                <td>${group.group_id}</td>
-                <td>${group.booking_number}</td>
-                <td>${group.name}</td>
-                <td>${group.arrival_date}</td>
-                <td>${group.departure_date}</td> 
-                <td>${group.type}</td>
-                <td>${group.accomodation}</td>
-                <td>${group.participants} + ${group.leaders}</td>
+                <td>${user.user_id}</td>
+                <td>${user.username}</td>
+                <td>${user.displayname}</td>
+                <td>${user.role}</td>
+                <td>${user.permission}</td> 
+                <td>${user.last_login}</td>
+                <td>${user.createdAt}</td>
                 <td>
                     <div class="buttons">
                         <button id="scheduleButton" class="button">
@@ -108,18 +104,18 @@
                     </div>
                 </td>
             `;
-            row.addEventListener("click", (e) => {
-                const scheduleButton = e.target.closest("#scheduleButton");
-                const historyButton = e.target.closest("#historyButton");
-                if (scheduleButton) {
-                    window.location = `./bookings.html?booking_number=${group.booking_number}`;
-                } else if (historyButton) {
-                    window.location = `./history.html?booking_number=${group.booking_number}`;
-                } else {
-                    window.location = `./view.html?booking_number=${group.booking_number}`;
-                }
-            });
-            groupsTable.appendChild(row);
+            // row.addEventListener("click", (e) => {
+            //     const scheduleButton = e.target.closest("#scheduleButton");
+            //     const historyButton = e.target.closest("#historyButton");
+            //     if (scheduleButton) {
+            //         window.location = `./bookings.html?booking_number=${group.booking_number}`;
+            //     } else if (historyButton) {
+            //         window.location = `./history.html?booking_number=${group.booking_number}`;
+            //     } else {
+            //         window.location = `./view.html?booking_number=${group.booking_number}`;
+            //     }
+            // });
+            usersTable.appendChild(row);
         });
         
     }

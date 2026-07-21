@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node ./src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-bulma": "sass --load-path=node_modules --source-map src/sass/main.scss public/css/main.css"
+    "build-bulma": "sass --load-path=node_modules --source-map src/sass/main.scss webapp/public/css/main.css"
   },
   "repository": {
     "type": "git",

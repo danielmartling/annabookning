@@ -53,4 +53,36 @@ function requireLogin(req, res, next) {
     next();
 }
 
-export { loginHandler, logoutHandler, requireLogin }
+function requireRoles(roles) {
+    return (req, res, next) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Not logged in' });
+        };
+
+        const hasRole = roles.some(role => req.session.user.role === role);
+
+        if (!hasRole) {
+            return res.status(403).json({ error: 'Forbidden: insufficient role' });
+        }
+
+        next();
+    }
+}
+
+function requirePermission(permissions) {
+    return (req, res, next) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Not logged in' });
+        };
+
+        const hasPermission = permissions.some(permission => req.session.user.permission === permission);
+
+        if (!hasPermission) {
+            return res.status(403).json({ error: 'Forbidden: insufficient permission' });
+        }
+
+        next();
+    }
+}
+
+export { loginHandler, logoutHandler, requireLogin, requireRoles, requirePermission }

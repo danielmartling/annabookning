@@ -85,3 +85,19 @@ Booking.belongsTo(Activity, {
 
 import createProgramDay from "./programday.js";
 export const ProgramDay = createProgramDay(sequelize);
+
+
+
+
+import createLogentry from "./logentry.js";
+export const Logentry = createLogentry(sequelize);
+
+User.hasMany(Logentry, {
+    foreignKey: "user_id",
+    as: "log_entries",
+});
+
+Logentry.belongsTo(User, {
+    foreignKey: "user_id",
+    as: "user",
+});

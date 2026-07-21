@@ -36,13 +36,18 @@ import { loginHandler, logoutHandler, requireLogin } from "./middleware/auth.js"
 app.post("/api/login", loginHandler);
 app.post("/api/logout", logoutHandler);
 
+// Import routes
+// import "./db/routes/index.js"
+import routes from "./db/routes/index.js";
+app.use(routes);
+
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 
 const staffRoot = path.join(__dirname, "../../webapp/staff");
 const guestRoot = path.join(__dirname, "../../webapp/guest");
 app.use(requireLogin);
 app.use((req, res, next) => {
-    
+
     const root =
         req.session.user.role === "staff"
             ? staffRoot

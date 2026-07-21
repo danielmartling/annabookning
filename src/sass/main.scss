@@ -25,7 +25,7 @@ $styrbord-invert: black;
     // $family-primary: $family-sans-serif,
 
     // Omdefinierade färger
-    // $primary: ($terrakotta, black),
+    // $primary: ($petrolblå, white),
     // $blue: $scoutblå,
     // $code: $utmanarrosa,
     // $success: ($spårargrön, black),
@@ -35,8 +35,7 @@ $styrbord-invert: black;
     // $warning: ($rovergul, black),
 
     // Egna färger (skapar css-klasser eg. is-staff)
-    $custom-colors: (
-        // "primary-staff": ($terrakotta, black),
+    $custom-colors: ( // "primary-staff": ($terrakotta, black),
         // "secondary-staff": ($petrolgrön, white),
         // "primary-guest": ($petrolgrön, white),
         // "secondary-guest": ($petrolblå, white),
@@ -51,6 +50,4 @@ $styrbord-invert: black;
         "styrbord": ($styrbord, black),
         "guest": ($petrolgrön, white),
         "staff": ($terrakotta, black),
-        "fladan": ($scoutblå, white)
-    )
-);
+        "fladan": ($scoutblå, white)));

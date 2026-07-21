@@ -6,7 +6,7 @@ import { User } from "./models/index.js";
 
 const password_hash = await bcrypt.hash(process.env.ADMINPASSWORD, 12);
 
-const [user, created] = await User.findOrCreate({
+const [adminuser, admincreated] = await User.findOrCreate({
     where: {
         username: process.env.ADMINUSERNAME
     },
@@ -18,6 +18,21 @@ const [user, created] = await User.findOrCreate({
     }
 });
 
-if (created) {
+if (admincreated) {
     console.log("Admin user created!");
+}
+
+const [testuser, testcreated] = await User.findOrCreate({
+    where: {
+        username: "test"
+    },
+    defaults: {
+        displayname: "Testanvändare 1",
+        password_hash: await bcrypt.hash("test", 12),
+        role: "guest"
+    }
+});
+
+if (testcreated) {
+    console.log("Test user created!");
 }
