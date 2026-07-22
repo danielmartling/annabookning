@@ -1,6 +1,8 @@
 .venv/
 package-lock.json
 .env
+webapp/public/css/main.css
+
 
 # Logs
 logs
