@@ -4,8 +4,8 @@ const router = express.Router();
 import groupRouter from "./group.js";
 router.use("/api/groups", groupRouter);
 
-import logRouter from "./logentry.js";
-router.use("/api/history", logRouter);
+import historyRouter from "./history.js";
+router.use("/api/history", historyRouter);
 
 import userRouter from "./user.js";
 router.use("/api/users", userRouter);

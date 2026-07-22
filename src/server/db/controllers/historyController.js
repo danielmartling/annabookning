@@ -1,6 +1,6 @@
-// src/server/db/controllers/groupController.js
+// src/server/db/controllers/historyController.js
 
-import { Logentry, User } from "../models/index.js";
+import { History, User } from "../models/index.js";
 import { Op } from "sequelize";
 
 // GET /history/user/:id

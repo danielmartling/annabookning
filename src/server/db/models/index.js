@@ -89,15 +89,15 @@ export const ProgramDay = createProgramDay(sequelize);
 
 
 
-import createLogentry from "./logentry.js";
-export const Logentry = createLogentry(sequelize);
+import createHistory from "./history.js";
+export const History = createHistory(sequelize);
 
-User.hasMany(Logentry, {
+User.hasMany(History, {
     foreignKey: "user_id",
-    as: "log_entries",
+    as: "history",
 });
 
-Logentry.belongsTo(User, {
+History.belongsTo(User, {
     foreignKey: "user_id",
     as: "user",
 });

@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 
 export default (sequelize) =>
     sequelize.define(
-        "logentry",
+        "history",
         {
             history_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
             table_name: { type: DataTypes.STRING, allowNull: false, validate: { notEmpty: true } },
@@ -13,6 +13,7 @@ export default (sequelize) =>
             user_id: { type: DataTypes.INTEGER, allowNull: false }
         },
         {
+            tableName: 'history',
             timestamps: true,
             paranoid: true,
             underscored: true

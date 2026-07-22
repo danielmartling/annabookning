@@ -1,6 +1,6 @@
 // src/server/db/controllers/groupController.js
 
-import { Group, Subgroup, Logentry } from "../models/index.js";
+import { Group, Subgroup, History } from "../models/index.js";
 import { Op } from "sequelize";
 
 // GET /groups
