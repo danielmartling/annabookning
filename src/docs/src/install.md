@@ -1,0 +1,3 @@
+# Installation
+
+Kör `npm install`.

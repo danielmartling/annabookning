@@ -7,6 +7,7 @@ repo_url: https://github.com/danielmartling/annabookning
 
 nav:
   - Hem: index.md
+  - Installation: install.md
 
 theme:
   name: material
