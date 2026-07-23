@@ -20,7 +20,7 @@ async function loginHandler(req, res) {
         const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
-            const logentry = await History.create({ table_name: "users", record_id: user.user_id, action: "wrongpassword", user_id: user.user_id });
+            await History.create({ table_name: "users", record_id: user.user_id, action: "wrongpassword", user_id: user.user_id });
             return res.status(401).json({ success: false });
         }
 
@@ -32,7 +32,8 @@ async function loginHandler(req, res) {
 
         user.last_login = new Date();
         await user.save();
-        const logentry = await History.create({ table_name: "users", record_id: user.user_id, action: "login", user_id: req.session.user.id });
+        await user.increment("login_count");
+        await History.create({ table_name: "users", record_id: user.user_id, action: "login", user_id: req.session.user.id });
 
         res.json({ success: true });
     } catch (err) {
