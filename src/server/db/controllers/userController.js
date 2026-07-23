@@ -9,7 +9,8 @@ import bcrypt from "bcrypt";
 export async function getAllUsers(req, res) {
     const users = await User.findAll({
         order: [
-            ['active', 'ASC'],
+            ['role', 'ASC'],
+            ['active', 'DESC'],
             ['username', 'ASC'],
         ],
     });
