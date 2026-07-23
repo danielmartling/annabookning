@@ -37,146 +37,217 @@
                 <div class="container" id="notification-container"></div>
                 <h1 id="pagetitle" class="title">View user</h1>
                 <!-- <h3 class="subtitle"></h3> -->
+                <div class="buttons">
+                    <button class="button">
+                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit user
+                    </button>
+                    <button class="button">
+                        <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
+                    </button>
+                    <button type="submit" class="button is-primary">
+                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;Save changes
+                    </button>
+                    <button type="button" class="button is-danger modal-cancel">
+                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;Cancel
+                    </button>
+                </div>
             </div>
 
-            <div class="columns is-desktop">
-                <div class="column">
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped is-hoverable is-narrow">
-                            <thead>
-                                <tr>
-                                    <th class="is-vcentered">Username</th>
-                                    <th colspan="2">
-                                        <input type="text" class="input is-static" data-field="username"
-                                            placeholder="Username" readonly>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="is-vcentered">Displayname</td>
-                                    <td colspan="2">
-                                        <input type="text" class="input is-static " data-field="displayname"
-                                            placeholder="Displayname" readonly>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="is-vcentered">Role</td>
-                                    <td colspan="2" class="is-vcentered">
-                                        <div class="tags" data-field="role"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="is-vcentered">Permission</td>
-                                    <td class="is-vcentered">
-                                        <div class="tags" data-field="permission"></div>
-                                    </td>
-                                    <td>
-                                        <div class="buttons is-right">
-                                            <a title="About user roles" class="button " href="./roles.html">
-                                                <span class="iconify navbar-icon" data-icon="mdi-help"></span>
-                                            </a>
+            <form id="form-user">
+                <div class="columns is-desktop">
+                    <div class="column">
+                        <div class="box">
+                            <!-- <h3 class="subtitle">
+                                <span class="iconify" data-icon="mdi-account-plus"></span>&nbsp;Create new user
+                            </h3> -->
+
+                            <!-- Username -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Username</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-static" type="text" name="username"
+                                                placeholder="Username" required>
                                         </div>
-                                    </td>
-                                <tr>
-                                    <td class="is-vcentered">User ID</td>
-                                    <td colspan="2">
-                                        <input type="text" class="input is-static " data-field="user_id"
-                                            placeholder="User ID" readonly>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="is-vcentered">User active</td>
-                                    <td colspan="2">
-                                        <input type="checkbox" data-field="active" disabled>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="is-vcentered">Created at</td>
-                                    <td colspan="2">
-                                        <input type="text" data-field="createdAt" class="input is-static " readonly>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="is-vcentered">Last login</td>
-                                    <td colspan="2">
-                                        <input type="text" data-field="last_login" class="input is-static " readonly>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" style="text-align: right;">
-                                        <a class="button" id="editButton">
-                                            <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Edit user
-                                            info
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Displayname -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Displayname</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input class="input is-static" type="text" name="displayname"
+                                                placeholder="Displayname">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Contact -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Contact info</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="field has-addons">
+                                            <p class="control is-expanded has-icons-left">
+                                                <input class="input is-static" type="tel" name="phone"
+                                                    placeholder="Phone number (+46...)">
+                                                <span class="icon is-small is-left">
+                                                    <span class="iconify" data-icon="mdi-phone"></span>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left">
+                                            <input class="input is-static" type="email" name="email"
+                                                placeholder="Email">
+                                            <span class="icon is-small is-left">
+                                                <span class="iconify" data-icon="mdi-email"></span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-
-
-
-                </div>
-                <div class="column">
-                    <!-- CHANGE PASSWORD -->
-                    <div class="box">
-                        <p class="subtitle is-5">Change password</p>
-                        <div class="table-container">
-                            <table class="table is-fullwidth">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Current password:</td>
-                                        <td>
-                                            <input id="input-oldPassword" type="password" class="input editable-input "
-                                                placeholder="****" required>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>New password:</td>
-                                        <td>
-                                            <input id="input-newPassword" type="password" class="input editable-input "
-                                                placeholder="****" required>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Repeat new password:</td>
-                                        <td>
-                                            <input id="input-repeatPassword" type="password"
-                                                class="input editable-input " placeholder="****" required>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="2">
-                                            <div class="buttons is-right is-flex-nowrap has-addons" is-right">
-                                                <button title="Save new password" class="button  is-success"
-                                                    id="changePasswordButton"><span class="iconify"
-                                                        data-icon="mdi-content-save"></span></button>
-                                                <button title="Cancel new password" class="button  is-danger"
-                                                    onclick="cancelPassword()"><span class="iconify"
-                                                        data-icon="mdi-close"></span></button>
+                            <!-- Activate -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Active</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field has-addons">
+                                        <div class="radios">
+                                            <div class="control">
+                                                <label class="radio">
+                                                    <input type="radio" name="active" value="true" disabled />
+                                                    Yes
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="active" value="false" disabled />
+                                                    No
+                                                </label>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            <!-- Role and permission -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Role</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="field has-addons">
+                                            <div class="radios">
+                                                <div class="control">
+                                                    <label class="radio">
+                                                        <input type="radio" name="role" value="staff" disabled />
+                                                        Staff
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="role" value="guest" disabled />
+                                                        Guest
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal" id="permissionField">
+                                <div class="field-label">
+                                    <label class="label">Permission</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="field has-addons">
+                                            <div class="radios">
+                                                <div class="control">
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="none" disabled />
+                                                        none
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="program-viewer"
+                                                            disabled />
+                                                        program-viewer
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="program-jour"
+                                                            disabled />
+                                                        program-jour
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="program-booker"
+                                                            disabled />
+                                                        program-booker
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="program-admin"
+                                                            disabled />
+                                                        program-admin
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="permission" value="system-admin"
+                                                            disabled />
+                                                        system-admin
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box" style="display: none;">
+                            <!-- Password -->
+                            <div class="field is-horizontal">
+                                <div class="field-label">
+                                    <label class="label">Password</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input class="input is-danger" type="password" name="password"
+                                                placeholder="Password" required />
+                                            <span class="icon is-small is-left">
+                                                <span class="iconify" data-icon="mdi-lock"></span>
+                                            </span>
+                                        </p>
+                                        <p class="help">At least 4 symbols.</p>
+                                    </div>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input class="input is-danger" type="password" name="repeatpassword"
+                                                placeholder="Repeat password" required />
+                                            <span class="icon is-small is-left">
+                                                <span class="iconify" data-icon="mdi-lock"></span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </form>
 
             <!-- RECENT HISTORY -->
             <div class="box">
@@ -264,7 +335,7 @@
             } else {
                 state = "view";
                 pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
-                editButton.href = `./view.html?user_id=${userId}&edit=true`;
+                // editButton.href = `./view.html?user_id=${userId}&edit=true`;
             }
         }
 
