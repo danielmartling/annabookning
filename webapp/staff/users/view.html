@@ -14,10 +14,17 @@
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
 
     <script src="/js/scripts.js"></script>
+    <script src="/js/modal.js"></script>
     <script type="module" src="/js/api/index.js"></script>
 
 
 </head>
+
+<style>
+    dt {
+        font-weight: bold;
+    }
+</style>
 
 <body class="has-navbar-fixed-top">
     <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
@@ -38,216 +45,81 @@
                 <h1 id="pagetitle" class="title">View user</h1>
                 <!-- <h3 class="subtitle"></h3> -->
                 <div class="buttons">
-                    <button class="button">
-                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit user
+                    <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-user">
+                        <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
                     </button>
-                    <button class="button">
+                    <button id="passwordButton" class="button js-modal-trigger" data-target="modal-change-password">
                         <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
                     </button>
-                    <button type="submit" class="button is-primary">
-                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;Save changes
+                    <button id="roleButton" class="button js-modal-trigger" data-target="modal-change-roles">
+                        <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles etc.
                     </button>
-                    <button type="button" class="button is-danger modal-cancel">
-                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;Cancel
-                    </button>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="box content">
+                            <p class="subtitle is-5">User info</p>
+                            <dl class="grid">
+                                <div class="cell">
+                                    <dt>Username:</dt>
+                                    <dd data-field="username" data-type="text"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Displayname:</dt>
+                                    <dd data-field="displayname" data-type="text"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>E-mail:</dt>
+                                    <dd data-field="email" data-type="text"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Phone:</dt>
+                                    <dd data-field="phone" data-type="text"></dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box content">
+                            <p class="subtitle is-5">System data</p>
+                            <dl class="grid">
+                                <div class="cell">
+                                    <dt>User ID:</dt>
+                                    <dd data-field="user_id" data-type="text"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Active:</dt>
+                                    <dd data-field="active" data-type="check"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Role:</dt>
+                                    <dd data-field="role" data-type="tag"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Permission:</dt>
+                                    <dd data-field="permission" data-type="tag"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Last login:</dt>
+                                    <dd data-field="last_login" data-type="date"></dd>
+                                </div>
+
+                                <div class="cell">
+                                    <dt>Created at:</dt>
+                                    <dd data-field="createdAt" data-type="date"></dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <form id="form-user">
-                <div class="columns is-desktop">
-                    <div class="column">
-                        <div class="box">
-                            <!-- <h3 class="subtitle">
-                                <span class="iconify" data-icon="mdi-account-plus"></span>&nbsp;Create new user
-                            </h3> -->
-
-                            <!-- Username -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Username</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <input class="input is-static" type="text" name="username"
-                                                placeholder="Username" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Displayname -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Displayname</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <input class="input is-static" type="text" name="displayname"
-                                                placeholder="Displayname">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Contact -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Contact info</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="field has-addons">
-                                            <p class="control is-expanded has-icons-left">
-                                                <input class="input is-static" type="tel" name="phone"
-                                                    placeholder="Phone number (+46...)">
-                                                <span class="icon is-small is-left">
-                                                    <span class="iconify" data-icon="mdi-phone"></span>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <p class="control is-expanded has-icons-left">
-                                            <input class="input is-static" type="email" name="email"
-                                                placeholder="Email">
-                                            <span class="icon is-small is-left">
-                                                <span class="iconify" data-icon="mdi-email"></span>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Activate -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Active</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field has-addons">
-                                        <div class="radios">
-                                            <div class="control">
-                                                <label class="radio">
-                                                    <input type="radio" name="active" value="true" disabled />
-                                                    Yes
-                                                </label>
-                                                <label class="radio">
-                                                    <input type="radio" name="active" value="false" disabled />
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="box">
-                            <!-- Role and permission -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Role</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="field has-addons">
-                                            <div class="radios">
-                                                <div class="control">
-                                                    <label class="radio">
-                                                        <input type="radio" name="role" value="staff" disabled />
-                                                        Staff
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="role" value="guest" disabled />
-                                                        Guest
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field is-horizontal" id="permissionField">
-                                <div class="field-label">
-                                    <label class="label">Permission</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="field has-addons">
-                                            <div class="radios">
-                                                <div class="control">
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="none" disabled />
-                                                        none
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="program-viewer"
-                                                            disabled />
-                                                        program-viewer
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="program-jour"
-                                                            disabled />
-                                                        program-jour
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="program-booker"
-                                                            disabled />
-                                                        program-booker
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="program-admin"
-                                                            disabled />
-                                                        program-admin
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" name="permission" value="system-admin"
-                                                            disabled />
-                                                        system-admin
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="box" style="display: none;">
-                            <!-- Password -->
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">Password</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <p class="control has-icons-left">
-                                            <input class="input is-danger" type="password" name="password"
-                                                placeholder="Password" required />
-                                            <span class="icon is-small is-left">
-                                                <span class="iconify" data-icon="mdi-lock"></span>
-                                            </span>
-                                        </p>
-                                        <p class="help">At least 4 symbols.</p>
-                                    </div>
-                                    <div class="field">
-                                        <p class="control has-icons-left">
-                                            <input class="input is-danger" type="password" name="repeatpassword"
-                                                placeholder="Repeat password" required />
-                                            <span class="icon is-small is-left">
-                                                <span class="iconify" data-icon="mdi-lock"></span>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
 
             <!-- RECENT HISTORY -->
             <div class="box">
@@ -284,14 +156,342 @@
                         </tfoot>
                     </table>
                 </div>
-
             </div>
-
-
         </section>
 
     </div>
     <footer class="footer" id="common-footer"></footer>
+
+    <!-- Edit user modal -->
+    <div id="modal-edit-user" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-edit-user">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
+                    </h3>
+
+                    <!-- Username -->
+                    <div class="field is-horizontal" id="usernameField">
+                        <div class="field-label">
+                            <label class="label">Username</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input is-danger" type="text" name="username" placeholder="Username"
+                                        required>
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-account"></span>
+                                    </span>
+                                </div>
+                                <p class="help">Used to log in. 3-50 letters, lower case, no blank spaces.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Displayname -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Displayname</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input is-danger" type="text" name="displayname"
+                                        placeholder="Displayname" required>
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-account"></span>
+                                    </span>
+                                </div>
+                                <p class="help">User friendly name. Preferably full name of user.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Contact info</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <p class="control is-expanded has-icons-left">
+                                        <input class="input" type="tel" name="phone"
+                                            placeholder="Phone number (+46...)">
+                                        <span class="icon is-small is-left">
+                                            <span class="iconify" data-icon="mdi-phone"></span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left">
+                                    <input class="input" type="email" name="email" placeholder="Email">
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-email"></span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Update user
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!-- Change system roles etc. modal -->
+    <div id="modal-change-roles" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-change-roles">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles etc.
+                    </h3>
+
+                    <!-- Activate -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Activate</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <div class="radios">
+                                    <div class="control">
+                                        <label class="radio">
+                                            <input type="radio" name="active" value="true" />
+                                            Yes
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="active" value="false" />
+                                            No
+                                        </label>
+                                    </div>
+                                    <p class="help">Inactive users can not log in.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Role and permission -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Role</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <div class="radios">
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="role" value="staff" disabled />
+                                                Staff
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="role" value="guest" disabled />
+                                                Guest
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal" id="permissionField">
+                        <div class="field-label">
+                            <label class="label">Permission</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <div class="radios">
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="none" />
+                                                none
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="program-viewer" />
+                                                program-viewer
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="program-jour" />
+                                                program-jour
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="program-booker" />
+                                                program-booker
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="program-admin" />
+                                                program-admin
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="permission" value="system-admin" />
+                                                system-admin
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal  is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Update user
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <div style="display: none;">
+
+    </div>
+
+    <!-- Change password modal -->
+    <div id="modal-change-password" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-change-password">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
+                    </h3>
+
+                    <!-- Password -->
+                    <div class="field is-horizontal" id="oldPasswordField">
+                        <div class="field-label">
+                            <label class="label">Old password</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input is-danger" type="password" name="oldpassword"
+                                        placeholder="Password" required />
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-lock"></span>
+                                    </span>
+                                </p>
+                                <p class="help">At least 4 symbols.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">New password</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input is-danger" type="password" name="newpassword"
+                                        placeholder="Password" required />
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-lock"></span>
+                                    </span>
+                                </p>
+                                <p class="help">At least 4 symbols.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Repeat password</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input is-danger" type="password" name="repeatpassword"
+                                        placeholder="Repeat password" required />
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-lock"></span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal  is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Change password
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 
 </body>
 
@@ -301,26 +501,44 @@
         init();
     });
 
-    let state;
     let user;
+    let me;
+    let editingSelf;
     let history;
     let userId;
-    userTable = document.getElementById("userTable");
     const pagetitle = document.getElementById("pagetitle");
 
     const completeHistoryButton = document.getElementById("completeHistoryButton")
+
     const editButton = document.getElementById("editButton");
+    const roleButton = document.getElementById("roleButton");
+
+    const editForm = document.getElementById("form-edit-user");
+    const roleForm = document.getElementById("form-change-roles");
+    const passwordForm = document.getElementById("form-change-password");
+
+    const renderers = {
+        text: value => value ?? "-",
+        date: value => renderDate(value),
+        tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
+        check: value => makeCheck(value)
+    };
+
 
     async function init() {
 
+        me = await api.getMe();
+
         const urlParam = new URLSearchParams(window.location.search).get("user_id");
         if (urlParam) {
-            if (urlParam === "me") {
-                user = await api.getMe();
+            if (urlParam === "me" || urlParam == me.user_id) {
+                user = me;
                 userId = user.user_id;
+                editingSelf = true;
             } else {
                 userId = urlParam;
                 user = await api.getUser(userId);
+                editingSelf = false;
             }
 
             history = await api.getRecentHistoryOfUser(userId);
@@ -328,52 +546,101 @@
             completeHistoryButton.href = `./history.html?user_id=${userId}`
 
             renderUserTable(user);
+            pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
 
-            if (new URLSearchParams(window.location.search).get("edit")) {
-                state = "edit";
-                editButton.style.display = "none";
-            } else {
-                state = "view";
-                pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
-                // editButton.href = `./view.html?user_id=${userId}&edit=true`;
+
+            if (editingSelf) {
+                showWarning("You may not change certain properties of yourself.")
             }
+            editButton.onclick = populateForm(editForm, user);
+            roleButton.onclick = populateForm(roleForm, user);
+            adaptForms(editingSelf);
+
+            // Create form submit handlers
+            editForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const data = new FormData(editForm);
+
+                const user = {
+                    username: data.get("username"),
+                    displayname: data.get("displayname"),
+                    phone: data.get("phone") === "" ? null : data.get("phone"),
+                    email: data.get("email") === "" ? null : data.get("email"),
+                };
+                console.log(user)
+                if (editingSelf) {
+                    api.updateMyInfo(user);
+                } else {
+                    api.updateUserInfo(userId, user);
+                }
+                showSuccess("User updated!")
+
+                editForm.reset();
+                init();
+
+                const modal = editForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+
+            passwordForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const data = new FormData(passwordForm);
+
+                if (editingSelf) {
+                    const user = {
+                        oldpassword: data.get("oldpassword"),
+                        newpassword: data.get("newpassword"),
+                        repeatpassword: data.get("repeatpassword")
+                    };
+                    api.updateMyPassword(user);
+                    showSuccess("Password changed!")
+                } else {
+                    const user = {
+                        newpassword: data.get("newpassword"),
+                        repeatpassword: data.get("repeatpassword")
+                    };
+                    api.updateUserPassword(userId, user);
+                    showSuccess("Password updated!")
+                }
+
+                passwordForm.reset();
+                init();
+
+                const modal = passwordForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+
+            roleForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const data = new FormData(roleForm);
+                const permission = data.get("permission");
+
+                if (!editingSelf) {
+                    const user = {
+                        active: data.get("active") === "true",
+                        permission: permission === "none" ? null : permission,
+                    };
+                    api.updateUserRoles(userId, user);
+                    showSuccess("User updated!")
+                }
+
+                roleForm.reset();
+                init();
+
+                const modal = roleForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
         }
-
-
     }
 
     function renderUserTable(user) {
-        document.querySelectorAll("[data-field]").forEach(el => {
-
-            const field = el.dataset.field;
-            const value = user[field];
-
-            if (value == null) return;
-
-            if (el.type === "checkbox") {
-                el.checked = value;
-                return;
-            }
-
-            else if (field === "createdAt" || field === "last_login") {
-                el.value = renderDate(value);
-                return;
-            }
-
-            else if (field === "role") {
-                el.innerHTML = makeTag(user.role, `is-${user.role}`);
-                return;
-            }
-
-            else if (field === "permission") {
-                el.innerHTML = makeTag(user.permission);
-                return;
-            }
-
-            else {
-                el.value = value;
-            }
-
+        document.querySelectorAll("dd[data-field]").forEach(dd => {
+            const value = user[dd.dataset.field];
+            const renderer = renderers[dd.dataset.type ?? "text"];
+            dd.innerHTML = renderer(value);
         });
     }
 
@@ -395,20 +662,33 @@
         }
     }
 
-    function renderRecord(entry) {
-        if (entry.table_name === "users") {
-            if (entry.action === "login") {
-                return "";
+    function populateForm(form, data) {
+        for (const [key, value] of Object.entries(data)) {
+            const field = form.elements[key];
+            if (!field) continue;
+
+            if (field instanceof RadioNodeList) {
+                field.value = String(value);
             } else {
-                return entry.record.username
-            };
-        } else if (entry.table_name === "groups") {
-            return entry.record.name;
-        } else if (entry.table_name === "activity") {
-            return entry.record.title;
-        } else {
-            return entry.record_id;
+                field.value = value ?? "";
+            }
         }
+    }
+
+    function adaptForms(editingSelf) {
+
+        document.getElementById("usernameField").style.display = editingSelf ? "none" : "";
+        document.getElementById("oldPasswordField").style.display = editingSelf ? "" : "none";
+
+        document.querySelector('input[name="oldpassword"]').required = editingSelf;
+
+        document.querySelectorAll('input[name="active"]').forEach(radio => {
+            radio.disabled = editingSelf;
+        });
+
+        document.querySelectorAll('input[name="permission"]').forEach(radio => {
+            radio.disabled = editingSelf;
+        });
     }
 
 </script>

@@ -1,4 +1,4 @@
-async function getAllUsers() {
+export async function getAllUsers() {
     try {
         const response = await fetch('/api/users');
         if (!response.ok) throw new Error("Request failed");
@@ -9,7 +9,7 @@ async function getAllUsers() {
     }
 }
 
-async function getUser(userId) {
+export async function getUser(userId) {
     try {
         const response = await fetch(`/api/users/${userId}`);
         if (!response.ok) throw new Error("Request failed");
@@ -20,7 +20,7 @@ async function getUser(userId) {
     }
 }
 
-async function createUser(user) {
+export async function createUser(user) {
     try {
         const response = await fetch("/api/users", {
             method: "POST",
@@ -56,7 +56,66 @@ async function createUser(user) {
     }
 }
 
+export async function updateUserInfo(userId, user) {
+    const response = await fetch(`/api/users/info/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: user.username,
+            displayname: user.displayname,
+            email: user.email,
+            phone: user.phone
+        })
+    });
 
-export {
-    getAllUsers, getUser, createUser
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update user");
+    }
+
+    return await response.json();
+}
+
+export async function updateUserPassword(userId, user) {
+    const response = await fetch(`/api/users/password/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            oldpassword: user.oldpassword,
+            newpassword: user.newpassword,
+            repeatpassword: user.repeatpassword
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update user");
+    }
+
+    return await response.json();
+}
+
+export async function updateUserRoles(userId, user) {
+    const response = await fetch(`/api/users/roles/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            active: user.active,
+            role: user.role,
+            permission: user.permission,
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update user");
+    }
+
+    return await response.json();
 }

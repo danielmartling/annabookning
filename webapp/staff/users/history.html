@@ -111,6 +111,7 @@
             history = await api.getHistoryOfUser(userId);
         } else {
             history = await api.getHistory();
+            completeHistoryButton.style.display = "none";
         }
         renderHistoryTable(history);
     }
@@ -134,20 +135,5 @@
         }
     }
 
-    function renderRecord(entry) {
-        if (entry.table_name === "users") {
-            if (entry.action === "login") {
-                return "";
-            } else {
-                return entry.record.username
-            };
-        } else if (entry.table_name === "groups") {
-            return entry.record.name;
-        } else if (entry.table_name === "activity") {
-            return entry.record.title;
-        } else {
-            return entry.record_id;
-        }
-    }
 
 </script>

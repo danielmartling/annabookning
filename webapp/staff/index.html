@@ -18,11 +18,19 @@
 
 </head>
 
+<style>
+    .hero-body {
+        background-image: url('/img/lillgarn2.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
 <body class="has-navbar-fixed-top">
     <!-- <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
     </nav> -->
 
-    <section class="hero is-primary is-medium">
+    <section class="hero is-primary is-large">
         <div class="hero-head">
             <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation"
                 aria-label="main navigation">
@@ -30,37 +38,25 @@
         </div>
 
         <div class="hero-body">
-            <div class="container has-text-centered">
+            <div class="box container has-text-centered" style="max-width: 250px;">
                 <p class="title">Home</p>
                 <p class="subtitle">Anna Bookning</p>
-                <p></p>
             </div>
-            <div class="columns">
-                <div class="column is-one-third">
-                    <div class="box">
-                        <div class="content">
-                            <p>Content!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-one-third">
-                    <div class="box">
-                        <div class="content">
-                            <p>Content!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-one-third">
-                    <div class="box">
-                        <div class="content">
-                            <p>Content!</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid">
+                <button class="button cell" onclick="location.href='./groups';">
+                    <span class="iconify" data-icon="mdi-tent"></span>&nbsp;Groups
+                </button>
+                <button class="button cell" onclick="location.href='./bookings';">
+                    <span class="iconify" data-icon="mdi-calendar-month-outline"></span>&nbsp;Bookings
+                </button>
+                <button class="button cell" onclick="location.href='./activities';">
+                    <span class="iconify" data-icon="mdi-run"></span>&nbsp;Activities
+                </button>
+                <button class="button cell" onclick="location.href='./users';">
+                    <span class="iconify" data-icon="mdi-account"></span>&nbsp;Users
+                </button>
             </div>
-
         </div>
-
     </section>
 
     <footer class="footer" id="common-footer"></footer>

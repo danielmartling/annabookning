@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { getAllUsers, getUser, createUser } from "../controllers/userController.js";
+import { getAllUsers, getUser, createUser, updateUserInfo, updateUserPassword, updateUserRoles } from "../controllers/userController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
@@ -27,5 +27,27 @@ router.post(
     requirePermission(["program-booker", "program-admin", "system-admin"]),
     createUser
 )
+
+router.put(
+    "/info/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-booker", "program-admin", "system-admin"]),
+    updateUserInfo
+)
+
+router.put(
+    "/password/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-booker", "program-admin", "system-admin"]),
+    updateUserPassword
+)
+
+router.put(
+    "/roles/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-booker", "program-admin", "system-admin"]),
+    updateUserRoles
+)
+
 
 export default router;

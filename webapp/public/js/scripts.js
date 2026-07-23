@@ -114,6 +114,28 @@ function makeTag(text, color = "") {
 }
 
 function makeCheck(bool) {
-    return `<input type="checkbox" ${bool ? "checked" : ""} disabled />`
+    // return `<input type="checkbox" ${bool ? "checked" : ""} disabled />`
+    return `<span class="iconify navbar-icon" data-icon="mdi-${bool ? "check-bold" : "close-thick"}"></span>`;
+
+}
+
+function renderRecord(entry) {
+    if (entry.record) {
+        if (entry.table_name === "users") {
+            if (entry.action === "login") {
+                return "";
+            } else {
+                return entry.record.username
+            }
+        } else if (entry.table_name === "groups") {
+            return entry.record.name;
+        } else if (entry.table_name === "activity") {
+            return entry.record.title;
+        } else {
+            return entry.record_id;
+        }
+    } else {
+        return entry.record_id;
+    }
 
 }

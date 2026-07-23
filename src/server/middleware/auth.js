@@ -20,6 +20,7 @@ async function loginHandler(req, res) {
         const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
+            const logentry = await History.create({ table_name: "users", record_id: user.user_id, action: "wrongpassword", user_id: user.user_id });
             return res.status(401).json({ success: false });
         }
 
