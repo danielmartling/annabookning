@@ -1,3 +1,12 @@
+function burgerButton(self) {
+    const $self = document.getElementById(self)
+    const target = "navMenu";
+    const $target = document.getElementById(target);
+
+    $self.classList.toggle('is-active');
+    $target.classList.toggle('is-active');
+}
+
 function initHTML() {
 
     $("#notification-container").load("/templates/notifications.html", function () {

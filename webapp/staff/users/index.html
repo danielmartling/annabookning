@@ -322,7 +322,7 @@
                 <td>
                     <div class="buttons are-small">
                         <button class="button" id="historyButton">
-                            <span class="iconify" data-icon="mdi-calendar"></span>
+                            <span class="iconify" data-icon="mdi-history"></span>
                         </button>
                         <button class="button" id="viewButton">
                             <span class="iconify" data-icon="mdi-arrow-right"></span>
@@ -331,9 +331,9 @@
                 </td>
             `;
             row.addEventListener("click", (e) => {
-                const scheduleButton = e.target.closest("#viewButton");
+                const viewButton = e.target.closest("#viewButton");
                 const historyButton = e.target.closest("#historyButton");
-                if (scheduleButton) {
+                if (viewButton) {
                     window.location = `./view.html?user_id=${row.id}`;
                 } else if (historyButton) {
                     window.location = `./history.html?user_id=${row.id}`;
