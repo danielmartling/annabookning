@@ -20,40 +20,43 @@
 
 <style>
     .hero-body {
-        background-image: url('/img/lillgarn2.png');
+        background-image: url('/img/lillgarn3.png');
         background-repeat: no-repeat;
         background-size: cover;
     }
 </style>
 
 <body class="has-navbar-fixed-top">
-    <!-- <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
-    </nav> -->
-
-    <section class="hero is-primary is-large">
+    <section class="hero is-large">
         <div class="hero-head">
-            <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation"
-                aria-label="main navigation">
+            <nav id="common-staff-navbar" class="navbar is-fixed-top" role="navigation"
+                aria-label="main navigation" style="background-color: white;">
             </nav>
         </div>
 
         <div class="hero-body">
-            <div class="box container has-text-centered" style="max-width: 250px;">
+            <div class="box container notification has-text-centered is-staff" style="max-width: 250px;">
                 <p class="title">Home</p>
                 <p class="subtitle">Anna Bookning</p>
             </div>
             <div class="grid">
-                <button class="button cell" onclick="location.href='./groups';">
+                <button class="button cell is-medium is-bav" onclick="location.href='./groups';">
                     <span class="iconify" data-icon="mdi-tent"></span>&nbsp;Groups
                 </button>
-                <button class="button cell" onclick="location.href='./bookings';">
+                <button class="button cell is-medium is-spar" onclick="location.href='./bookings';">
                     <span class="iconify" data-icon="mdi-calendar-month-outline"></span>&nbsp;Bookings
                 </button>
-                <button class="button cell" onclick="location.href='./activities';">
+                <button class="button cell is-medium is-upp" onclick="location.href='./activities';">
                     <span class="iconify" data-icon="mdi-run"></span>&nbsp;Activities
                 </button>
-                <button class="button cell" onclick="location.href='./users';">
+                <button class="button cell is-medium is-aven" onclick="location.href='./users';">
                     <span class="iconify" data-icon="mdi-account"></span>&nbsp;Users
+                </button>
+                <button class="button cell is-medium is-utm" onclick="location.href='./docs';">
+                    <span class="iconify" data-icon="mdi-book-open-blank-variant-outline"></span>&nbsp;Docs
+                </button>
+                <button class="button cell is-medium is-rov" onclick="api.logout()">
+                    <span class="iconify" data-icon="mdi-logout"></span>&nbsp;Log out
                 </button>
             </div>
         </div>
