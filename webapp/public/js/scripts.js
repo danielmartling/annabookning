@@ -114,3 +114,16 @@ function showMessage(message) {
 function hideMessage() {
     document.getElementById('message-box').classList.add('is-hidden');
 }
+
+function renderDate(date) {
+    return new Date(date).toLocaleString("sv-SE");
+}
+
+function makeTag(text, color = "") {
+    return `<span class="tag ${color}">${text}</span>`
+}
+
+function makeCheck(bool) {
+    return `<input type="checkbox" ${bool ? "checked" : ""} disabled />`
+
+}

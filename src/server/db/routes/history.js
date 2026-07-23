@@ -1,11 +1,46 @@
 import express from "express";
 const router = express.Router();
 
-import { getHistoryOfUser, getHistoryOfGroup, log } from "../controllers/historyController.js";
+import { getHistory, getHistoryOfUser, getRecentHistoryOfUser, getHistoryOfGroup, log } from "../controllers/historyController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
-router.get("/user/:id", requireLogin, requireRoles(["staff"]), getHistoryOfUser);
-router.get("/group/:id", requireLogin, requireRoles(["staff"]), getHistoryOfGroup);
-router.post("/", requireLogin, requireRoles(["staff"]), log);
+router.get(
+    "/",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]),
+    getHistory
+)
+
+router.get(
+    "/user/:id",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]),
+    getHistoryOfUser
+)
+
+router.get(
+    "/user/recent/:id",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]),
+    getRecentHistoryOfUser
+);
+
+router.get(
+    "/group/:id",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]), 
+    getHistoryOfGroup
+);
+
+router.post(
+    "/",
+    requireLogin,
+    requireRoles(["staff", "guest"]),
+    log
+);
 
 export default router;

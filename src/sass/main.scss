@@ -18,8 +18,7 @@ $babord-invert: black;
 $styrbord: #00B300;
 $styrbord-invert: black;
 
-// $family-sans-serif: "Helvetica", "Arial", sans-serif;
-
+// $family-sans-serif: "Helvetica", "Arial", sans-serif;    
 @use "bulma/sass" with ($control-border-width: 2px,
     $input-shadow: none,
     // $family-primary: $family-sans-serif,

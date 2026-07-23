@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View user | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/js/scripts.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+
+
+</head>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <section class="section is-fullheight">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class=""><a href="/users/" aria-current="page">Users</a></li>
+                    <li class="is-active"><a href="/users/view.html" aria-current="page">View user</a></li>
+                </ul>
+            </nav>
+
+            <div class="block">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">View user</h1>
+                <!-- <h3 class="subtitle"></h3> -->
+            </div>
+
+            <div class="columns is-desktop">
+                <div class="column">
+                    <div class="table-container">
+                        <table class="table is-fullwidth is-striped is-hoverable is-narrow">
+                            <thead>
+                                <tr>
+                                    <th class="is-vcentered">Username</th>
+                                    <th colspan="2">
+                                        <input type="text" class="input is-static" data-field="username"
+                                            placeholder="Username" readonly>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="is-vcentered">Displayname</td>
+                                    <td colspan="2">
+                                        <input type="text" class="input is-static " data-field="displayname"
+                                            placeholder="Displayname" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="is-vcentered">Role</td>
+                                    <td colspan="2" class="is-vcentered">
+                                        <div class="tags" data-field="role"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="is-vcentered">Permission</td>
+                                    <td class="is-vcentered">
+                                        <div class="tags" data-field="permission"></div>
+                                    </td>
+                                    <td>
+                                        <div class="buttons is-right">
+                                            <a title="About user roles" class="button " href="./roles.html">
+                                                <span class="iconify navbar-icon" data-icon="mdi-help"></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                <tr>
+                                    <td class="is-vcentered">User ID</td>
+                                    <td colspan="2">
+                                        <input type="text" class="input is-static " data-field="user_id"
+                                            placeholder="User ID" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="is-vcentered">User active</td>
+                                    <td colspan="2">
+                                        <input type="checkbox" data-field="active" disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="is-vcentered">Created at</td>
+                                    <td colspan="2">
+                                        <input type="text" data-field="createdAt" class="input is-static " readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="is-vcentered">Last login</td>
+                                    <td colspan="2">
+                                        <input type="text" data-field="last_login" class="input is-static " readonly>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align: right;">
+                                        <a class="button" id="editButton">
+                                            <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Edit user
+                                            info
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="column">
+                    <!-- CHANGE PASSWORD -->
+                    <div class="box">
+                        <p class="subtitle is-5">Change password</p>
+                        <div class="table-container">
+                            <table class="table is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Current password:</td>
+                                        <td>
+                                            <input id="input-oldPassword" type="password" class="input editable-input "
+                                                placeholder="****" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>New password:</td>
+                                        <td>
+                                            <input id="input-newPassword" type="password" class="input editable-input "
+                                                placeholder="****" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Repeat new password:</td>
+                                        <td>
+                                            <input id="input-repeatPassword" type="password"
+                                                class="input editable-input " placeholder="****" required>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div class="buttons is-right is-flex-nowrap has-addons" is-right">
+                                                <button title="Save new password" class="button  is-success"
+                                                    id="changePasswordButton"><span class="iconify"
+                                                        data-icon="mdi-content-save"></span></button>
+                                                <button title="Cancel new password" class="button  is-danger"
+                                                    onclick="cancelPassword()"><span class="iconify"
+                                                        data-icon="mdi-close"></span></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- RECENT HISTORY -->
+            <div class="box">
+                <p class="subtitle is-5">
+                    Recent history
+                </p>
+                <table class="table is-narrow is-fullwidth is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Table name</th>
+                            <th>Record ID</th>
+                            <th>Action</th>
+                            <th>Changes</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable">
+                        <tr>
+                            <td colspan="6"><i>No actions so far...</i></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6" style="text-align: right;">
+                                <a title="Complete history" class="button" id="completeHistoryButton"
+                                    href="./history.html">
+                                    <span class="iconify navbar-icon" data-icon="mdi-history"></span>
+                                    &nbsp;
+                                    <span>Complete history</span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+
+        </section>
+
+    </div>
+    <footer class="footer" id="common-footer"></footer>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+        init();
+    });
+
+    let state;
+    let user;
+    let history;
+    userTable = document.getElementById("userTable");
+    const pagetitle = document.getElementById("pagetitle");
+
+
+    const editButton = document.getElementById("editButton");
+
+    async function init() {
+
+        const userId = new URLSearchParams(window.location.search).get("user_id");
+
+        if (userId) {
+            user = await api.getUser(userId);
+            history = await api.getRecentHistoryOfUser(userId);
+
+            if (new URLSearchParams(window.location.search).get("edit")) {
+                state = "edit";
+                editButton.style.display = "none";
+            } else {
+                state = "view";
+                pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
+                editButton.href = `./view.html?user_id=${userId}&edit=true`;
+                renderUserTable(user);
+
+                const completeHistoryButton = document.getElementById("completeHistoryButton")
+                completeHistoryButton.href = `./history.html?userId=${userId}`
+                renderHistoryTable(history);
+            }
+        }
+
+
+    }
+
+    function renderUserTable(user) {
+        document.querySelectorAll("[data-field]").forEach(el => {
+
+            const field = el.dataset.field;
+            const value = user[field];
+
+            if (value == null) return;
+
+            if (el.type === "checkbox") {
+                el.checked = value;
+                return;
+            }
+
+            else if (field === "createdAt" || field === "last_login") {
+                el.value = renderDate(value);
+                return;
+            }
+
+            else if (field === "role") {
+                el.innerHTML = makeTag(user.role, `is-${user.role}`);
+                return;
+            }
+
+            else if (field === "permission") {
+                el.innerHTML = makeTag(user.permission);
+                return;
+            }
+
+            else {
+                el.value = value;
+            }
+
+        });
+    }
+
+    function renderHistoryTable(history) {
+        const historyTable = document.getElementById("historyTable");
+        if (history.length > 0) {
+            historyTable.innerHTML = "";
+            history.forEach(entry => {
+                historyTable.innerHTML += `
+                <tr>
+                    <td>${entry.history_id}</td>
+                    <td>${entry.table_name}</td>
+                    <td>${entry.record_id}</td>
+                    <td>${entry.action}</td>
+                    <td>${entry.changes || ""}</td>
+                    <td>${renderDate(entry.createdAt)}</td>
+                </tr>
+            `;
+            })
+        }
+    }
+
+</script>

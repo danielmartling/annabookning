@@ -1,13 +1,16 @@
 import express from "express";
 const router = express.Router();
 
-import groupRouter from "./group.js";
-router.use("/api/groups", groupRouter);
+import group from "./group.js";
+router.use("/api/groups", group);
 
-import historyRouter from "./history.js";
-router.use("/api/history", historyRouter);
+import history from "./history.js";
+router.use("/api/history", history);
 
-import userRouter from "./user.js";
-router.use("/api/users", userRouter);
+import user from "./user.js";
+router.use("/api/users", user);
+
+import me from "./me.js";
+router.use("/api/me", me);
 
 export default router;

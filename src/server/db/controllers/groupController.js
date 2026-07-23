@@ -43,7 +43,6 @@ export async function createGroup(req, res) {
     // await group.setSubgroups(req.body.subgroups);
     res.json(group);
 
-    const logentry = await Logentry.create({ table_name: "groups", record_id: group.group_id, action: "create", user_id: req.session.user.id });
-    console.log(logentry);
+    const history = await History.create({ table_name: "groups", record_id: group.group_id, action: "create", user_id: req.session.user.id });
 }
 

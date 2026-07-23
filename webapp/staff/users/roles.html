@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Roles and permissions | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/js/scripts.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+
+
+</head>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <section class="section is-fullheight">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class=""><a href="/users/" aria-current="page">Users</a></li>
+                    <li class="is-active"><a href="/users/roles.html" aria-current="page">Roles and permissions</a></li>
+                </ul>
+            </nav>
+
+            <div class="content">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">User roles and permissions</h1>
+                <p>
+                    This is a matrix explaining the different user roles in the system, and what the user of a certain
+                    role can do.
+                </p>
+                <p>
+                    There are two roles: a user is either a staff member or a guest. Many actions require a permission
+                    along with the staff role.
+                </p>
+                <p><i>db*</i> = Can only be done in database.</p>
+                <p>Deletes are <strong>soft</strong> and can be restored (in db).</p>
+                <!-- <p>There is also a 'fladan' role that just changes the home page to '/staff/fladan/'.</p> -->
+                <div class="box">
+                    <div class="columns">
+                        <div class="column is-narrow">
+                            My role:
+                        </div>
+                        <div id="roleCell" class="column is-narrow">
+                            <i>none</i>
+                        </div>
+                        <div class="column is-narrow">
+                            My permission:
+                        </div>
+                        <div id="permissionCell" class="column is-narrow">
+                            <i>none</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table-container">
+                <table class="table is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="2">Roles</th>
+                            <th colspan="5">Permissions</th>
+                        </tr>
+                        <tr>
+                            <th>Action</th>
+                            <th>guest</th>
+                            <th>staff</th>
+                            <th>program-viewer</th>
+                            <th>program-jour</th>
+                            <th>program-booker</th>
+                            <th>program-admin</th>
+                            <th>system-admin</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <tr>
+                            <th>View self</th>
+                            <td>X</td>
+                            <td>X</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>View users</th>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <th>Create user</th>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>guest</th>
+                            <th>staff</th>
+                            <th>program-viewer</th>
+                            <th>program-jour</th>
+                            <th>program-booker</th>
+                            <th>program-admin</th>
+                            <th>system-admin</th>
+                        </tr>
+                        <tr>
+                            <th>View groups</th>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <th>Create group</th>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <th>Edit group</th>
+                            <td>-</td>
+                            <td>TODO</td>
+                            <td>-</td>
+                            <td>TODO</td>
+                            <td>TODO</td>
+                            <td>TODO</td>
+                            <td>TODO</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>guest</th>
+                            <th>staff</th>
+                            <th>program-viewer</th>
+                            <th>program-jour</th>
+                            <th>program-booker</th>
+                            <th>program-admin</th>
+                            <th>system-admin</th>
+                        </tr>
+                        <tr>
+                            <th>View history</th>
+                            <td>-</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <th>Log history</th>
+                            <td>X</td>
+                            <td>X</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+    <footer class="footer" id="common-footer"></footer>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+
+        init();
+
+    });
+
+    let user;
+
+    async function init() {
+        try {
+            user = await api.getMe()
+
+            if (user) {
+                roleCell = document.getElementById("roleCell");
+                roleCell.innerHTML = makeTag(user.role, `is-${user.role}`) || "<i>none...</i>";
+                permissionCell = document.getElementById("permissionCell");
+                permissionCell.innerHTML = makeTag(user.permission) || "<i>none...</i>";
+            }
+            // fetch('/api/me')
+            //     .then(res => {
+            //         if (!res.ok) throw new Error("Not logged in");
+            //         return res.json();
+            //     })
+            //     .then(me => {
+            //         roleCell = document.getElementById("roleCell");
+            //         roleCell.innerHTML += renderRoles(me.roles) || "<i>none...</i>";
+            //     })
+            //     .catch(err => {
+            //         console.error(err);
+            //     });
+        } catch (error) {
+            console.error("Oj nu blev det fel!", error);
+            title.textContent = "User not found!";
+        }
+    };
+
+    // function renderRoles(user) {
+    //     let roles = user.roles;
+    //     let html = '<span class="tags">';
+    //     if (roles) {
+    //         roles.forEach(role => {
+    //             html += `<span class="tag is-info">${role.role}</span>`
+    //         });
+    //     }
+    //     html += '</span>'
+    //     return html;
+    // }
+</script>

@@ -3,12 +3,25 @@
 import { History, User } from "../models/index.js";
 import { Op } from "sequelize";
 
+// GET /history
+async function getHistory(req, res) {
+    const entries = await History.findAll({
+        include: [
+            {
+                model: User,
+                as: "user",
+                attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
+            }
+        ]
+    });
+    res.json(entries);
+}
+
 // GET /history/user/:id
 async function getHistoryOfUser(req, res) {
     const user_id = req.params.id;
-
-    const entries = await Logentry.findAll({
-        where : {
+    const entries = await History.findAll({
+        where: {
             user_id: user_id
         },
         include: [
@@ -19,7 +32,25 @@ async function getHistoryOfUser(req, res) {
             }
         ]
     });
-    
+    res.json(entries);
+}
+
+// GET /history/user/recent/:id
+async function getRecentHistoryOfUser(req, res) {
+    const user_id = req.params.id;
+    const entries = await History.findAll({
+        limit: 10,
+        where: {
+            user_id: user_id
+        },
+        include: [
+            {
+                model: User,
+                as: "user",
+                attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
+            }
+        ]
+    });
     res.json(entries);
 }
 
@@ -27,7 +58,7 @@ async function getHistoryOfUser(req, res) {
 async function getHistoryOfGroup(req, res) {
     const group_id = req.params.group_id;
 
-    const entries = await Logentry.findAll({
+    const entries = await History.findAll({
         where: {
             group_id: group_id
         },
@@ -45,14 +76,15 @@ async function getHistoryOfGroup(req, res) {
 
 // POST /history/
 async function log(req, res) {
-    // const entry = await Logentry.create(req.body);
-    // res.json(entry);
-
-    const entry = await Logentry.create({ table_name: "groups", record_id: group.group_id, action: "create", user_id: req.session.user.id });
-    // console.log(logentry);
+    const entry = await History.create({
+        table_name: "groups",
+        record_id: group.group_id,
+        action: "create",
+        user_id: req.session.user.id
+    });
     res.json(entry);
 }
 
 
 
-export { getHistoryOfUser, getHistoryOfGroup, log };
+export { getHistory, getHistoryOfUser, getRecentHistoryOfUser, getHistoryOfGroup, log };
