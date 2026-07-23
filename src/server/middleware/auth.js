@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { User } from "../db/models/index.js";
+import { User, History } from "../db/models/index.js";
 
 
 async function loginHandler(req, res) {
@@ -31,6 +31,7 @@ async function loginHandler(req, res) {
 
         user.last_login = new Date();
         await user.save();
+        const logentry = await History.create({ table_name: "users", record_id: user.user_id, action: "login", user_id: req.session.user.id });
 
         res.json({ success: true });
     } catch (err) {

@@ -187,9 +187,8 @@
                     <table class="table is-narrow is-fullwidth is-striped is-hoverable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Table name</th>
-                                <th>Record ID</th>
+                                <th>Record</th>
                                 <th>Action</th>
                                 <th>Changes</th>
                                 <th>Time</th>
@@ -197,7 +196,7 @@
                         </thead>
                         <tbody id="historyTable">
                             <tr>
-                                <td colspan="6"><i>No actions so far...</i></td>
+                                <td colspan="5"><i>No actions so far...</i></td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -234,19 +233,30 @@
     let state;
     let user;
     let history;
+    let userId;
     userTable = document.getElementById("userTable");
     const pagetitle = document.getElementById("pagetitle");
 
-
+    const completeHistoryButton = document.getElementById("completeHistoryButton")
     const editButton = document.getElementById("editButton");
 
     async function init() {
 
-        const userId = new URLSearchParams(window.location.search).get("user_id");
+        const urlParam = new URLSearchParams(window.location.search).get("user_id");
+        if (urlParam) {
+            if (urlParam === "me") {
+                user = await api.getMe();
+                userId = user.user_id;
+            } else {
+                userId = urlParam;
+                user = await api.getUser(userId);
+            }
 
-        if (userId) {
-            user = await api.getUser(userId);
             history = await api.getRecentHistoryOfUser(userId);
+            renderHistoryTable(history);
+            completeHistoryButton.href = `./history.html?user_id=${userId}`
+
+            renderUserTable(user);
 
             if (new URLSearchParams(window.location.search).get("edit")) {
                 state = "edit";
@@ -255,11 +265,6 @@
                 state = "view";
                 pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
                 editButton.href = `./view.html?user_id=${userId}&edit=true`;
-                renderUserTable(user);
-
-                const completeHistoryButton = document.getElementById("completeHistoryButton")
-                completeHistoryButton.href = `./history.html?userId=${userId}`
-                renderHistoryTable(history);
             }
         }
 
@@ -308,15 +313,30 @@
             history.forEach(entry => {
                 historyTable.innerHTML += `
                 <tr>
-                    <td>${entry.history_id}</td>
                     <td>${entry.table_name}</td>
-                    <td>${entry.record_id}</td>
+                    <td>${renderRecord(entry)}</td>
                     <td>${entry.action}</td>
                     <td>${entry.changes || ""}</td>
                     <td>${renderDate(entry.createdAt)}</td>
                 </tr>
             `;
             })
+        }
+    }
+
+    function renderRecord(entry) {
+        if (entry.table_name === "users") {
+            if (entry.action === "login") {
+                return "";
+            } else {
+                return entry.record.username
+            };
+        } else if (entry.table_name === "groups") {
+            return entry.record.name;
+        } else if (entry.table_name === "activity") {
+            return entry.record.title;
+        } else {
+            return entry.record_id;
         }
     }
 

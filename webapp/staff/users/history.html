@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>History | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/js/scripts.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+
+
+</head>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <section class="section is-fullheight">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class=""><a href="/users/" aria-current="page">Users</a></li>
+                    <li class="is-active"><a href="/users/history.html" aria-current="page">History</a></li>
+                </ul>
+            </nav>
+
+            <div class="block">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">History</h1>
+                <!-- <h3 class="subtitle"></h3> -->
+            </div>
+
+            <div class="table-container">
+                <table class="table is-narrow is-fullwidth is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Table name</th>
+                            <th>Record</th>
+                            <th>Action</th>
+                            <th>Changes</th>
+                            <th>Performed by</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable">
+                        <tr>
+                            <td colspan="5"><i>No actions so far...</i></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6" style="text-align: right;">
+                                <a title="Complete history" class="button" id="completeHistoryButton"
+                                    href="./history.html">
+                                    <span class="iconify navbar-icon" data-icon="mdi-history"></span>
+                                    &nbsp;
+                                    <span>Complete history</span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+    </div>
+    <footer class="footer" id="common-footer"></footer>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+        init();
+    });
+
+    let state;
+    let user;
+    let history;
+    let userId;
+    userTable = document.getElementById("userTable");
+    const pagetitle = document.getElementById("pagetitle");
+
+    const completeHistoryButton = document.getElementById("completeHistoryButton")
+    const editButton = document.getElementById("editButton");
+
+    async function init() {
+
+        const urlParam = new URLSearchParams(window.location.search).get("user_id");
+        if (urlParam) {
+            if (urlParam === "me") {
+                user = await api.getMe();
+                userId = user.user_id;
+            } else {
+                userId = urlParam;
+                user = await api.getUser(userId);
+            }
+            history = await api.getHistoryOfUser(userId);
+        } else {
+            history = await api.getHistory();
+        }
+        renderHistoryTable(history);
+    }
+
+    function renderHistoryTable(history) {
+        const historyTable = document.getElementById("historyTable");
+        if (history.length > 0) {
+            historyTable.innerHTML = "";
+            history.forEach(entry => {
+                historyTable.innerHTML += `
+                <tr>
+                    <td>${entry.table_name}</td>
+                    <td>${renderRecord(entry)}</td>
+                    <td>${entry.action}</td>
+                    <td>${entry.changes || ""}</td>
+                    <td>${entry.user.username}</td>
+                    <td>${renderDate(entry.createdAt)}</td>
+                </tr>
+            `;
+            })
+        }
+    }
+
+    function renderRecord(entry) {
+        if (entry.table_name === "users") {
+            if (entry.action === "login") {
+                return "";
+            } else {
+                return entry.record.username
+            };
+        } else if (entry.table_name === "groups") {
+            return entry.record.name;
+        } else if (entry.table_name === "activity") {
+            return entry.record.title;
+        } else {
+            return entry.record_id;
+        }
+    }
+
+</script>

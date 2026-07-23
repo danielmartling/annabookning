@@ -1,7 +1,14 @@
 // src/server/db/controllers/historyController.js
 
-import { History, User } from "../models/index.js";
+import { History, User, Group, Booking, Activity } from "../models/index.js";
 import { Op } from "sequelize";
+
+const models = {
+    users: User,
+    groups: Group,
+    bookings: Booking,
+    activities: Activity
+};
 
 // GET /history
 async function getHistory(req, res) {
@@ -12,8 +19,20 @@ async function getHistory(req, res) {
                 as: "user",
                 attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
             }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
     });
+
+    for (const entry of entries) {
+        const Model = models[entry.table_name];
+
+        if (Model) {
+            entry.dataValues.record = await Model.findByPk(entry.record_id);
+        } else {
+            entry.dataValues.record = null;
+        }
+    }
+
     res.json(entries);
 }
 
@@ -30,8 +49,20 @@ async function getHistoryOfUser(req, res) {
                 as: "user",
                 attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
             }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
     });
+
+    for (const entry of entries) {
+        const Model = models[entry.table_name];
+
+        if (Model) {
+            entry.dataValues.record = await Model.findByPk(entry.record_id);
+        } else {
+            entry.dataValues.record = null;
+        }
+    }
+
     res.json(entries);
 }
 
@@ -49,8 +80,20 @@ async function getRecentHistoryOfUser(req, res) {
                 as: "user",
                 attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
             }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
     });
+
+    for (const entry of entries) {
+        const Model = models[entry.table_name];
+
+        if (Model) {
+            entry.dataValues.record = await Model.findByPk(entry.record_id);
+        } else {
+            entry.dataValues.record = null;
+        }
+    }
+
     res.json(entries);
 }
 
@@ -84,7 +127,6 @@ async function log(req, res) {
     });
     res.json(entry);
 }
-
 
 
 export { getHistory, getHistoryOfUser, getRecentHistoryOfUser, getHistoryOfGroup, log };

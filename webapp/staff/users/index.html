@@ -20,6 +20,12 @@
 
 </head>
 
+<style>
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+</style>
+
 <body class="has-navbar-fixed-top">
     <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
     </nav>
@@ -75,7 +81,7 @@
 
         <div class="modal-content">
             <form id="form-create-user">
-                <div class="box">
+                <div class="box" style="border: 1px solid black">
                     <h3 class="subtitle">
                         <span class="iconify" data-icon="mdi-account-plus"></span>&nbsp;Create new user
                     </h3>
@@ -194,7 +200,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field is-horizontal">
+                    <div class="field is-horizontal" id="permissionField">
                         <div class="field-label">
                             <label class="label">Permission</label>
                         </div>
@@ -373,6 +379,28 @@
         const modal = form.closest(".modal");
         modal.classList.remove("is-active");
     });
+
+    const roleRadios = document.querySelectorAll('input[name="role"]');
+    const permissionRadios = document.querySelectorAll('input[name="permission"]');
+
+    function updatePermissions() {
+        const isGuest = document.querySelector('input[name="role"]:checked').value === 'guest';
+
+        permissionRadios.forEach(radio => {
+            radio.disabled = isGuest;
+        });
+
+        if (isGuest) {
+            document.querySelector('input[name="permission"][value="none"]').checked = true;
+        }
+    }
+
+    roleRadios.forEach(radio => {
+        radio.addEventListener('change', updatePermissions);
+    });
+
+    updatePermissions();
+
 
 
 </script>
