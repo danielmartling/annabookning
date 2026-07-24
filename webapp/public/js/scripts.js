@@ -125,12 +125,12 @@ function renderRecord(entry) {
             if (entry.action === "login") {
                 return "";
             } else {
-                return entry.record.username
+                return `<a href="./view.html?user_id=${entry.record.user_id}">${entry.record.username}</a>`;
             }
         } else if (entry.table_name === "groups") {
-            return entry.record.name;
+            return `<a href="../groups/view.html?group_id=${entry.record.group_id}">${entry.record.name}</a>`;
         } else if (entry.table_name === "activity") {
-            return entry.record.title;
+            return `<a href="../activities/view.html?activity_id=${entry.record.activity_id}">${entry.record.title}</a>`;
         } else {
             return entry.record_id;
         }

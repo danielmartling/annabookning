@@ -37,10 +37,15 @@
                 <div class="container" id="notification-container"></div>
                 <h1 id="pagetitle" class="title">History</h1>
                 <!-- <h3 class="subtitle"></h3> -->
+                <a title="Complete history" class="button" id="completeHistoryButton" href="./history.html">
+                    <span class="iconify navbar-icon" data-icon="mdi-history"></span>
+                    &nbsp;
+                    <span>Complete history</span>
+                </a>
             </div>
 
             <div class="table-container">
-                <table class="table is-narrow is-fullwidth is-striped is-hoverable">
+                <table class="table is-fullwidth is-striped is-hoverable">
                     <thead>
                         <tr>
                             <th>Table name</th>
@@ -59,17 +64,11 @@
                     <tfoot>
                         <tr>
                             <th colspan="6" style="text-align: right;">
-                                <a title="Complete history" class="button" id="completeHistoryButton"
-                                    href="./history.html">
-                                    <span class="iconify navbar-icon" data-icon="mdi-history"></span>
-                                    &nbsp;
-                                    <span>Complete history</span>
-                                </a>
+
                             </th>
                         </tr>
                     </tfoot>
                 </table>
-
 
             </div>
 
@@ -127,7 +126,7 @@
                     <td>${renderRecord(entry)}</td>
                     <td>${entry.action}</td>
                     <td>${entry.changes || ""}</td>
-                    <td>${entry.user.username}</td>
+                    <td><a href="./view.html?user_id=${entry.user.user_id}">${entry.user.username}</a></td>
                     <td>${renderDate(entry.createdAt)}</td>
                 </tr>
             `;

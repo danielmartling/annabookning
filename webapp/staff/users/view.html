@@ -48,19 +48,22 @@
                 <div class="container" id="notification-container"></div>
                 <h1 id="pagetitle" class="title">View user</h1>
                 <!-- <h3 class="subtitle"></h3> -->
-                <div class="buttons">
-                    <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-user">
-                        <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
-                    </button>
-                    <button id="passwordButton" class="button js-modal-trigger" data-target="modal-change-password">
-                        <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
-                    </button>
-                    <button id="roleButton" class="button js-modal-trigger" data-target="modal-change-roles">
-                        <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles etc.
-                    </button>
-                </div>
                 <div class="columns">
                     <div class="column">
+
+                        <div class="buttons">
+                            <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-user">
+                                <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
+                            </button>
+                            <button id="passwordButton" class="button js-modal-trigger"
+                                data-target="modal-change-password">
+                                <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
+                            </button>
+                            <button id="roleButton" class="button js-modal-trigger" data-target="modal-change-roles">
+                                <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles etc.
+                            </button>
+                        </div>
+                        
                         <div class="box content">
                             <p class="subtitle is-5">User info</p>
                             <dl class="grid">
@@ -90,10 +93,6 @@
                         <div class="box content">
                             <p class="subtitle is-5">System data</p>
                             <dl class="grid">
-                                <div class="cell">
-                                    <dt>User ID:</dt>
-                                    <dd data-field="user_id" data-type="text"></dd>
-                                </div>
 
                                 <div class="cell">
                                     <dt>Active:</dt>
@@ -111,6 +110,11 @@
                                 </div>
 
                                 <div class="cell">
+                                    <dt>Created at:</dt>
+                                    <dd data-field="createdAt" data-type="date"></dd>
+                                </div>
+
+                                <div class="cell">
                                     <dt>Last login:</dt>
                                     <dd data-field="last_login" data-type="date"></dd>
                                 </div>
@@ -119,11 +123,11 @@
                                     <dt>Login count:</dt>
                                     <dd data-field="login_count" data-type="text"></dd>
                                 </div>
-
                                 <div class="cell">
-                                    <dt>Created at:</dt>
-                                    <dd data-field="createdAt" data-type="date"></dd>
+                                    <dt>User ID:</dt>
+                                    <dd data-field="user_id" data-type="text"></dd>
                                 </div>
+
                             </dl>
                         </div>
                     </div>
@@ -132,9 +136,18 @@
 
             <!-- RECENT HISTORY -->
             <div class="box">
-                <p class="subtitle is-5">
-                    Recent history
-                </p>
+                <div class="content">
+                    <p class="subtitle is-5">
+                        Recent history
+                    </p>
+
+                    <a title="Complete history" class="button" id="completeHistoryButton" href="./history.html">
+                        <span class="iconify navbar-icon" data-icon="mdi-history"></span>
+                        &nbsp;
+                        <span>Complete user history</span>
+                    </a>
+                </div>
+
                 <div class="table-container">
                     <table class="table is-narrow is-fullwidth is-striped is-hoverable">
                         <thead>
@@ -154,12 +167,6 @@
                         <tfoot>
                             <tr>
                                 <th colspan="6" style="text-align: right;">
-                                    <a title="Complete history" class="button" id="completeHistoryButton"
-                                        href="./history.html">
-                                        <span class="iconify navbar-icon" data-icon="mdi-history"></span>
-                                        &nbsp;
-                                        <span>Complete history</span>
-                                    </a>
                                 </th>
                             </tr>
                         </tfoot>
