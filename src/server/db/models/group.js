@@ -10,8 +10,11 @@ export default (sequelize) =>
             booking_number: { type: DataTypes.INTEGER, allowNull: false, unique: true },
             arrival_date: { type: DataTypes.DATEONLY, allowNull: false },
             departure_date: { type: DataTypes.DATEONLY, allowNull: false },
-            accomodation: { type: DataTypes.ENUM("in", "out", "both", "day") },
-            type: { type: DataTypes.ENUM("own", "external", "staff", "test") },
+            accomodation: { type: DataTypes.ENUM("in", "out", "other", "day"), allowNull: true },
+            type: { type: DataTypes.ENUM("own", "external", "staff", "test"), allowNull: true },
+            contact_name: { type: DataTypes.STRING, allowNull: true },
+            contact_phone: { type: DataTypes.STRING, allowNull: true },
+            contact_email: { type: DataTypes.STRING, allowNull: true },
             participants: {
                 type: DataTypes.VIRTUAL,
                 get() {
@@ -32,6 +35,13 @@ export default (sequelize) =>
                     );
                 }
             },
+            on_island: {
+                type: DataTypes.VIRTUAL,
+                get() {
+                    const today = new Date().toISOString().slice(0, 10);
+                    return today >= this.get("arrival_date") && today <= this.get("departure_date");
+                }
+            }
         },
         {
             timestamps: true,

@@ -346,4 +346,4 @@ function toDate(dateStr) {
     return new Date(y, m - 1, d);
 }
 
-export default BulmaDatePicker;
+// export default BulmaDatePicker;

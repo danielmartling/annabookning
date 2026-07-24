@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { getAllGroups, getGroupsByDay, createGroup } from "../controllers/groupController.js";
+import { getAllGroups, getGroupsByDay, createGroup, getGroupsOnIsland } from "../controllers/groupController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
@@ -10,6 +10,14 @@ router.get(
     requireRoles(["staff"]),
     requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]),
     getAllGroups
+);
+
+router.get(
+    "/island",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]),
+    getGroupsOnIsland
 );
 
 router.get(

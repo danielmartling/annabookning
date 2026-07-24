@@ -18,6 +18,10 @@
     <script type="module" src="/js/api/index.js"></script>
 
 
+    <script src="/vendor/BulmaDatePicker.js"></script>
+    <link rel="stylesheet" href="/vendor/BulmaDatePicker.css">
+
+
 </head>
 
 <style>
@@ -52,17 +56,16 @@
                 <table class="table is-narrow is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
-                            <th>User name</th>
-                            <th>Display name</th>
-                            <th>Active</th>
-                            <th>Role</th>
-                            <th>Permission</th>
-                            <th>Last login</th>
-                            <th>Created at</th>
-                            <th></th>
+                            <th><abbr title="Booking number"><span class="iconify" data-icon="mdi-pound"></span></abbr></th>
+                            <th>Name</th>
+                            <th><abbr title="On island today"><span class="iconify" data-icon="mdi-island"></span></abbr></th>
+                            <th>Arrival</th>
+                            <th>Departure</th>
+                            <th>Accomodation</th>
+                            <th>Type</th>
                         </tr>
                     </thead>
-                    <tbody id="usersTable"></tbody>
+                    <tbody id="groupsTable"></tbody>
                     <tfoot>
                         <tr>
                             <td colspan="9"></td>
@@ -73,57 +76,70 @@
         </section>
 
     </div>
-    
+
     <footer class="footer" id="common-footer"></footer>
 
     <!-- Create new user modal -->
-    <div id="modal-create-user" class="modal">
+    <div id="modal-create-group" class="modal">
         <div class="modal-background"></div>
 
         <div class="modal-content">
-            <form id="form-create-user">
+            <form id="form-create-group">
                 <div class="box" style="border: 1px solid black">
                     <h3 class="subtitle">
-                        <span class="iconify" data-icon="mdi-account-plus"></span>&nbsp;Create new user
+                        <span class="iconify" data-icon="mdi-plus"></span>&nbsp;Create new group
                     </h3>
 
-                    <!-- Username -->
+                    <!-- Group name -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Username</label>
+                            <label class="label">Group name*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="username" placeholder="Username"
-                                        required>
+                                    <input class="input" type="text" name="name" placeholder="Group name" required>
                                     <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-account"></span>
+                                        <span class="iconify" data-icon="mdi-tent"></span>
                                     </span>
                                 </div>
-                                <p class="help">Used to log in. 3-50 letters, lower case, no blank spaces.</p>
+                                <p class="help">Helpful description of group. For example "X Scoutkår MSC1"...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking number -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Booking number*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input" type="number" name="booking_number" placeholder="NNNN"
+                                        required>
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-numeric"></span>
+                                    </span>
+                                </div>
+                                <p class="help">Provided by Storgårn.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camp time = Arrival and departure dates -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Camp time*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div id="dateControl"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Displayname -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Displayname</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="displayname"
-                                        placeholder="Displayname" required>
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-account"></span>
-                                    </span>
-                                </div>
-                                <p class="help">User friendly name. Preferably full name of user.</p>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Contact -->
                     <div class="field is-horizontal">
@@ -132,9 +148,17 @@
                         </div>
                         <div class="field-body">
                             <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input" type="text" name="contact_name" placeholder="Name">
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-account"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="field">
                                 <div class="field has-addons">
                                     <p class="control is-expanded has-icons-left">
-                                        <input class="input" type="tel" name="phone"
+                                        <input class="input" type="tel" name="contact_phone"
                                             placeholder="Phone number (+46...)">
                                         <span class="icon is-small is-left">
                                             <span class="iconify" data-icon="mdi-phone"></span>
@@ -144,7 +168,7 @@
                             </div>
                             <div class="field">
                                 <p class="control is-expanded has-icons-left">
-                                    <input class="input" type="email" name="email" placeholder="Email">
+                                    <input class="input" type="email" name="contact_email" placeholder="Email">
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-email"></span>
                                     </span>
@@ -153,34 +177,41 @@
                         </div>
                     </div>
 
-                    <!-- Activate -->
+                    <!-- Accomodation -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Activate</label>
+                            <label class="label">Accomodation</label>
                         </div>
                         <div class="field-body">
                             <div class="field has-addons">
                                 <div class="radios">
                                     <div class="control">
                                         <label class="radio">
-                                            <input type="radio" name="active" checked value="true" />
-                                            Yes
+                                            <input type="radio" name="accomodation" checked value="in" />
+                                            In
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="active" value="false" />
-                                            No
+                                            <input type="radio" name="accomodation" value="out" />
+                                            Out
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="accomodation" value="day" />
+                                            Day
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="accomodation" value="other" />
+                                            Other
                                         </label>
                                     </div>
-                                    <p class="help">Inactive users can not log in.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Role and permission -->
+                    <!-- Type -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Role</label>
+                            <label class="label">Type</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
@@ -188,83 +219,24 @@
                                     <div class="radios">
                                         <div class="control">
                                             <label class="radio">
-                                                <input type="radio" name="role" checked value="staff" />
+                                                <input type="radio" name="type" checked value="own" />
+                                                Own
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="type" value="external" />
+                                                External
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="type" value="staff" />
                                                 Staff
                                             </label>
                                             <label class="radio">
-                                                <input type="radio" name="role" value="guest" />
-                                                Guest
+                                                <input type="radio" name="type" value="test" />
+                                                Test
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal" id="permissionField">
-                        <div class="field-label">
-                            <label class="label">Permission</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="field has-addons">
-                                    <div class="radios">
-                                        <div class="control">
-                                            <label class="radio">
-                                                <input type="radio" name="permission" checked value="none" />
-                                                none
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="permission" value="program-viewer" />
-                                                program-viewer
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="permission" value="program-jour" />
-                                                program-jour
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="permission" value="program-booker" />
-                                                program-booker
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="permission" value="program-admin" />
-                                                program-admin
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="permission" value="system-admin" />
-                                                system-admin
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Password</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="password"
-                                        placeholder="Password" required />
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-lock"></span>
-                                    </span>
-                                </p>
-                                <p class="help">At least 4 symbols.</p>
-                            </div>
-                            <div class="field">
-                                <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="repeatpassword"
-                                        placeholder="Repeat password" required />
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-lock"></span>
-                                    </span>
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -278,7 +250,7 @@
                                 <p class="control">
                                     <button type="submit" class="button is-primary">
                                         <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
-                                        Create new user
+                                        Create new group
                                     </button>
                                 </p>
                                 <p class="control">
@@ -292,14 +264,13 @@
                     </div>
                 </div>
             </form>
-
         </div>
 
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
-</body>
 
+</body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         initHTML();
@@ -308,98 +279,62 @@
 
 
     let users;
-    usersTable = document.getElementById("usersTable");
+    groupsTable = document.getElementById("groupsTable");
+
+    const dateControl = new BulmaDatePicker(document.getElementById('dateControl'), { range: true });
 
     async function init() {
-        users = await api.getAllUsers();
+        groups = await api.getAllGroups();
 
-        users.forEach(user => {
+
+        groups.forEach(group => {
             const row = document.createElement('tr');
-            row.id = `${user.user_id}`;
+            row.id = `${group.group_id}`;
             row.style.cursor = "pointer";
             row.innerHTML = `
-                <td>${user.username}</td>
-                <td>${user.displayname}</td>
-                <td>${makeCheck(user.active)}</td>
-                <td>${makeTag(user.role, `is-${user.role}`)}</td>
-                <td>${user.permission ? makeTag(user.permission, "is-staff") : makeTag("<i>none</i>")}</td> 
-                <td>${user.last_login ? renderDate(user.last_login) : "<i>never...</i>"}</td>
-                <td>${renderDate(user.createdAt)}</td>
-                <td>
-                    <div class="buttons are-small">
-                        <button class="button" id="historyButton">
-                            <span class="iconify" data-icon="mdi-history"></span>
-                        </button>
-                        <button class="button" id="viewButton">
-                            <span class="iconify" data-icon="mdi-arrow-right"></span>
-                        </button>
-                    </div>
-                </td>
+                <td>${group.booking_number}</td>
+                <th>${group.name}</th>
+                <td>${makeCheck(group.on_island)}</td>
+                <td>${renderDate(group.arrival_date)}</td>
+                <td>${renderDate(group.departure_date)}</td>
+                <td>${makeTag(group.accomodation)}</td>
+                <td>${makeTag(group.type)}</td>
             `;
             row.addEventListener("click", (e) => {
-                const viewButton = e.target.closest("#viewButton");
-                const historyButton = e.target.closest("#historyButton");
-                if (viewButton) {
-                    window.location = `./view.html?user_id=${row.id}`;
-                } else if (historyButton) {
-                    window.location = `./history.html?user_id=${row.id}`;
-                } else {
-                    window.location = `./view.html?user_id=${row.id}`;
-                }
+                window.location = `./view.html?group_id=${row.id}`;
             });
-            usersTable.appendChild(row);
+            groupsTable.appendChild(row);
         });
 
     }
 
     // Create user form submit handler
-    const form = document.getElementById("form-create-user");
+    const form = document.getElementById("form-create-group");
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
         const data = new FormData(form);
-        const permission = data.get("permission");
+        const [arrival_date, departure_date] = dateControl.getValue();
 
-        const user = {
-            username: data.get("username"),
-            displayname: data.get("displayname"),
-            phone: data.get("phone"),
-            email: data.get("email"),
-            active: data.get("active") === "true",
-            role: data.get("role"),
-            permission: permission === "none" ? null : permission,
-            password: data.get("password"),
-            repeatpassword: data.get("repeatpassword")
+        const group = {
+            name: data.get("name"),
+            booking_number: data.get("booking_number"),
+            arrival_date: arrival_date,
+            departure_date: departure_date,
+            accomodation: data.get("accomodation"),
+            type: data.get("type"),
+            contact_name: data.get("contact_name"),
+            contact_phone: data.get("contact_phone"),
+            contact_email: data.get("contact_email")
         };
-        api.createUser(user);
+        api.createGroup(group);
 
         form.reset();
 
         const modal = form.closest(".modal");
         modal.classList.remove("is-active");
     });
-
-    const roleRadios = document.querySelectorAll('input[name="role"]');
-    const permissionRadios = document.querySelectorAll('input[name="permission"]');
-
-    function updatePermissions() {
-        const isGuest = document.querySelector('input[name="role"]:checked').value === 'guest';
-
-        permissionRadios.forEach(radio => {
-            radio.disabled = isGuest;
-        });
-
-        if (isGuest) {
-            document.querySelector('input[name="permission"][value="none"]').checked = true;
-        }
-    }
-
-    roleRadios.forEach(radio => {
-        radio.addEventListener('change', updatePermissions);
-    });
-
-    updatePermissions();
 
 
 

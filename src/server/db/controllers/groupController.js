@@ -13,8 +13,35 @@ export async function getAllGroups(req, res) {
             }
         ]
     });
-    
+
     res.json(groups);
+}
+
+// GET /groups/island
+export async function getGroupsOnIsland(req, res) {
+    const today = new Date().toISOString().slice(0, 10);
+    const groups = await Group.findAll({
+        where: {
+            arrival_date: {
+                [Op.lte]: today
+            },
+            departure_date: {
+                [Op.gte]: today
+            }
+        }
+    });
+    const grouped = {
+        arriving: groups.filter(
+            group => group.arrival_date === today
+        ),
+        staying: groups.filter(
+            group => group.arrival_date < today && group.departure_date > today
+        ),
+        leaving: groups.filter(
+            group => group.departure_date === today
+        )
+    };
+    res.json(grouped);
 }
 
 // GET /groups/byday:day

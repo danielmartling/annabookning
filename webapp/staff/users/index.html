@@ -90,13 +90,12 @@
                     <!-- Username -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Username</label>
+                            <label class="label">Username*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="username" placeholder="Username"
-                                        required>
+                                    <input class="input" type="text" name="username" placeholder="Username" required>
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-account"></span>
                                     </span>
@@ -109,13 +108,13 @@
                     <!-- Displayname -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Displayname</label>
+                            <label class="label">Displayname*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="displayname"
-                                        placeholder="Displayname" required>
+                                    <input class="input" type="text" name="displayname" placeholder="Displayname"
+                                        required>
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-account"></span>
                                     </span>
@@ -244,13 +243,13 @@
                     <!-- Password -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Password</label>
+                            <label class="label">Password*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="password"
-                                        placeholder="Password" required />
+                                    <input class="input" type="password" name="password" placeholder="Password"
+                                        required />
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-lock"></span>
                                     </span>
@@ -259,7 +258,7 @@
                             </div>
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="repeatpassword"
+                                    <input class="input" type="password" name="repeatpassword"
                                         placeholder="Repeat password" required />
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-lock"></span>
@@ -337,15 +336,7 @@
                 </td>
             `;
             row.addEventListener("click", (e) => {
-                const viewButton = e.target.closest("#viewButton");
-                const historyButton = e.target.closest("#historyButton");
-                if (viewButton) {
-                    window.location = `./view.html?user_id=${row.id}`;
-                } else if (historyButton) {
-                    window.location = `./history.html?user_id=${row.id}`;
-                } else {
-                    window.location = `./view.html?user_id=${row.id}`;
-                }
+                window.location = `./view.html?user_id=${row.id}`;
             });
             usersTable.appendChild(row);
         });

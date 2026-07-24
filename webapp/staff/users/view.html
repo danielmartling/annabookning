@@ -192,12 +192,12 @@
                     <!-- Username -->
                     <div class="field is-horizontal" id="usernameField">
                         <div class="field-label">
-                            <label class="label">Username</label>
+                            <label class="label">Username*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="username" placeholder="Username"
+                                    <input class="input " type="text" name="username" placeholder="Username"
                                         required>
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-account"></span>
@@ -211,12 +211,12 @@
                     <!-- Displayname -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Displayname</label>
+                            <label class="label">Displayname*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input is-danger" type="text" name="displayname"
+                                    <input class="input " type="text" name="displayname"
                                         placeholder="Displayname" required>
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-account"></span>
@@ -431,12 +431,12 @@
                     <!-- Password -->
                     <div class="field is-horizontal" id="oldPasswordField">
                         <div class="field-label">
-                            <label class="label">Old password</label>
+                            <label class="label">Old password*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="oldpassword"
+                                    <input class="input " type="password" name="oldpassword"
                                         placeholder="Password" required />
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-lock"></span>
@@ -448,12 +448,12 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">New password</label>
+                            <label class="label">New password*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="newpassword"
+                                    <input class="input " type="password" name="newpassword"
                                         placeholder="Password" required />
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-lock"></span>
@@ -465,12 +465,12 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Repeat password</label>
+                            <label class="label">Repeat password*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input is-danger" type="password" name="repeatpassword"
+                                    <input class="input " type="password" name="repeatpassword"
                                         placeholder="Repeat password" required />
                                     <span class="icon is-small is-left">
                                         <span class="iconify" data-icon="mdi-lock"></span>
@@ -567,6 +567,7 @@
 
             if (editingSelf) {
                 showWarning("You may not change certain properties of yourself.")
+                roleButton.style.display = "none";
             }
             editButton.onclick = populateForm(editForm, user);
             roleButton.onclick = populateForm(roleForm, user);
