@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { getAllGroups, getGroupsByDay, createGroup, getGroupsOnIsland, getGroup, updateGroup } from "../controllers/groupController.js";
+import { getAllGroups, getGroupsByDay, createGroup, getGroupsOnIsland, getGroup, updateGroup, updateGroupNotes } from "../controllers/groupController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
@@ -49,6 +49,13 @@ router.put(
     requireRoles(["staff"]),
     requirePermission(["program-jour", "program-booker", "program-admin", "system-admin"]),
     updateGroup
+)
+
+router.put(
+    "/notes/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-jour", "program-booker", "program-admin", "system-admin"]),
+    updateGroupNotes
 )
 
 export default router;

@@ -102,9 +102,29 @@ export async function updateGroup(groupId, group) {
 
     if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to update user");
+        throw new Error(error.message || "Failed to update group");
     }
 
-    showSuccess("User updated!")
+    showSuccess("Group updated!")
+    return await response.json();
+}
+
+export async function updateGroupNotes(groupId, group) {
+    const response = await fetch(`/api/groups/notes/${groupId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            notes: group.notes
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update group");
+    }
+
+    showSuccess("Group updated!")
     return await response.json();
 }

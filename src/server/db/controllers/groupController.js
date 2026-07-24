@@ -11,7 +11,10 @@ export async function getAllGroups(req, res) {
                 model: Subgroup,
                 as: "subgroups"
             }
-        ]
+        ],
+        order: [
+            ['arrival_date', 'ASC']
+        ],
     });
 
     res.json(groups);
@@ -138,6 +141,47 @@ export async function updateGroup(req, res) {
                 group_id: group.group_id,
                 name: group.name,
                 booking_number: group.booking_number
+            }
+        });
+
+    } catch (error) {
+        console.error("Update group error:", error);
+
+        return res.status(500).json({
+            message: "Failed to update group",
+            error: error.message
+        });
+    }
+}
+
+// PUT /groups/notes/:id
+export async function updateGroupNotes(req, res) {
+    try {
+        const {
+            notes
+        } = req.body;
+
+        const group = await Group.findByPk(req.params.id);
+
+        if (!group) {
+            return res.status(404).json({
+                message: "Group not found"
+            });
+        }
+
+        await group.update({
+            notes
+        });
+
+        const logentry = await History.create({ table_name: "groups", record_id: group.group_id, action: "change", changes: "notes", user_id: req.session.user.id });
+
+        return res.status(200).json({
+            message: "Group updated successfully",
+            group: {
+                group_id: group.group_id,
+                name: group.name,
+                booking_number: group.booking_number,
+                notes: notes.group
             }
         });
 

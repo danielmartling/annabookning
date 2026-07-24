@@ -90,6 +90,12 @@
                                     <div class="cell is-col-span-2">
                                         <dt>Notes:</dt>
                                         <dd data-field="notes" data-type="textarea"></dd>
+                                        <dd class="has-text-right">
+                                            <button id="editNotesButton" class="button js-modal-trigger is-small"
+                                                data-target="modal-edit-notes">
+                                                <span class="iconify" data-icon="mdi-edit"></span>
+                                            </button>
+                                        </dd>
                                     </div>
                                 </dl>
                             </div>
@@ -189,7 +195,8 @@
                 </div>
                 <div class="message-body">
                     <div class="table-container">
-                        <table class="table is-narrow is-fullwidth is-striped is-hoverable" style="background-color: transparent;">
+                        <table class="table is-narrow is-fullwidth is-striped is-hoverable"
+                            style="background-color: transparent;">
                             <thead>
                                 <tr>
                                     <th>Action</th>
@@ -226,7 +233,7 @@
             <form id="form-edit-group">
                 <div class="box" style="border: 1px solid black">
                     <h3 class="subtitle">
-                        <span class="iconify" data-icon="mdi-plus"></span>&nbsp;Create new group
+                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit group
                     </h3>
 
                     <!-- Group name -->
@@ -406,6 +413,57 @@
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
+    <!-- Edit notes modal -->
+    <div id="modal-edit-notes" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-edit-notes">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit group notes
+                    </h3>
+
+                    <!-- Notes -->
+                    <div class="field">
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea id="notesField" class="textarea" placeholder="..." name="notes"></textarea>
+                                </div>
+                                <p class="help">Internal notes on group.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal  is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Save notes
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
 </body>
 
 <script>
@@ -423,9 +481,13 @@
     const completeHistoryButton = document.getElementById("completeHistoryButton")
 
     const editButton = document.getElementById("editButton");
+    const editNotesButton = document.getElementById("editNotesButton");
 
     const editForm = document.getElementById("form-edit-group");
+    const editNotesForm = document.getElementById("form-edit-notes");
+
     const dateControl = new BulmaDatePicker(document.getElementById('dateControl'), { range: true });
+    const notesTextArea = document.getElementById("notesTextArea");
 
     const renderers = {
         text: value => value ?? "-",
@@ -452,6 +514,7 @@
             pagetitle.innerHTML = "View group:&nbsp;" + group.booking_number + " - " + group.name;
 
             editButton.onclick = populateForm(editForm, group);
+            editNotesButton.onclick = populateForm(editNotesForm, group);
 
             // Create form submit handlers
             editForm.addEventListener("submit", (event) => {
@@ -467,7 +530,7 @@
 
                     arrival_date: arrival_date,
                     departure_date: departure_date,
-                    
+
                     contact_name: data.get("contact_name") === "" ? null : data.get("contact_name"),
                     contact_phone: data.get("contact_phone") === "" ? null : data.get("contact_phone"),
                     contact_email: data.get("contact_email") === "" ? null : data.get("contact_email"),
@@ -482,6 +545,24 @@
                 init();
 
                 const modal = editForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+
+            editNotesForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const data = new FormData(editNotesForm);
+
+                const group = {
+                    notes: data.get("notes")
+                };
+
+                api.updateGroupNotes(groupId, group);
+
+                editNotesForm.reset();
+                init();
+
+                const modal = editNotesForm.closest(".modal");
                 modal.classList.remove("is-active");
             });
         }
@@ -525,6 +606,7 @@
         }
 
         dateControl.setValue([data.arrival_date, data.departure_date]);
+        notesField.innerHTML = data.notes;
     }
 
 </script>
