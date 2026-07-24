@@ -30,3 +30,25 @@ export async function getRecentHistoryOfUser(userId) {
         console.error(err);
     }
 }
+
+export async function getHistoryOfGroup(groupId) {
+    try {
+        const response = await fetch(`/api/history/group/${groupId}`);
+        if (!response.ok) throw new Error("Request failed");
+        const history = await response.json();
+        return history;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function getRecentHistoryOfGroup(groupId) {
+    try {
+        const response = await fetch(`/api/history/group/recent/${groupId}`);
+        if (!response.ok) throw new Error("Request failed");
+        const history = await response.json();
+        return history;
+    } catch (err) {
+        console.error(err);
+    }
+}

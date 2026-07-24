@@ -105,7 +105,7 @@ function hideMessage() {
     document.getElementById('message-box').classList.add('is-hidden');
 }
 
-function renderDate(date) {
+function renderDateTime(date) {
     return new Date(date).toLocaleString("sv-SE");
 }
 
@@ -118,6 +118,11 @@ function makeCheck(bool) {
     return `<span class="iconify navbar-icon" data-icon="mdi-${bool ? "check-bold" : "close-thick"}"></span>`;
 
 }
+
+function makeTextArea(text) {
+    return `<textarea class="textarea" placeholder="..." readonly>${text}</textarea>`;
+}
+
 
 function renderRecord(entry) {
     if (entry.record) {

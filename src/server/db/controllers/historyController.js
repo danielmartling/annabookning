@@ -11,7 +11,7 @@ const models = {
 };
 
 // GET /history
-async function getHistory(req, res) {
+export async function getHistory(req, res) {
     const entries = await History.findAll({
         include: [
             {
@@ -37,7 +37,7 @@ async function getHistory(req, res) {
 }
 
 // GET /history/user/:id
-async function getHistoryOfUser(req, res) {
+export async function getHistoryOfUser(req, res) {
     const user_id = req.params.id;
     const entries = await History.findAll({
         where: {
@@ -67,7 +67,7 @@ async function getHistoryOfUser(req, res) {
 }
 
 // GET /history/user/recent/:id
-async function getRecentHistoryOfUser(req, res) {
+export async function getRecentHistoryOfUser(req, res) {
     const user_id = req.params.id;
     const entries = await History.findAll({
         limit: 10,
@@ -98,12 +98,12 @@ async function getRecentHistoryOfUser(req, res) {
 }
 
 // GET /history/group/:id
-async function getHistoryOfGroup(req, res) {
-    const group_id = req.params.group_id;
+export async function getHistoryOfGroup(req, res) {
+    const group_id = req.params.id;
 
     const entries = await History.findAll({
         where: {
-            group_id: group_id
+            [Op.and]: [{ table_name: "groups" }, { record_id: group_id }]
         },
         include: [
             {
@@ -114,11 +114,52 @@ async function getHistoryOfGroup(req, res) {
         ]
     });
 
+    for (const entry of entries) {
+        const Model = models[entry.table_name];
+
+        if (Model) {
+            entry.dataValues.record = await Model.findByPk(entry.record_id);
+        } else {
+            entry.dataValues.record = null;
+        }
+    }
+
+    res.json(entries);
+}
+
+// GET /history/group/:id
+export async function getRecentHistoryOfGroup(req, res) {
+    const group_id = req.params.id;
+
+    const entries = await History.findAll({
+        limit: 10,
+        where: {
+            [Op.and]: [{ table_name: "groups" }, { record_id: group_id }]
+        },
+        include: [
+            {
+                model: User,
+                as: "user",
+                attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
+            }
+        ]
+    });
+
+    for (const entry of entries) {
+        const Model = models[entry.table_name];
+
+        if (Model) {
+            entry.dataValues.record = await Model.findByPk(entry.record_id);
+        } else {
+            entry.dataValues.record = null;
+        }
+    }
+
     res.json(entries);
 }
 
 // POST /history/
-async function log(req, res) {
+export async function log(req, res) {
     const entry = await History.create({
         table_name: "groups",
         record_id: group.group_id,
@@ -129,4 +170,3 @@ async function log(req, res) {
 }
 
 
-export { getHistory, getHistoryOfUser, getRecentHistoryOfUser, getHistoryOfGroup, log };

@@ -535,7 +535,7 @@
 
     const renderers = {
         text: value => value ?? "-",
-        date: value => renderDate(value),
+        date: value => renderDateTime(value),
         tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
         check: value => makeCheck(value)
     };
@@ -672,7 +672,7 @@
                     <td>${renderRecord(entry)}</td>
                     <td>${entry.action}</td>
                     <td>${entry.changes || ""}</td>
-                    <td>${renderDate(entry.createdAt)}</td>
+                    <td>${renderDateTime(entry.createdAt)}</td>
                 </tr>
             `;
             })

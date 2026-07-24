@@ -20,6 +20,17 @@ export async function getGroupsOnIsland() {
     }
 }
 
+export async function getGroup(id) {
+    try {
+        const response = await fetch(`/api/groups/${id}`);
+        if (!response.ok) throw new Error("Request failed");
+        const group = await response.json();
+        return group;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 export async function getGroupsByDay(day) {
     try {
         const response = await fetch(`/api/groups/byday/${day}`);
@@ -65,4 +76,35 @@ export async function createGroup(group) {
         showWarning(`Unexpected error: ${error.message}`);
         return false;
     }
+}
+
+export async function updateGroup(groupId, group) {
+    const response = await fetch(`/api/groups/${groupId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: group.name,
+            booking_number: group.booking_number,
+
+            arrival_date: group.arrival_date,
+            departure_date: group.departure_date,
+
+            contact_name: group.contact_name,
+            contact_phone: group.contact_phone,
+            contact_email: group.contact_email,
+
+            accomodation: group.accomodation,
+            type: group.type,
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update user");
+    }
+
+    showSuccess("User updated!")
+    return await response.json();
 }

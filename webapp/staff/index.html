@@ -19,6 +19,10 @@
 </head>
 
 <style>
+    dt {
+        font-weight: bold;
+    }
+
     .hero-body {
         background-image: url('/img/lillgarn4.png');
         background-repeat: no-repeat;
@@ -71,18 +75,44 @@
         <div class="columns">
 
             <div class="column is-two-thirds">
-                <div class="box">
-                    Daily message
-                </div>
+                <article class="message">
+                    <div class="message-header">
+                        <p>Daily message</p>
+                        <button class="button">
+                            <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit message
+                        </button>
+                    </div>
+                    <div class="message-body">
+                        <textarea class="textarea" readonly></textarea>
+                    </div>
+                </article>
             </div>
 
             <div class="column is-one-third">
-                <div class="box">
-                    On island today<br>
-                    Arriving / Staying / Leaving
-                </div>
-            </div>
+                <article class="message">
+                    <div class="message-header">
+                        <p>On island today</p>
+                    </div>
+                    <div class="message-body">
+                        <dl>
+                            <dt>Arriving:</dt>
+                            <div id="arrivingField">
+                                <dd>-</dd>
+                            </div>
 
+                            <dt>Staying:</dt>
+                            <div id="stayingField">
+                                <dd>-</dd>
+                            </div>
+
+                            <dt>Leaving:</dt>
+                            <div id="leavingField">
+                                <dd>-</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            </div>
         </div>
     </div>
 
@@ -96,7 +126,42 @@
         init();
     });
 
-    async function init() {
+    let groupsOnIsland;
 
+    async function init() {
+        groupsOnIsland = await api.getGroupsOnIsland();
+
+        renderOnIslandTable(groupsOnIsland);
+    }
+
+    function renderOnIslandTable(groups) {
+        arrivingField = document.getElementById("arrivingField");
+        stayingField = document.getElementById("stayingField");
+        leavingField = document.getElementById("leavingField");
+
+        if (groups.arriving.length > 0) {
+            arrivingField.innerHTML = "";
+            groups.arriving.forEach(group => {
+                arrivingField.innerHTML += renderGroupLink(group);
+            });
+        }
+
+        if (groups.staying.length > 0) {
+            stayingField.innerHTML = "";
+            groups.staying.forEach(group => {
+                stayingField.innerHTML += renderGroupLink(group);
+            });
+        }
+
+        if (groups.leaving.length > 0) {
+            leavingField.innerHTML = "";
+            groups.leaving.forEach(group => {
+                leavingField.innerHTML += renderGroupLink(group);
+            });
+        }
+    }
+
+    function renderGroupLink(group) {
+        return `<dd><a href="./groups/view.html?group_id=${group.group_id}">${group.booking_number}&nbsp;${group.name}</a></dd>`;
     }
 </script>

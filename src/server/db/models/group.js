@@ -15,6 +15,7 @@ export default (sequelize) =>
             contact_name: { type: DataTypes.STRING, allowNull: true },
             contact_phone: { type: DataTypes.STRING, allowNull: true },
             contact_email: { type: DataTypes.STRING, allowNull: true },
+            notes: { type: DataTypes.STRING, allowNull: true },
             participants: {
                 type: DataTypes.VIRTUAL,
                 get() {
