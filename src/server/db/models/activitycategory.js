@@ -7,7 +7,9 @@ export default (sequelize) =>
         {
             category_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
             name: { type: DataTypes.STRING, allowNull: false },
+            desc: { type: DataTypes.STRING, allowNull: true },
             order: { type: DataTypes.INTEGER },
+            active: { type: DataTypes.BOOLEAN, defaultValue: true }
         },
         {
             timestamps: true,

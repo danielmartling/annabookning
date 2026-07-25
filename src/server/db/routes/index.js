@@ -19,4 +19,7 @@ router.use("/api/me", me);
 import programday from "./programday.js";
 router.use("/api/programday", programday);
 
+import categories from "./activitycategories.js";
+router.use("/api/categories", categories);
+
 export default router;

@@ -54,8 +54,8 @@
                         <tr>
                             <th>User name</th>
                             <th>Display name</th>
-                            <th class="is-narrow">Active</th>
-                            <th class="is-narrow">Role</th>
+                            <th class="is-narrow" style="text-align: center">Active</th>
+                            <th class="is-narrow" style="text-align: center">Role</th>
                             <th class="is-narrow">Permission</th>
                             <th>Last login</th>
                             <th>Created at</th>
@@ -319,8 +319,8 @@
             row.innerHTML = `
                 <td>${user.username}</td>
                 <td>${user.displayname}</td>
-                <td>${makeCheck(user.active)}</td>
-                <td>${makeTag(user.role, `is-${user.role}`)}</td>
+                <td style="text-align: center">${makeCheck(user.active)}</td>
+                <td style="text-align: center">${makeTag(user.role, `is-${user.role}`)}</td>
                 <td>${user.permission ? makeTag(user.permission, "is-staff") : makeTag("<i>none</i>")}</td> 
                 <td>${user.last_login ? renderDateTime(user.last_login) : "<i>never...</i>"}</td>
                 <td>${renderDateTime(user.createdAt)}</td>
