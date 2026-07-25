@@ -144,3 +144,7 @@ function renderRecord(entry) {
     }
 
 }
+
+function renderParticipants(kids, leaders) {
+    return kids + " + " + leaders;
+}

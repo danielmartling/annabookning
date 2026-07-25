@@ -4,6 +4,9 @@ const router = express.Router();
 import group from "./group.js";
 router.use("/api/groups", group);
 
+import subgroup from "./subgroup.js";
+router.use("/api/subgroups", subgroup);
+
 import history from "./history.js";
 router.use("/api/history", history);
 

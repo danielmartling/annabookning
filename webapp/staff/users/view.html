@@ -576,12 +576,14 @@
                 showWarning("You may not change certain properties of yourself.")
                 roleButton.style.display = "none";
             }
-            editButton.onclick = populateForm(editForm, user);
-            roleButton.onclick = populateForm(roleForm, user);
+            // editButton.onclick = populateForm(editForm, user);
+            // roleButton.onclick = populateForm(roleForm, user);
+            editButton.onclick = () => populateForm(editForm, user);
+            roleButton.onclick = () => populateForm(roleForm, user);
             adaptForms(editingSelf);
 
             // Create form submit handlers
-            editForm.addEventListener("submit", (event) => {
+            editForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(editForm);
@@ -593,21 +595,27 @@
                     email: data.get("email") === "" ? null : data.get("email"),
                 };
                 console.log(user)
-                if (editingSelf) {
-                    api.updateMyInfo(user);
-                } else {
-                    api.updateUserInfo(userId, user);
+                try {
+                    if (editingSelf) {
+                        await api.updateMyInfo(user);
+                    } else {
+                        await api.updateUserInfo(userId, user);
+                    }
+                    showSuccess("User updated!");
+                    editForm.reset();
+                    init();
+                } catch (err) {
+                    showWarning("Could not update user!", err)
                 }
-                showSuccess("User updated!")
 
-                editForm.reset();
-                init();
+
+
 
                 const modal = editForm.closest(".modal");
                 modal.classList.remove("is-active");
             });
 
-            passwordForm.addEventListener("submit", (event) => {
+            passwordForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(passwordForm);
@@ -618,14 +626,14 @@
                         newpassword: data.get("newpassword"),
                         repeatpassword: data.get("repeatpassword")
                     };
-                    api.updateMyPassword(user);
+                    await api.updateMyPassword(user);
                     showSuccess("Password changed!")
                 } else {
                     const user = {
                         newpassword: data.get("newpassword"),
                         repeatpassword: data.get("repeatpassword")
                     };
-                    api.updateUserPassword(userId, user);
+                    await api.updateUserPassword(userId, user);
                     showSuccess("Password updated!")
                 }
 
@@ -636,7 +644,7 @@
                 modal.classList.remove("is-active");
             });
 
-            roleForm.addEventListener("submit", (event) => {
+            roleForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(roleForm);
@@ -647,7 +655,7 @@
                         active: data.get("active") === "true",
                         permission: permission === "none" ? null : permission,
                     };
-                    api.updateUserRoles(userId, user);
+                    await api.updateUserRoles(userId, user);
                     showSuccess("User updated!")
                 }
 

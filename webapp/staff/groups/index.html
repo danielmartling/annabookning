@@ -58,6 +58,7 @@
                         <tr>
                             <th><abbr title="Booking number"><span class="iconify" data-icon="mdi-pound"></span></abbr></th>
                             <th>Name</th>
+                            <th><abbr title="Kids + leaders">Participants</abbr></th>
                             <th><abbr title="On island today"><span class="iconify" data-icon="mdi-island"></span></abbr></th>
                             <th>Arrival</th>
                             <th>Departure</th>
@@ -294,6 +295,7 @@
             row.innerHTML = `
                 <td>${group.booking_number}</td>
                 <th>${group.name}</th>
+                <td>${renderParticipants(group.participants, group.leaders)}</td>
                 <td>${makeCheck(group.on_island)}</td>
                 <td>${group.arrival_date}</td>
                 <td>${group.departure_date}</td>
@@ -335,7 +337,5 @@
         const modal = form.closest(".modal");
         modal.classList.remove("is-active");
     });
-
-
 
 </script>

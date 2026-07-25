@@ -183,6 +183,51 @@
                 </div>
             </div>
 
+            <!-- SUBGROUPS -->
+            <article class="message">
+                <div class="message-header">
+                    <p>Subgroups</p>
+                    <div class="buttons">
+                        <button class="button is-small">
+                            <span class="iconify" data-icon="mdi-auto-fix"></span>&nbsp;Create default subgroup
+                        </button>
+                        <button class="button is-small">
+                            <span class="iconify" data-icon="mdi-auto-fix"></span>&nbsp;Create scout troops
+                        </button>
+                        <button id="createSubgroupButton" class="button js-modal-trigger"
+                            data-target="modal-create-subgroup">
+                            <span class="iconify" data-icon="mdi-add"></span>&nbsp;Create subgroup
+                        </button>   
+                    </div>
+                </div>
+                <div class="message-body">
+                    <div class="table-container">
+                        <table class="table is-narrow is-fullwidth is-striped is-hoverable"
+                            style="background-color: transparent;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Tag</th>
+                                    <th>Description</th>
+                                    <th>Participants</th>
+                                    <th>Arrival date</th>
+                                    <th>Departure date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subgroupTable"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="7" style="text-align: right;">
+
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </article>
+
             <!-- RECENT HISTORY -->
             <article class="message">
                 <div class="message-header">
@@ -413,6 +458,119 @@
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
+    <!-- Create subgroup modal -->
+    <div id="modal-create-subgroup" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-create-subgroup">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-add"></span>&nbsp;Create subgroup
+                    </h3>
+
+                    <!-- Name -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Name</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" name="name" placeholder="Name">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Description</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" name="description" placeholder="...">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Tag</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" name="description" placeholder="...">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camp time = Arrival and departure dates -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Camp time</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div id="dateControlSubgroup"></div>
+                                <p class="help">If not same as parent group.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Participants -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Participants</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="number" name="participants" placeholder="Kids">
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" name="leaders" placeholder="Leaders">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal  is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Save notes
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
     <!-- Edit notes modal -->
     <div id="modal-edit-notes" class="modal">
         <div class="modal-background"></div>
@@ -429,7 +587,8 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <textarea id="notesField" class="textarea" placeholder="..." name="notes"></textarea>
+                                    <textarea id="notesField" class="textarea" placeholder="..."
+                                        name="notes"></textarea>
                                 </div>
                                 <p class="help">Internal notes on group.</p>
                             </div>
@@ -476,6 +635,7 @@
     let history;
     let groupId;
 
+
     const pagetitle = document.getElementById("pagetitle");
 
     const completeHistoryButton = document.getElementById("completeHistoryButton")
@@ -487,6 +647,7 @@
     const editNotesForm = document.getElementById("form-edit-notes");
 
     const dateControl = new BulmaDatePicker(document.getElementById('dateControl'), { range: true });
+    const dateControlSubgroup = new BulmaDatePicker(document.getElementById('dateControlSubgroup'), { range: true });
     const notesTextArea = document.getElementById("notesTextArea");
 
     const renderers = {
@@ -511,6 +672,7 @@
             completeHistoryButton.href = `./history.html?group_id=${groupId}`
 
             renderGroupTable(group);
+            renderSubgroupTable(group);
             pagetitle.innerHTML = "View group:&nbsp;" + group.booking_number + " - " + group.name;
 
             editButton.onclick = populateForm(editForm, group);
@@ -573,6 +735,23 @@
             const value = user[dd.dataset.field];
             const renderer = renderers[dd.dataset.type ?? "text"];
             dd.innerHTML = renderer(value);
+        });
+    }
+    
+    function renderSubgroupTable(group) {
+        subgroupTable = document.getElementById("subgroupTable");
+        group.subgroups.forEach(subgroup => {
+            subgroupTable.innerHTML += `
+                <tr>
+                    <td>${subgroup.name}</td>
+                    <td>${subgroup.tag}</td>
+                    <td>${subgroup.desc || "-"}</td>
+                    <td>${renderParticipants(subgroup.participants, subgroup.leaders)}</td>
+                    <td>${subgroup.arrival_date || ""}</td>
+                    <td>${subgroup.departure_date || ""}</td>
+                    <td><i>todo...</i></td>
+                </tr>
+            `;
         });
     }
 
