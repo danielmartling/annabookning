@@ -1,13 +1,17 @@
 import * as auth from "./auth.js";
 import * as groups from "./groups.js";
+import * as subgroups from "./subgroups.js";
 import * as users from "./users.js";
 import * as me from "./me.js";
 import * as history from "./history.js";
+import * as programDay from "./programDay.js";
 
 window.api = {
     ...auth,
     ...groups,
+    ...subgroups,
     ...users,
     ...me,
-    ...history
+    ...history,
+    ...programDay
 };

@@ -53,17 +53,19 @@
 
 
             <div class="table-container">
-                <table class="table is-narrow is-striped is-hoverable is-fullwidth">
+                <table class="table is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
-                            <th><abbr title="Booking number"><span class="iconify" data-icon="mdi-pound"></span></abbr></th>
+                            <th class="is-narrow"><abbr title="Booking number"><span class="iconify" data-icon="mdi-pound"></span></abbr>
+                            </th>
                             <th>Name</th>
-                            <th><abbr title="Kids + leaders">Participants</abbr></th>
-                            <th><abbr title="On island today"><span class="iconify" data-icon="mdi-island"></span></abbr></th>
+                            <th class="is-narrow"><abbr title="Kids + leaders">Participants</abbr></th>
+                            <th class="is-narrow"><abbr title="On island today"><span class="iconify"
+                                        data-icon="mdi-island"></span></abbr></th>
                             <th>Arrival</th>
                             <th>Departure</th>
-                            <th>Accomodation</th>
-                            <th>Type</th>
+                            <th class="is-narrow">Type</th>
+                            <th class="is-narrow">Accomodation</th>
                         </tr>
                     </thead>
                     <tbody id="groupsTable"></tbody>
@@ -80,7 +82,7 @@
 
     <footer class="footer" id="common-footer"></footer>
 
-    <!-- Create new user modal -->
+    <!-- Create new group modal -->
     <div id="modal-create-group" class="modal">
         <div class="modal-background"></div>
 
@@ -139,8 +141,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Displayname -->
 
                     <!-- Contact -->
                     <div class="field is-horizontal">
@@ -242,6 +242,33 @@
                         </div>
                     </div>
 
+                    <!-- Subgroups -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Subgroups</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <div class="radios">
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="subgroups" checked value="default" />
+                                                One subgroup
+                                            </label>
+                                            <p class="help">En deltagargrupp "Deltagare".</p>
+                                            <label class="radio">
+                                                <input type="radio" name="subgroups" value="scoutgroup" />
+                                                Scout troops
+                                            </label>
+                                            <p class="help">Avdelningar efter åldersgrupp. Bävrar, spårare osv.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="field">
                         <div class="field-label">
                             <!-- Left empty for spacing -->
@@ -285,35 +312,40 @@
     const dateControl = new BulmaDatePicker(document.getElementById('dateControl'), { range: true });
 
     async function init() {
-        groups = await api.getAllGroups();
+        try {
+            groups = await api.getAllGroups();
 
 
-        groups.forEach(group => {
-            const row = document.createElement('tr');
-            row.id = `${group.group_id}`;
-            row.style.cursor = "pointer";
-            row.innerHTML = `
+            groups.forEach(group => {
+                const row = document.createElement('tr');
+                row.id = `${group.group_id}`;
+                row.style.cursor = "pointer";
+                row.innerHTML = `
                 <td>${group.booking_number}</td>
                 <th>${group.name}</th>
                 <td>${renderParticipants(group.participants, group.leaders)}</td>
                 <td>${makeCheck(group.on_island)}</td>
                 <td>${group.arrival_date}</td>
                 <td>${group.departure_date}</td>
-                <td>${makeTag(group.accomodation)}</td>
                 <td>${makeTag(group.type)}</td>
+                <td>${makeTag(group.accomodation)}</td>
             `;
-            row.addEventListener("click", (e) => {
-                window.location = `./view.html?group_id=${row.id}`;
+                row.addEventListener("click", (e) => {
+                    window.location = `./view.html?group_id=${row.id}`;
+                });
+                groupsTable.appendChild(row);
             });
-            groupsTable.appendChild(row);
-        });
+        } catch (err) {
+            showWarning("Could not get groups!", err)
+        }
+
 
     }
 
     // Create user form submit handler
     const form = document.getElementById("form-create-group");
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const data = new FormData(form);
@@ -328,14 +360,19 @@
             type: data.get("type"),
             contact_name: data.get("contact_name"),
             contact_phone: data.get("contact_phone"),
-            contact_email: data.get("contact_email")
+            contact_email: data.get("contact_email"),
+            subgroups: data.get("subgroups")
         };
-        api.createGroup(group);
 
-        form.reset();
-
-        const modal = form.closest(".modal");
-        modal.classList.remove("is-active");
+        try {
+            await api.createGroup(group);
+            showSuccess("Group created!")
+            form.reset();
+            const modal = form.closest(".modal");
+            modal.classList.remove("is-active");
+        } catch (err) {
+            showWarning("Could not create group!", err)
+        }
     });
 
 </script>

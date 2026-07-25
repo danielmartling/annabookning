@@ -85,7 +85,6 @@ export async function getGroupsByDay(req, res) {
 // POST /groups
 export async function createGroup(req, res) {
     const group = await Group.create(req.body);
-    // await group.setSubgroups(req.body.subgroups);
     res.json(group);
 
     const history = await History.create({ table_name: "groups", record_id: group.group_id, action: "create", user_id: req.session.user.id });

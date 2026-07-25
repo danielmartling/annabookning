@@ -61,7 +61,7 @@
 
                 <div class="columns">
                     <div class="column">
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>Group info</p>
                             </div>
@@ -87,14 +87,25 @@
                                         <dd data-field="accomodation" data-type="text"></dd>
                                     </div>
 
+                                    <div class="cell">
+                                        <dt>Participants:</dt>
+                                        <dd data-type="text" id="ParticipantsNumberDD"></dd>
+                                    </div>
+
                                     <div class="cell is-col-span-2">
                                         <dt>Notes:</dt>
-                                        <dd data-field="notes" data-type="textarea"></dd>
-                                        <dd class="has-text-right">
-                                            <button id="editNotesButton" class="button js-modal-trigger is-small"
-                                                data-target="modal-edit-notes">
-                                                <span class="iconify" data-icon="mdi-edit"></span>
-                                            </button>
+                                        <dd>
+                                            <form id="form-edit-notes">
+                                                <textarea id="notesField" class="textarea" name="notes"
+                                                    placeholder="Internal notes on group."></textarea>
+
+                                                <div class="has-text-right mt-2">
+                                                    <button type="submit" class="button is-primary">
+                                                        <span class="iconify" data-icon="mdi-content-save"></span>
+                                                        &nbsp;Save notes
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </dd>
                                     </div>
                                 </dl>
@@ -103,7 +114,7 @@
                     </div>
 
                     <div class="column">
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>Visit info</p>
                             </div>
@@ -127,7 +138,7 @@
                             </div>
                         </article>
 
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>Contact info</p>
                             </div>
@@ -154,7 +165,7 @@
 
                     <div class="column">
 
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>System data</p>
                             </div>
@@ -184,25 +195,19 @@
             </div>
 
             <!-- SUBGROUPS -->
-            <article class="message">
+            <article class="message is-petrol-green">
                 <div class="message-header">
                     <p>Subgroups</p>
                     <div class="buttons">
-                        <button class="button is-small">
-                            <span class="iconify" data-icon="mdi-auto-fix"></span>&nbsp;Create default subgroup
-                        </button>
-                        <button class="button is-small">
-                            <span class="iconify" data-icon="mdi-auto-fix"></span>&nbsp;Create scout troops
-                        </button>
                         <button id="createSubgroupButton" class="button js-modal-trigger"
                             data-target="modal-create-subgroup">
                             <span class="iconify" data-icon="mdi-add"></span>&nbsp;Create subgroup
-                        </button>   
+                        </button>
                     </div>
                 </div>
                 <div class="message-body">
                     <div class="table-container">
-                        <table class="table is-narrow is-fullwidth is-striped is-hoverable"
+                        <table class="table  is-fullwidth is-striped is-hoverable"
                             style="background-color: transparent;">
                             <thead>
                                 <tr>
@@ -215,12 +220,21 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="subgroupTable"></tbody>
+                            <tbody id="subgroupTable">
+                                <tr>
+                                    <td colspan="7" style="text-align: center;">
+                                        <i>There are no subgroups...</i>
+                                    </td>
+                                </tr>
+                            </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="7" style="text-align: right;">
+                                    <!-- <th colspan="7" style="text-align: right;">
 
-                                    </th>
+                                    </th> -->
+                                    <th colspan="3"></th>
+                                    <th id="participantsNumberField"></th>
+                                    <th colspan="3"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -229,7 +243,7 @@
             </article>
 
             <!-- RECENT HISTORY -->
-            <article class="message">
+            <article class="message is-petrol-green">
                 <div class="message-header">
                     <p>Recent history</p>
                     <a title="Complete history" class="button" id="completeHistoryButton" href="./history.html">
@@ -240,7 +254,7 @@
                 </div>
                 <div class="message-body">
                     <div class="table-container">
-                        <table class="table is-narrow is-fullwidth is-striped is-hoverable"
+                        <table class="table is-fullwidth is-striped is-hoverable"
                             style="background-color: transparent;">
                             <thead>
                                 <tr>
@@ -275,184 +289,187 @@
         <div class="modal-background"></div>
 
         <div class="modal-content">
-            <form id="form-edit-group">
-                <div class="box" style="border: 1px solid black">
-                    <h3 class="subtitle">
-                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit group
-                    </h3>
+            <article class="message is-petrol-green">
+                <div class="message-header">
+                    <p><span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit group</p>
+                </div>
+                <div class="message-body">
+                    <form id="form-edit-group">
 
-                    <!-- Group name -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Group name*</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input" type="text" name="name" placeholder="Group name" required>
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-tent"></span>
-                                    </span>
-                                </div>
-                                <p class="help">Helpful description of group. For example "X Scoutkår MSC1"...</p>
+                        <!-- Group name -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Group name*</label>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Booking number -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Booking number*</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input" type="number" name="booking_number" placeholder="NNNN"
-                                        required>
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-numeric"></span>
-                                    </span>
-                                </div>
-                                <p class="help">Provided by Storgårn.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Camp time = Arrival and departure dates -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Camp time*</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div id="dateControl"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Contact info</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control has-icons-left">
-                                    <input class="input" type="text" name="contact_name" placeholder="Name">
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-account"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="field has-addons">
-                                    <p class="control is-expanded has-icons-left">
-                                        <input class="input" type="tel" name="contact_phone"
-                                            placeholder="Phone number (+46...)">
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="text" name="name" placeholder="Group name" required>
                                         <span class="icon is-small is-left">
-                                            <span class="iconify" data-icon="mdi-phone"></span>
+                                            <span class="iconify" data-icon="mdi-tent"></span>
+                                        </span>
+                                    </div>
+                                    <p class="help">Helpful description of group. For example "X Scoutkår MSC1"...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booking number -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Booking number*</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="number" name="booking_number" placeholder="NNNN"
+                                            required>
+                                        <span class="icon is-small is-left">
+                                            <span class="iconify" data-icon="mdi-numeric"></span>
+                                        </span>
+                                    </div>
+                                    <p class="help">Provided by Storgårn.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Camp time = Arrival and departure dates -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Camp time*</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div id="dateControl"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Contact info</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="text" name="contact_name" placeholder="Name">
+                                        <span class="icon is-small is-left">
+                                            <span class="iconify" data-icon="mdi-account"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field has-addons">
+                                        <p class="control is-expanded has-icons-left">
+                                            <input class="input" type="tel" name="contact_phone"
+                                                placeholder="Phone number (+46...)">
+                                            <span class="icon is-small is-left">
+                                                <span class="iconify" data-icon="mdi-phone"></span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <p class="control is-expanded has-icons-left">
+                                        <input class="input" type="email" name="contact_email" placeholder="Email">
+                                        <span class="icon is-small is-left">
+                                            <span class="iconify" data-icon="mdi-email"></span>
                                         </span>
                                     </p>
                                 </div>
                             </div>
-                            <div class="field">
-                                <p class="control is-expanded has-icons-left">
-                                    <input class="input" type="email" name="contact_email" placeholder="Email">
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-email"></span>
-                                    </span>
-                                </p>
-                            </div>
                         </div>
-                    </div>
 
-                    <!-- Accomodation -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Accomodation</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field has-addons">
-                                <div class="radios">
-                                    <div class="control">
-                                        <label class="radio">
-                                            <input type="radio" name="accomodation" checked value="in" />
-                                            In
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="accomodation" value="out" />
-                                            Out
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="accomodation" value="day" />
-                                            Day
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="accomodation" value="other" />
-                                            Other
-                                        </label>
-                                    </div>
-                                </div>
+                        <!-- Accomodation -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Accomodation</label>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Type -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Type</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
+                            <div class="field-body">
                                 <div class="field has-addons">
                                     <div class="radios">
                                         <div class="control">
                                             <label class="radio">
-                                                <input type="radio" name="type" checked value="own" />
-                                                Own
+                                                <input type="radio" name="accomodation" checked value="in" />
+                                                In
                                             </label>
                                             <label class="radio">
-                                                <input type="radio" name="type" value="external" />
-                                                External
+                                                <input type="radio" name="accomodation" value="out" />
+                                                Out
                                             </label>
                                             <label class="radio">
-                                                <input type="radio" name="type" value="staff" />
-                                                Staff
+                                                <input type="radio" name="accomodation" value="day" />
+                                                Day
                                             </label>
                                             <label class="radio">
-                                                <input type="radio" name="type" value="test" />
-                                                Test
+                                                <input type="radio" name="accomodation" value="other" />
+                                                Other
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="field">
-                        <div class="field-label">
-                            <!-- Left empty for spacing -->
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-horizontal  is-grouped is-grouped-right">
-                                <p class="control">
-                                    <button type="submit" class="button is-primary">
-                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
-                                        Create new group
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button type="button" class="button is-danger modal-cancel">
-                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
-                                        Cancel
-                                    </button>
-                                </p>
+                        <!-- Type -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Type</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="field has-addons">
+                                        <div class="radios">
+                                            <div class="control">
+                                                <label class="radio">
+                                                    <input type="radio" name="type" checked value="own" />
+                                                    Own
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="type" value="external" />
+                                                    External
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="type" value="staff" />
+                                                    Staff
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="type" value="test" />
+                                                    Test
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="field">
+                            <div class="field-label">
+                                <!-- Left empty for spacing -->
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-horizontal  is-grouped is-grouped-right">
+                                    <p class="control">
+                                        <button type="submit" class="button is-primary">
+                                            <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                            Save group
+                                        </button>
+                                    </p>
+                                    <p class="control">
+                                        <button type="button" class="button is-danger modal-cancel">
+                                            <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                            Cancel
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </article>
         </div>
 
         <button class="modal-close is-large" aria-label="close"></button>
@@ -463,165 +480,119 @@
         <div class="modal-background"></div>
 
         <div class="modal-content">
-            <form id="form-create-subgroup">
-                <div class="box" style="border: 1px solid black">
-                    <h3 class="subtitle">
-                        <span class="iconify" data-icon="mdi-add"></span>&nbsp;Create subgroup
-                    </h3>
-
-                    <!-- Name -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Name</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" type="text" name="name" placeholder="Name">
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Description</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" type="text" name="description" placeholder="...">
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tag -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Tag</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" type="text" name="description" placeholder="...">
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Camp time = Arrival and departure dates -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Camp time</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div id="dateControlSubgroup"></div>
-                                <p class="help">If not same as parent group.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Participants -->
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Participants</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" type="number" name="participants" placeholder="Kids">
-                                </p>
-                            </div>
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" type="text" name="leaders" placeholder="Leaders">
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <div class="field-label">
-                            <!-- Left empty for spacing -->
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-horizontal  is-grouped is-grouped-right">
-                                <p class="control">
-                                    <button type="submit" class="button is-primary">
-                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
-                                        Save notes
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button type="button" class="button is-danger modal-cancel">
-                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
-                                        Cancel
-                                    </button>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+            <article class="message is-petrol-green">
+                <div class="message-header">
+                    <p><span class="iconify" data-icon="mdi-add"></span>&nbsp;Create subgroup</p>
                 </div>
-            </form>
-        </div>
+                <div class="message-body">
+                    <form id="form-create-subgroup">
 
-        <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-
-    <!-- Edit notes modal -->
-    <div id="modal-edit-notes" class="modal">
-        <div class="modal-background"></div>
-
-        <div class="modal-content">
-            <form id="form-edit-notes">
-                <div class="box" style="border: 1px solid black">
-                    <h3 class="subtitle">
-                        <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit group notes
-                    </h3>
-
-                    <!-- Notes -->
-                    <div class="field">
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <textarea id="notesField" class="textarea" placeholder="..."
-                                        name="notes"></textarea>
+                        <!-- Name -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Name*</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control">
+                                        <input class="input" type="text" name="name" placeholder="Name">
+                                    </p>
                                 </div>
-                                <p class="help">Internal notes on group.</p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="field">
-                        <div class="field-label">
-                            <!-- Left empty for spacing -->
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-horizontal  is-grouped is-grouped-right">
-                                <p class="control">
-                                    <button type="submit" class="button is-primary">
-                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
-                                        Save notes
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button type="button" class="button is-danger modal-cancel">
-                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
-                                        Cancel
-                                    </button>
-                                </p>
+                        <!-- Tag -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Tag*</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control">
+                                        <input class="input" type="text" name="tag" placeholder="tag">
+                                    </p>
+                                    <p class="help">Short identifier for group. Useful for bookings.</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <!-- Description -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Description</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control">
+                                        <input class="input" type="text" name="desc" placeholder="Description">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Camp time = Arrival and departure dates -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Camp time</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div id="dateControlSubgroup"></div>
+                                    <p class="help">If not same as parent group.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Participants -->
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Participants</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control">
+                                        <input class="input" type="number" name="participants" placeholder="Kids">
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <input class="input" type="text" name="leaders" placeholder="Leaders">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-label">
+                                <!-- Left empty for spacing -->
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-horizontal  is-grouped is-grouped-right">
+                                    <p class="control">
+                                        <button type="submit" class="button is-primary">
+                                            <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                            Create subgroup
+                                        </button>
+                                    </p>
+                                    <p class="control">
+                                        <button type="button" class="button is-danger modal-cancel">
+                                            <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                            Cancel
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </article>
+
         </div>
 
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
+
+
 
 </body>
 
@@ -641,10 +612,11 @@
     const completeHistoryButton = document.getElementById("completeHistoryButton")
 
     const editButton = document.getElementById("editButton");
-    const editNotesButton = document.getElementById("editNotesButton");
+    const createSubgroupButton = document.getElementById("createSubgroupButton");
 
     const editForm = document.getElementById("form-edit-group");
     const editNotesForm = document.getElementById("form-edit-notes");
+    const createSubgroupForm = document.getElementById("form-create-subgroup");
 
     const dateControl = new BulmaDatePicker(document.getElementById('dateControl'), { range: true });
     const dateControlSubgroup = new BulmaDatePicker(document.getElementById('dateControlSubgroup'), { range: true });
@@ -655,7 +627,7 @@
         date: value => renderDateTime(value),
         tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
         check: value => makeCheck(value),
-        textarea: value => makeTextArea(value ? value : "")
+        // textarea: value => makeTextArea(value ? value : "")
     };
 
 
@@ -665,21 +637,29 @@
         if (urlParam) {
 
             groupId = urlParam;
-            group = await api.getGroup(groupId);
 
-            history = await api.getRecentHistoryOfGroup(groupId);
-            renderHistoryTable(history);
-            completeHistoryButton.href = `./history.html?group_id=${groupId}`
+            try {
+                group = await api.getGroup(groupId);
+                renderGroupTable(group);
+                renderSubgroupTable(group);
+                pagetitle.innerHTML = "View group:&nbsp;" + group.booking_number + " - " + group.name;
 
-            renderGroupTable(group);
-            renderSubgroupTable(group);
-            pagetitle.innerHTML = "View group:&nbsp;" + group.booking_number + " - " + group.name;
+                editButton.onclick = () => populateForm(editForm, group);
+                populateForm(editNotesForm, group);
+            } catch (err) {
+                showWarning("Could not find group!")
+            }
 
-            editButton.onclick = populateForm(editForm, group);
-            editNotesButton.onclick = populateForm(editNotesForm, group);
+            try {
+                history = await api.getRecentHistoryOfGroup(groupId);
+                renderHistoryTable(history);
+                completeHistoryButton.href = `./history.html?group_id=${groupId}`
+            } catch (err) {
+                showWarning("Could not find group history!", err)
+            }
 
             // Create form submit handlers
-            editForm.addEventListener("submit", (event) => {
+            editForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(editForm);
@@ -701,47 +681,93 @@
                     type: data.get("type"),
                 };
 
-                api.updateGroup(groupId, group);
+                try {
+                    await api.updateGroup(groupId, group);
 
-                editForm.reset();
-                init();
+                    editForm.reset();
+                    init();
 
-                const modal = editForm.closest(".modal");
-                modal.classList.remove("is-active");
+                    const modal = editForm.closest(".modal");
+                    modal.classList.remove("is-active");
+                } catch (err) {
+                    showWarning("Could not update group!", err)
+                }
             });
 
-            editNotesForm.addEventListener("submit", (event) => {
+            editNotesForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(editNotesForm);
 
-                const group = {
-                    notes: data.get("notes")
+                try {
+                    await api.updateGroupNotes(groupId, {
+                        notes: data.get("notes")
+                    });
+
+                    group.notes = data.get("notes");
+
+                    // editNotesForm.reset();
+                    // init();
+
+                    // const modal = editNotesForm.closest(".modal");
+                    // modal.classList.remove("is-active");
+                    showSuccess("Notes saved!")
+                } catch (err) {
+                    showWarning("Could not update group notes!", err)
+                }
+            });
+
+            createSubgroupForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const data = new FormData(createSubgroupForm);
+
+                const [arrival_date, departure_date] = dateControlSubgroup.getValue();
+
+                const subgroup = {
+                    name: data.get("name"),
+                    desc: data.get("desc"),
+                    tag: data.get("tag"),
+                    arrival_date: arrival_date,
+                    departure_date: departure_date,
+                    participants: data.get("participants"),
+                    leaders: data.get("leaders"),
                 };
 
-                api.updateGroupNotes(groupId, group);
+                try {
+                    await api.createSubgroup(groupId, subgroup);
 
-                editNotesForm.reset();
-                init();
+                    createSubgroupForm.reset();
+                    init();
 
-                const modal = editNotesForm.closest(".modal");
-                modal.classList.remove("is-active");
+                    const modal = createSubgroupForm.closest(".modal");
+                    modal.classList.remove("is-active");
+                } catch (err) {
+                    showWarning("Could not create subgroup!", err)
+                }
             });
         }
     }
 
-    function renderGroupTable(user) {
+    function renderGroupTable(group) {
         document.querySelectorAll("dd[data-field]").forEach(dd => {
-            const value = user[dd.dataset.field];
+            const value = group[dd.dataset.field];
             const renderer = renderers[dd.dataset.type ?? "text"];
             dd.innerHTML = renderer(value);
         });
+
+
+        ParticipantsNumberDD = document.getElementById("ParticipantsNumberDD");
+        ParticipantsNumberDD.innerHTML = renderParticipants(group.participants, group.leaders);
     }
-    
+
     function renderSubgroupTable(group) {
         subgroupTable = document.getElementById("subgroupTable");
-        group.subgroups.forEach(subgroup => {
-            subgroupTable.innerHTML += `
+
+        if (group.subgroups.length > 0) {
+            subgroupTable.innerHTML = "";
+            group.subgroups.forEach(subgroup => {
+                subgroupTable.innerHTML += `
                 <tr>
                     <td>${subgroup.name}</td>
                     <td>${subgroup.tag}</td>
@@ -752,7 +778,12 @@
                     <td><i>todo...</i></td>
                 </tr>
             `;
-        });
+            });
+
+
+            participantsNumberField = document.getElementById("participantsNumberField");
+            participantsNumberField.innerHTML = renderParticipants(group.participants, group.leaders, sum = true);
+        }
     }
 
     function renderHistoryTable(history) {
@@ -785,7 +816,7 @@
         }
 
         dateControl.setValue([data.arrival_date, data.departure_date]);
-        notesField.innerHTML = data.notes;
+        // notesField.value = data.notes ?? "";
     }
 
 </script>

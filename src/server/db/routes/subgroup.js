@@ -1,8 +1,16 @@
 import express from "express";
 const router = express.Router();
 
-import { createDefaultSubgroup, createDefaultScoutgroup } from "../controllers/subgroupController.js";
+import { createSubgroup, createDefaultSubgroup, createDefaultScoutgroup } from "../controllers/subgroupController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
+
+router.post(
+    "/",
+    requireLogin,
+    requireRoles(["staff"]),
+    requirePermission(["program-jour", "program-booker", "program-admin", "system-admin"]),
+    createSubgroup
+)
 
 router.post(
     "/default",

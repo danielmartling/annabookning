@@ -68,8 +68,15 @@ export async function createGroup(group) {
             showWarning(data.error || `Server responded with ${response.status}`);
             return false;
         }
+        
+        if (group.subgroups) {
+            if (group.subgroups === "default") {
+                await createDefaultSubgroup(data.group_id);
+            } else if (group.subgroups === "scoutgroup") {
+                await createDefaultScoutgroup(data.group_id);
+            }
+        }
 
-        showSuccess("Group created successfully.");
         return data;
 
     } catch (error) {

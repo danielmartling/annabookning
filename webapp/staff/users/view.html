@@ -48,22 +48,25 @@
                 <div class="container" id="notification-container"></div>
                 <h1 id="pagetitle" class="title">View user</h1>
                 <!-- <h3 class="subtitle"></h3> -->
+
+                <div class="buttons">
+                    <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-user">
+                        <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
+                    </button>
+                    <button id="roleButton" class="button cell js-modal-trigger" data-target="modal-change-roles">
+                        <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles
+                        etc.
+                    </button>
+                    <button id="passwordButton" class="button js-modal-trigger" data-target="modal-change-password">
+                        <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
+                    </button>
+                </div>
                 <div class="columns">
                     <div class="column">
 
-                        <div class="buttons">
-                            <button id="passwordButton" class="button js-modal-trigger"
-                                data-target="modal-change-password">
-                                <span class="iconify" data-icon="mdi-lock"></span>&nbsp;Change password
-                            </button>
-                        </div>
-
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>User info</p>
-                                <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-user">
-                                    <span class="iconify" data-icon="mdi-account-edit"></span>&nbsp;Update user
-                                </button>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
@@ -91,13 +94,9 @@
                         </article>
                     </div>
                     <div class="column">
-                        <article class="message">
+                        <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>System data</p>
-                                <button id="roleButton" class="button js-modal-trigger"
-                                    data-target="modal-change-roles">
-                                    <span class="iconify" data-icon="mdi-format-paint"></span>&nbsp;Change roles etc.
-                                </button>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
@@ -135,7 +134,6 @@
                                         <dt>User ID:</dt>
                                         <dd data-field="user_id" data-type="text"></dd>
                                     </div>
-
                                 </dl>
                             </div>
                         </article>
@@ -144,7 +142,7 @@
             </div>
 
             <!-- RECENT HISTORY -->
-            <article class="message">
+            <article class="message is-petrol-green">
                 <div class="message-header">
                     <p>Recent history</p>
                     <a title="Complete history" class="button" id="completeHistoryButton" href="./history.html">
@@ -155,7 +153,7 @@
                 </div>
                 <div class="message-body">
                     <div class="table-container">
-                        <table class="table is-narrow is-fullwidth is-striped is-hoverable"
+                        <table class="table is-fullwidth is-striped is-hoverable"
                             style="background-color: transparent;">
                             <thead>
                                 <tr>
@@ -549,7 +547,7 @@
 
 
     async function init() {
-
+makeTag
         me = await api.getMe();
 
         const urlParam = new URLSearchParams(window.location.search).get("user_id");
@@ -560,13 +558,21 @@
                 editingSelf = true;
             } else {
                 userId = urlParam;
-                user = await api.getUser(userId);
                 editingSelf = false;
+                try {
+                    user = await api.getUser(userId);
+                } catch (err) {
+                    showWarning("Couldn't find user!", err)
+                }
             }
 
-            history = await api.getRecentHistoryOfUser(userId);
-            renderHistoryTable(history);
-            completeHistoryButton.href = `./history.html?user_id=${userId}`
+            try {
+                history = await api.getRecentHistoryOfUser(userId);
+                renderHistoryTable(history);
+                completeHistoryButton.href = `./history.html?user_id=${userId}`
+            } catch (err) {
+                showWarning("Could not find history!", err)
+            }
 
             renderUserTable(user);
             pagetitle.innerHTML = "View user:&nbsp;" + user.displayname;
@@ -626,15 +632,23 @@
                         newpassword: data.get("newpassword"),
                         repeatpassword: data.get("repeatpassword")
                     };
-                    await api.updateMyPassword(user);
-                    showSuccess("Password changed!")
+                    try {
+                        await api.updateMyPassword(user);
+                        showSuccess("Password changed!");
+                    } catch (err) {
+                        showWarning("Could not change password!, err")
+                    }
                 } else {
                     const user = {
                         newpassword: data.get("newpassword"),
                         repeatpassword: data.get("repeatpassword")
                     };
-                    await api.updateUserPassword(userId, user);
-                    showSuccess("Password updated!")
+                    try {
+                        await api.updateUserPassword(userId, user);
+                        showSuccess("Password updated!")
+                    } catch (err) {
+                        showWarning("Could not change password!, err")
+                    }
                 }
 
                 passwordForm.reset();
@@ -655,15 +669,19 @@
                         active: data.get("active") === "true",
                         permission: permission === "none" ? null : permission,
                     };
-                    await api.updateUserRoles(userId, user);
-                    showSuccess("User updated!")
+                    try {
+                        await api.updateUserRoles(userId, user);
+                        showSuccess("User updated!")
+
+                        roleForm.reset();
+                        init();
+
+                        const modal = roleForm.closest(".modal");
+                        modal.classList.remove("is-active");
+                    } catch (err) {
+                        showWarning("Could not update user!", err)
+                    }
                 }
-
-                roleForm.reset();
-                init();
-
-                const modal = roleForm.closest(".modal");
-                modal.classList.remove("is-active");
             });
         }
     }

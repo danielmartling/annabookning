@@ -41,10 +41,21 @@ const defaultScoutGroup = [
     },
 ]
 
+// POST /subgroups/
+export async function createSubgroup(req, res) {
+    const group = await Group.findByPk(req.body.group_id);
+    await Subgroup.create({
+        ...req.body.subgroup,
+        group_id: group.group_id
+    })
+    res.json(group);
+
+    const history = await History.create({ table_name: "groups", record_id: group.group_id, action: "create", changes: "subgroup", user_id: req.session.user.id });
+}
+
 // POST /subgroups/default/
 export async function createDefaultSubgroup(req, res) {
     const group = await Group.findByPk(req.body.group_id);
-    // await group.setSubgroups(req.body.subgroups);
     await Subgroup.create({
         ...defaultSubgroup,
         group_id: group.group_id
@@ -57,7 +68,6 @@ export async function createDefaultSubgroup(req, res) {
 // POST /subgroups/default/scoutgroup
 export async function createDefaultScoutgroup(req, res) {
     const group = await Group.findByPk(req.body.group_id);
-    // await group.setSubgroups(req.body.subgroups);
     await Subgroup.bulkCreate(
         defaultScoutGroup.map((subgroup) => ({
             ...subgroup,

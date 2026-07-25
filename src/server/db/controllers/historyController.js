@@ -1,13 +1,14 @@
 // src/server/db/controllers/historyController.js
 
-import { History, User, Group, Booking, Activity } from "../models/index.js";
+import { History, User, Group, Booking, Activity, ProgramDay } from "../models/index.js";
 import { Op } from "sequelize";
 
 const models = {
     users: User,
     groups: Group,
     bookings: Booking,
-    activities: Activity
+    activities: Activity,
+    program_days: ProgramDay
 };
 
 // GET /history
@@ -111,7 +112,8 @@ export async function getHistoryOfGroup(req, res) {
                 as: "user",
                 attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
             }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
     });
 
     for (const entry of entries) {
@@ -127,7 +129,7 @@ export async function getHistoryOfGroup(req, res) {
     res.json(entries);
 }
 
-// GET /history/group/:id
+// GET /history/group/recent/:id
 export async function getRecentHistoryOfGroup(req, res) {
     const group_id = req.params.id;
 
@@ -142,7 +144,8 @@ export async function getRecentHistoryOfGroup(req, res) {
                 as: "user",
                 attributes: ['user_id', 'username', 'displayname', 'role', 'permission'],
             }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
     });
 
     for (const entry of entries) {

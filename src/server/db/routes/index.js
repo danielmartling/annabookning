@@ -16,4 +16,7 @@ router.use("/api/users", user);
 import me from "./me.js";
 router.use("/api/me", me);
 
+import programday from "./programday.js";
+router.use("/api/programday", programday);
+
 export default router;

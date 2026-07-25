@@ -134,6 +134,9 @@ function renderRecord(entry) {
             }
         } else if (entry.table_name === "groups") {
             return `<a href="../groups/view.html?group_id=${entry.record.group_id}">${entry.record.name}</a>`;
+        } else if (entry.table_name === "program_days") {
+            // return `<a href="../bookings/view.html?day_id=${entry.record.day}">${entry.record.day}</a>`;
+            return entry.record.day;
         } else if (entry.table_name === "activity") {
             return `<a href="../activities/view.html?activity_id=${entry.record.activity_id}">${entry.record.title}</a>`;
         } else {
@@ -145,6 +148,11 @@ function renderRecord(entry) {
 
 }
 
-function renderParticipants(kids, leaders) {
-    return kids + " + " + leaders;
+function renderParticipants(kids, leaders, sum = false) {
+    return (sum ? "&Sum; = " : "") + kids + " + " + leaders;
+}
+
+function todayString() {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
 }

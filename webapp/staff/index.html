@@ -31,6 +31,9 @@
 </style>
 
 <body class="has-navbar-fixed-top">
+
+    <div class="container" id="notification-container"></div>
+
     <div class="hero is-medium">
         <div class="hero-head">
             <nav id="common-staff-navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation"
@@ -75,21 +78,30 @@
         <div class="columns">
 
             <div class="column is-two-thirds">
-                <article class="message">
-                    <div class="message-header">
-                        <p>Daily message</p>
-                        <button class="button">
-                            <span class="iconify" data-icon="mdi-pencil"></span>&nbsp;Edit message
-                        </button>
-                    </div>
-                    <div class="message-body">
-                        <textarea class="textarea" readonly></textarea>
-                    </div>
-                </article>
+                <form id="form-edit-programday">
+                    <article class="message is-petrol-green">
+                        <div class="message-header">
+                            <input class="input is-medium" type="text" name="title" placeholder="Daily title">
+                        </div>
+                        <div class="message-body">
+                            <textarea class="textarea" type="text" name="message"
+                                placeholder="Daily message"></textarea>
+                            <div class="has-text-right mt-2">
+                                <button type="submit" class="button is-primary" style="margin-left: 15px;">
+                                    <span class="iconify" data-icon="mdi-content-save"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+
+
+                </form>
+
             </div>
 
             <div class="column is-one-third">
-                <article class="message">
+                <article class="message is-petrol-green">
                     <div class="message-header">
                         <p>On island today</p>
                     </div>
@@ -127,11 +139,54 @@
     });
 
     let groupsOnIsland;
+    let today = todayString();
+    let programDay;
+
+    const editProgramDayForm = document.getElementById("form-edit-programday");
+
+
 
     async function init() {
-        groupsOnIsland = await api.getGroupsOnIsland();
+        try {
+            groupsOnIsland = await api.getGroupsOnIsland();
+            renderOnIslandTable(groupsOnIsland);
+        } catch (err) {
+            alert("Could not get groups!", err)
+        }
 
-        renderOnIslandTable(groupsOnIsland);
+        try {
+            programDay = await api.getProgramDay(today);
+
+            const day_id = programDay.day_id;
+            populateForm(editProgramDayForm, programDay);
+        } catch (err) {
+            alert("Could not get program day!", err)
+        }
+
+
+
+        editProgramDayForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const data = new FormData(editProgramDayForm);
+
+            const payload = {
+                title: data.get("title"),
+                message: data.get("message"),
+            };
+
+            console.log("data", data)
+            console.log("payload", payload)
+
+            try {
+                await api.updateProgramDay(today, payload);
+
+                programDay.title = data.get("title");
+                programDay.message = data.get("message");
+            } catch (err) {
+                showWarning("Could not update daily message!", err)
+            }
+        });
     }
 
     function renderOnIslandTable(groups) {
@@ -164,4 +219,24 @@
     function renderGroupLink(group) {
         return `<dd><a href="./groups/view.html?group_id=${group.group_id}">${group.booking_number}&nbsp;${group.name}</a></dd>`;
     }
+
+    function renderProgramDay(programDay) {
+
+    }
+
+    function populateForm(form, data) {
+        for (const [key, value] of Object.entries(data)) {
+            const field = form.elements[key];
+            if (!field) continue;
+
+            if (field instanceof RadioNodeList) {
+                field.value = String(value);
+            } else {
+                field.value = value ?? "";
+            }
+        }
+
+        // messageField.value = data.notes ?? "";
+    }
+
 </script>
