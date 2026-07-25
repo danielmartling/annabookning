@@ -152,7 +152,13 @@ function renderParticipants(kids, leaders, sum = false) {
     return (sum ? "&Sum; = " : "") + kids + " + " + leaders;
 }
 
+const weekDay = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
 function todayString() {
     const today = new Date();
     return today.toISOString().split("T")[0];
+}
+
+function magicDateRenderer(date) {
+    return weekDay[date.getDay()] + " " + date.getDate() + "/" + date.getMonth() + "-" + date.getFullYear();
 }

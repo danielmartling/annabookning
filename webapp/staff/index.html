@@ -32,8 +32,6 @@
 
 <body class="has-navbar-fixed-top">
 
-    <div class="container" id="notification-container"></div>
-
     <div class="hero is-medium">
         <div class="hero-head">
             <nav id="common-staff-navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation"
@@ -73,17 +71,27 @@
     </div>
 
 
+    <div class="section container">
 
-    <div class="section">
+        <div class="container" id="notification-container"></div>
+
         <div class="columns">
 
             <div class="column is-two-thirds">
                 <form id="form-edit-programday">
                     <article class="message is-petrol-green">
                         <div class="message-header">
-                            <input class="input is-medium" type="text" name="title" placeholder="Daily title">
+                            <p>
+                                <span class="iconify" data-icon="mdi-calendar-today"></span>
+                                <span id="todaysDate"></span>
+                            </p>
                         </div>
                         <div class="message-body">
+
+                            <p class="control is-expanded">
+                                <input class="input is-medium" type="text" name="title" placeholder="Daily title">
+                            </p>
+
                             <textarea class="textarea" type="text" name="message"
                                 placeholder="Daily message"></textarea>
                             <div class="has-text-right mt-2">
@@ -93,9 +101,6 @@
                             </div>
                         </div>
                     </article>
-
-
-
                 </form>
 
             </div>
@@ -139,7 +144,11 @@
     });
 
     let groupsOnIsland;
+
     let today = todayString();
+    todaysDate = document.getElementById("todaysDate");
+    todaysDate.textContent = magicDateRenderer(new Date());
+
     let programDay;
 
     const editProgramDayForm = document.getElementById("form-edit-programday");
@@ -159,6 +168,7 @@
 
             const day_id = programDay.day_id;
             populateForm(editProgramDayForm, programDay);
+
         } catch (err) {
             alert("Could not get program day!", err)
         }
@@ -217,10 +227,6 @@
 
     function renderGroupLink(group) {
         return `<dd><a href="./groups/view.html?group_id=${group.group_id}">${group.booking_number}&nbsp;${group.name}</a></dd>`;
-    }
-
-    function renderProgramDay(programDay) {
-
     }
 
     function populateForm(form, data) {
