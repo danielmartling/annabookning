@@ -4,7 +4,6 @@ import path from "path";
 
 export default function roleRedirect(req, res, next) {
 
-    console.log(req.signedCookies.roles);
     if (!req.signedCookies.roles) {
         // Not logged in
         return res.sendFile(path.join(__dirname, '../../../public/login.html'));

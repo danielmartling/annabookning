@@ -600,7 +600,7 @@ makeTag
                     phone: data.get("phone") === "" ? null : data.get("phone"),
                     email: data.get("email") === "" ? null : data.get("email"),
                 };
-                console.log(user)
+                
                 try {
                     if (editingSelf) {
                         await api.updateMyInfo(user);

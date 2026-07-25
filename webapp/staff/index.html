@@ -175,14 +175,13 @@
                 message: data.get("message"),
             };
 
-            console.log("data", data)
-            console.log("payload", payload)
-
             try {
-                await api.updateProgramDay(today, payload);
+                if (!(payload.title === programDay.title && payload.message === programDay.message)) {
+                    await api.updateProgramDay(today, payload);
 
-                programDay.title = data.get("title");
-                programDay.message = data.get("message");
+                    programDay.title = data.get("title");
+                    programDay.message = data.get("message");
+                }
             } catch (err) {
                 showWarning("Could not update daily message!", err)
             }
