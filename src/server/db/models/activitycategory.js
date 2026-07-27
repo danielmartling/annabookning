@@ -8,7 +8,8 @@ export default (sequelize) =>
             category_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
             name: { type: DataTypes.STRING, allowNull: false },
             desc: { type: DataTypes.STRING, allowNull: true },
-            order: { type: DataTypes.INTEGER },
+            color: { type: DataTypes.STRING, allowNull: true },
+            order: { type: DataTypes.INTEGER, defaultValue: 9999 },
             active: { type: DataTypes.BOOLEAN, defaultValue: true }
         },
         {

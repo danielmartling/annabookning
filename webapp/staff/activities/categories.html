@@ -23,6 +23,26 @@
     .modal-background {
         background-color: rgba(0, 0, 0, 0.4);
     }
+
+    .color-preview {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid grey;
+        vertical-align: middle;
+    }
+
+    input[type="color"] {
+        width: 80px;
+        height: 30px;
+        padding: 0;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: pointer;
+        background: transparent;
+        overflow: hidden;
+    }
 </style>
 
 <body class="has-navbar-fixed-top">
@@ -51,7 +71,8 @@
 
                 <div class="column is-narrow">
                     <aside class="menu">
-                        <p class="menu-label">Search</p>
+
+                        <!-- <p class="menu-label">Search</p>
                         <ul class="menu-list">
                             <li>
                                 <div class="field">
@@ -63,29 +84,20 @@
                                     </div>
                                 </div>
                             </li>
-                        </ul>
-                        <p class="menu-label">Filters</p>
+                        </ul> -->
+
+                        <!-- <p class="menu-label">Actions</p> -->
                         <ul class="menu-list">
                             <li>
-                                <a>Categories</a>
-                                    <ul>
-                                        <li><label><input type="checkbox" checked> Guided activities</label></li>
-                                        <li><label><input type="checkbox" checked> Activity trails</label></li>
-                                        <li><label><input type="checkbox" checked> Activity sites</label></li>
-                                    </ul>
-                            </li>
-                            <li>
-                                <a>Tags</a>
-                                    <ul>
-                                        <li><label><input type="checkbox" checked> Program</label></li>
-                                        <li><label><input type="checkbox" checked> Fladan</label></li>
-                                        <li><label><input type="checkbox" checked> Distriktsläger</label></li>
-                                    </ul>
+                                <button class="button js-modal-trigger" data-target="categoryModal">
+                                    <span class="iconify" data-icon="mdi-add"></span>&nbsp; New category
+                                </button>
                             </li>
                         </ul>
 
-                        <p class="menu-label">Settings</p>
+                        <p class="menu-label">Navigation</p>
                         <ul class="menu-list">
+                            <li><a href="./index.html">Activities list</a></li>
                             <li><a href="./categories.html">Categories</a></li>
                             <li><a href="./tags.html">Tags</a></li>
                         </ul>
@@ -102,20 +114,21 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
+                                    <th class="is-narrow" style="text-align: center">Color</th>
                                     <th class="is-narrow" style="text-align: center">Active</th>
                                     <th class="is-narrow" style="text-align: center">Order</th>
                                 </tr>
                             </thead>
                             <tbody id="categoriesTable">
                                 <tr>
-                                    <td colspan="4" style="text-align: center;">
+                                    <td colspan="5" style="text-align: center;">
                                         <i>There are no categories...</i>
                                     </td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4"></td>
+                                    <td colspan="5"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -128,39 +141,165 @@
 
     <footer class="footer" id="common-footer"></footer>
 
+    <div class="modal" id="categoryModal">
+        <div class="modal-background"></div>
+
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" id="modalTitle">New category</p>
+                <button class="delete close-modal"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <input type="hidden" id="categoryId">
+
+                <div class="field">
+                    <label class="label">Name</label>
+                    <input class="input" id="categoryName">
+                </div>
+
+                <div class="field">
+                    <label class="label">Description</label>
+                    <textarea class="textarea" id="categoryDesc"></textarea>
+                </div>
+
+                <div class="field">
+                    <label class="label">Color</label>
+                    <span class="iconify" data-icon="mdi-palette"></span>&nbsp;<input class="input" type="color" alpha id="categoryColor">
+                </div>
+
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" id="categoryActive">
+                        Active
+                    </label>
+                    <p class="help">Inactivated categories are hidden.</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Order</label>
+                    <input class="input" type="number" id="categoryOrder">
+                    <p class="help">Order in which the categorized activities should be sorted.</p>
+                </div>
+            </section>
+
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button is-primary" onclick="saveCategory()" id="saveCategory">
+                        Save
+                    </button>
+                    <button class="button close-modal">
+                        Cancel
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
 </body>
 <script>
+
+
+    const categoriesTable = document.getElementById("categoriesTable");
+
     document.addEventListener('DOMContentLoaded', () => {
         initHTML();
         init();
     });
 
+    document
+        .querySelector(".js-modal-trigger")
+        .addEventListener("click", newCategory);
 
-    let categories;
-    const categoriesTable = document.getElementById("categoriesTable");
+
 
     async function init() {
 
         try {
-            categories = await api.getCategories();
+            const categories = await api.getCategories();
+
+            if (!categories.length) { return; }
 
             if (categories.length > 0) {
                 categoriesTable.innerHTML = "";
-                categories.forEach(category => {
-                    const row = document.createElement('tr');
-                    row.id = `${category.category_id}`;
-                    row.innerHTML = `
+                categories
+                    .sort((a, b) => a.order - b.order)
+                    .forEach(category => {
+                        const row = document.createElement('tr');
+                        row.id = `${category.category_id}`;
+                        row.innerHTML = `
                             <td>${category.name}</td>
                             <td>${category.desc || ""}</td>
+                            <td style="text-align: center">
+                                <span class="color-preview"
+                                    style="background-color: ${category.color};"
+                                    title="${category.color}">
+                                </span>
+                            </td>
                             <td style="text-align: center">${makeCheck(category.active)}</td>
                             <td style="text-align: center">${category.order}</td>
                         `;
-                    categoriesTable.appendChild(row);
-                });
+
+                        row.style.cursor = "pointer";
+                        row.addEventListener("click", () => {
+                            editCategory(category);
+                        });
+
+                        categoriesTable.appendChild(row);
+                    });
             }
+
         } catch (err) {
             showWarning("Could not get categories!", err.message)
         }
     }
+
+    function newCategory() {
+        document.getElementById("modalTitle").textContent = "New category";
+
+        document.getElementById("categoryId").value = "";
+        document.getElementById("categoryName").value = "";
+        document.getElementById("categoryDesc").value = "";
+        document.getElementById("categoryColor").value = "#ffffff";
+        document.getElementById("categoryActive").checked = true;
+        document.getElementById("categoryOrder").value = "";
+
+        openModal(document.getElementById("categoryModal"));
+    }
+
+    function editCategory(category) {
+        document.getElementById("modalTitle").textContent = "Edit category";
+
+        document.getElementById("categoryId").value = category.category_id;
+        document.getElementById("categoryName").value = category.name;
+        document.getElementById("categoryDesc").value = category.desc ?? "";
+        document.getElementById("categoryColor").value = category.color ?? "#ffffff";
+        document.getElementById("categoryActive").checked = category.active;
+        document.getElementById("categoryOrder").value = category.order;
+
+        openModal(document.getElementById("categoryModal"));
+    }
+
+    async function saveCategory() {
+        const id = document.getElementById("categoryId").value;
+
+        const category = {
+            name: document.getElementById("categoryName").value,
+            desc: document.getElementById("categoryDesc").value,
+            color: document.getElementById("categoryColor").value,
+            active: document.getElementById("categoryActive").checked,
+            order: Number(document.getElementById("categoryOrder").value)
+        };
+
+        if (id) {
+            await api.updateCategory(id, category);
+        } else {
+            await api.createCategory(category);
+        }
+
+        closeModal(document.getElementById("categoryModal"));
+        await init();
+    }
+
 
 </script>
