@@ -22,4 +22,7 @@ router.use("/api/programday", programday);
 import categories from "./activitycategories.js";
 router.use("/api/categories", categories);
 
+import tags from "./activitytags.js";
+router.use("/api/tags", tags);
+
 export default router;

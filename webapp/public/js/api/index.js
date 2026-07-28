@@ -6,6 +6,8 @@ import * as me from "./me.js";
 import * as history from "./history.js";
 import * as programDay from "./programDay.js";
 import * as activities from "./activities.js";
+import * as activityCategories from "./activityCategories.js";
+import * as activityTags from "./activityTags.js";
 
 window.api = {
     ...auth,
@@ -16,4 +18,6 @@ window.api = {
     ...history,
     ...programDay,
     ...activities,
+    ...activityCategories,
+    ...activityTags
 };

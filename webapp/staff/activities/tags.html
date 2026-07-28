@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Activity tags | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/modal.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+
+</head>
+
+<style>
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .color-preview {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid grey;
+        vertical-align: middle;
+    }
+
+    input[type="color"] {
+        width: 80px;
+        height: 30px;
+        padding: 0;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: pointer;
+        background: transparent;
+        overflow: hidden;
+    }
+</style>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <section class="section is-fullheight">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="/activities/" aria-current="page">Activities</a></li>
+                    <li class="is-active"><a href="/activities/tags.html" aria-current="page">Tags</a></li>
+                </ul>
+            </nav>
+
+            <div class="block">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">View all activity tags</h1>
+                <!-- <button class="button js-modal-trigger" data-target="modal-create-group">
+                    <span class="iconify" data-icon="mdi-plus"></span>&nbsp;Create new group
+                </button> -->
+            </div>
+
+            <div class="columns">
+
+                <div class="column is-narrow">
+                    <aside class="menu">
+
+                        <!-- <p class="menu-label">Search</p>
+                        <ul class="menu-list">
+                            <li>
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="text" placeholder="Search...">
+                                        <span class="icon is-left">
+                                            <span class="iconify" data-icon="mdi-search"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul> -->
+
+                        <!-- <p class="menu-label">Actions</p> -->
+                        <ul class="menu-list">
+                            <li>
+                                <button class="button js-modal-trigger" data-target="tagModal">
+                                    <span class="iconify" data-icon="mdi-add"></span>&nbsp; New tag
+                                </button>
+                            </li>
+                        </ul>
+
+                        <p class="menu-label">Navigation</p>
+                        <ul class="menu-list">
+                            <li><a href="./index.html">Activities list</a></li>
+                            <li><a href="./categories.html">Categories</a></li>
+                            <li><a href="./tags.html">Tags</a></li>
+                        </ul>
+
+                    </aside>
+
+                </div>
+
+                <div class="column">
+
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th class="is-narrow" style="text-align: center">Color</th>
+                                    <th class="is-narrow" style="text-align: center">Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tagsTable">
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">
+                                        <i>There are no tags...</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer" id="common-footer"></footer>
+
+    <div class="modal" id="tagModal">
+        <div class="modal-background"></div>
+
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" id="modalTitle">New tag</p>
+                <button class="delete close-modal"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <input type="hidden" id="tagId">
+
+                <div class="field">
+                    <label class="label">Name</label>
+                    <input class="input" id="tagName">
+                </div>
+
+                <div class="field">
+                    <label class="label">Description</label>
+                    <textarea class="textarea" id="tagDesc"></textarea>
+                </div>
+
+                <div class="field">
+                    <label class="label">Color</label>
+                    <span class="iconify" data-icon="mdi-palette"></span>&nbsp;<input class="input" type="color" alpha id="tagColor">
+                </div>
+
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" id="tagActive">
+                        Active
+                    </label>
+                    <p class="help">Inactivated tags are hidden.</p>
+                </div>
+            </section>
+
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button is-primary" onclick="saveTag()" id="saveTag">
+                        Save
+                    </button>
+                    <button class="button close-modal">
+                        Cancel
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</body>
+<script>
+
+
+    const tagsTable = document.getElementById("tagsTable");
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+        init();
+    });
+
+    document
+        .querySelector(".js-modal-trigger")
+        .addEventListener("click", newTag);
+
+
+
+    async function init() {
+
+        try {
+            const tags = await api.getTags();
+
+            if (!tags.length) { return; }
+
+            if (tags.length > 0) {
+                tagsTable.innerHTML = "";
+                tags
+                    .forEach(tag => {
+                        const row = document.createElement('tr');
+                        row.id = `${tag.tag_id}`;
+                        row.innerHTML = `
+                            <td>${tag.name}</td>
+                            <td>${tag.desc || ""}</td>
+                            <td style="text-align: center">
+                                <span class="color-preview"
+                                    style="background-color: ${tag.color};"
+                                    title="${tag.color}">
+                                </span>
+                            </td>
+                            <td style="text-align: center">${makeCheck(tag.active)}</td>
+                        `;
+
+                        row.style.cursor = "pointer";
+                        row.addEventListener("click", () => {
+                            editTag(tag);
+                        });
+
+                        tagsTable.appendChild(row);
+                    });
+            }
+
+        } catch (err) {
+            showWarning("Could not get tags!", err.message)
+        }
+    }
+
+    function newTag() {
+        document.getElementById("modalTitle").textContent = "New Tag";
+
+        document.getElementById("tagId").value = "";
+        document.getElementById("tagName").value = "";
+        document.getElementById("tagDesc").value = "";
+        document.getElementById("tagColor").value = "#ffffff";
+        document.getElementById("tagActive").checked = true;
+
+        openModal(document.getElementById("tagModal"));
+    }
+
+    function editTag(tag) {
+        document.getElementById("modalTitle").textContent = "Edit tag";
+
+        document.getElementById("tagId").value = tag.tag_id;
+        document.getElementById("tagName").value = tag.name;
+        document.getElementById("tagDesc").value = tag.desc ?? "";
+        document.getElementById("tagColor").value = tag.color ?? "#ffffff";
+        document.getElementById("tagActive").checked = tag.active;
+
+        openModal(document.getElementById("tagModal"));
+    }
+
+    async function saveTag() {
+        const id = document.getElementById("tagId").value;
+
+        const tag = {
+            name: document.getElementById("tagName").value,
+            desc: document.getElementById("tagDesc").value,
+            color: document.getElementById("tagColor").value,
+            active: document.getElementById("tagActive").checked,
+        };
+
+        if (id) {
+            await api.updateTag(id, tag);
+        } else {
+            await api.createTag(tag);
+        }
+
+        closeModal(document.getElementById("tagModal"));
+        await init();
+    }
+
+
+</script>
