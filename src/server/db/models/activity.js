@@ -10,6 +10,7 @@ export default (sequelize) =>
             tag_id: { type: DataTypes.INTEGER, allowNull: true },
             title: { type: DataTypes.STRING, allowNull: false },
             subtitle: { type: DataTypes.STRING },
+            order: { type: DataTypes.INTEGER },
             desc_short: { type: DataTypes.STRING },
             desc_guest: { type: DataTypes.STRING },
             desc_staff: { type: DataTypes.STRING },

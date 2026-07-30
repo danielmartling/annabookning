@@ -19,10 +19,13 @@ router.use("/api/me", me);
 import programday from "./programday.js";
 router.use("/api/programday", programday);
 
+import activities from "./activities.js";
+router.use("/api/activities/", activities)
+
 import categories from "./activitycategories.js";
-router.use("/api/categories", categories);
+router.use("/api/activities/categories", categories);
 
 import tags from "./activitytags.js";
-router.use("/api/tags", tags);
+router.use("/api/activities/tags", tags);
 
 export default router;

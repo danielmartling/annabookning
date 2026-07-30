@@ -1,6 +1,6 @@
 export async function getTags() {
     try {
-        const response = await fetch('/api/tags');
+        const response = await fetch('/api/activities/tags');
         if (!response.ok) throw new Error("Request failed");
         const tags = await response.json();
         return tags;
@@ -11,7 +11,7 @@ export async function getTags() {
 
 export async function createTag(tag) {
     try {
-        const response = await fetch("/api/tags", {
+        const response = await fetch("/api/activities/tags", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -40,7 +40,7 @@ export async function createTag(tag) {
 }
 
 export async function updateTag(id, tag) {
-    const response = await fetch(`/api/tags/${id}`, {
+    const response = await fetch(`/api/activities/tags/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

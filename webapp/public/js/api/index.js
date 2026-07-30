@@ -1,3 +1,6 @@
+// /webapp/public/js/api/index.js
+
+
 import * as auth from "./auth.js";
 import * as groups from "./groups.js";
 import * as subgroups from "./subgroups.js";

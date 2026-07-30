@@ -1,6 +1,6 @@
 export async function getCategories() {
     try {
-        const response = await fetch('/api/categories');
+        const response = await fetch('/api/activities/categories');
         if (!response.ok) throw new Error("Request failed");
         const categories = await response.json();
         return categories;
@@ -11,7 +11,7 @@ export async function getCategories() {
 
 export async function createCategory(category) {
     try {
-        const response = await fetch("/api/categories", {
+        const response = await fetch("/api/activities/categories", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export async function createCategory(category) {
 }
 
 export async function updateCategory(id, category) {
-    const response = await fetch(`/api/categories/${id}`, {
+    const response = await fetch(`/api/activities/categories/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

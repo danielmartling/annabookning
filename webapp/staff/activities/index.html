@@ -41,21 +41,15 @@
             <div class="block">
                 <div class="container" id="notification-container"></div>
                 <h1 id="pagetitle" class="title">View all activities</h1>
-                <!-- <button class="button js-modal-trigger" data-target="modal-create-group">
-                    <span class="iconify" data-icon="mdi-plus"></span>&nbsp;Create new group
-                </button> -->
             </div>
 
             <div class="columns">
 
                 <div class="column is-narrow">
-
-
-
                     <aside class="menu">
                         <ul class="menu-list">
                             <li>
-                                <label class="button">
+                                <label class="button js-modal-trigger" data-target="activityModal">
                                     <span class="iconify" data-icon="mdi-add"></span>&nbsp; New activity
                                 </label>
                             </li>
@@ -78,14 +72,13 @@
                             <li>
                                 <a">Categories</a>
                                     <ul>
-                                        <li><label><input type="checkbox" checked> Guided activities</label></li>
-                                        <li><label><input type="checkbox" checked> Activity trails</label></li>
-                                        <li><label><input type="checkbox" checked> Activity sites</label></li>
+                                        <li><label><input type="checkbox" checked> Todo...</label></li>
                                     </ul>
                             </li>
                             <li>
                                 <a">Tags</a>
                                     <ul>
+                                        <li><label><input type="checkbox" checked> Todo...</label></li>
                                         <li><label><input type="checkbox" checked> Program</label></li>
                                         <li><label><input type="checkbox" checked> Fladan</label></li>
                                         <li><label><input type="checkbox" checked> Distriktsläger</label></li>
@@ -107,21 +100,20 @@
                 <div class="column">
 
                     <div class="table-container">
-                        <table class="table is-striped is-hoverable is-fullwidth">
+                        <table id="activitiesTable" class="table is-striped is-hoverable is-fullwidth">
                             <thead>
                                 <tr>
+                                    <th class="is-narrow"></th>
                                     <th>Title</th>
                                     <th>Subtitle</th>
-                                    <th class="is-narrow">Category</th>
                                     <th class="is-narrow">Tag</th>
                                 </tr>
                             </thead>
-                            <tbody id="activitiesTable"></tbody>
-                            <tfoot>
+                            <!-- <tfoot>
                                 <tr>
                                     <td colspan="3"></td>
                                 </tr>
-                            </tfoot>
+                            </tfoot> -->
                         </table>
                     </div>
                 </div>
@@ -135,6 +127,91 @@
 
     <footer class="footer" id="common-footer"></footer>
 
+    <div class="modal" id="activityModal">
+        <div class="modal-background"></div>
+
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" id="modalTitle">New category</p>
+                <button class="delete close-modal"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <form id="form-create-activity">
+                    <input type="hidden" id="activityId">
+
+                    <!-- Title -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Title*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" name="title" id="activityTitle" placeholder="Name">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Category*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="select">
+                                    <select id="categorySelect"></select>
+                                </div>
+                                <p class="help">Used to sort activities.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Tag</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="select">
+                                    <select id="tagSelect"></select>
+                                </div>
+                                <p class="help">Used to create schedule views.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label"></label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p>More fields will be available in the activity view page.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button is-primary" onclick="saveActivity()" id="saveCategory">
+                        Save
+                    </button>
+                    <button class="button close-modal">
+                        Cancel
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -142,39 +219,114 @@
         init();
     });
 
-
-    let activities;
-    activitiesTable = document.getElementById("activitiesTable");
+    const activitiesTable = document.getElementById("activitiesTable");
+    const activityModal = document.getElementById("activityModal")
 
     async function init() {
         try {
-            // groups = await api.getAllGroups();
+            const categories = await api.getActivitiesByCategory();
+            const tags = await api.getTags();
 
+            const categorySelect = document.getElementById("categorySelect");
+            const tagSelect = document.getElementById("tagSelect");
 
-            // groups.forEach(group => {
-            //     const row = document.createElement('tr');
-            //     row.id = `${group.group_id}`;
-            //     row.style.cursor = "pointer";
-            //     row.innerHTML = `
-            //     <td>${group.booking_number}</td>
-            //     <th>${group.name}</th>
-            //     <td>${renderParticipants(group.participants, group.leaders)}</td>
-            //     <td>${makeCheck(group.on_island)}</td>
-            //     <td>${group.arrival_date}</td>
-            //     <td>${group.departure_date}</td>
-            //     <td>${makeTag(group.type)}</td>
-            //     <td>${makeTag(group.accomodation)}</td>
-            // `;
-            //     row.addEventListener("click", (e) => {
-            //         window.location = `./view.html?group_id=${row.id}`;
-            //     });
-            //     groupsTable.appendChild(row);
-            // });
+            categories.forEach(category => {
+                renderCategoryHead(category);
+                renderActivities(category);
+                categorySelect.innerHTML += `<option value="${category.category_id}">${category.name}</option>`;
+            });
+
+            tagSelect.innerHTML = `<option value=null>none</option>`;
+            tags.forEach(tag => {
+                tagSelect.innerHTML += `<option value="${tag.tag_id}">${tag.name}</option>`;
+            })
         } catch (err) {
-            showWarning("Could not get activities!", err)
+            showWarning("Could not get activities!", err.message)
+            console.log(err)
         }
+    }
+
+    function renderCategoryHead(category) {
+        const categoryHead = document.createElement("thead");
+        categoryHead.id = `row-${category.category_id}`;
+        categoryHead.style.backgroundColor = category.color;
+        categoryHead.innerHTML = `
+            <tr>
+                <td style="vertical-align: middle" id="chevron-${category.category_id}">
+                    <span class="iconify" data-icon="mdi-chevron-down" style="font-size: 32px;">></span>
+                </td>
+                <th colspan="3">
+                    <div class="tag is-large is-white">
+                        ${category.name}
+                    </div>
+                </th>
+            </tr>
+        `;
+        categoryHead.addEventListener("click", (e) => {
+            const categoryBody = document.getElementById(`body-${category.category_id}`);
+            const categoryChevron = document.getElementById(`chevron-${category.category_id}`);
+
+            if (categoryBody.style.display === "") {
+                categoryBody.style.display = "none";
+                categoryChevron.innerHTML = `<span class="iconify" data-icon="mdi-chevron-right" style="font-size: 32px;">></span>`;
+            } else {
+                categoryBody.style.display = "";
+                categoryChevron.innerHTML = `<span class="iconify" data-icon="mdi-chevron-down" style="font-size: 32px;">></span>`;
+            }
+        });
+        categoryHead.style.cursor = "pointer";
+        activitiesTable.appendChild(categoryHead);
+    }
+
+    function renderActivities(category) {
+        const categoryBody = document.createElement("tbody");
+        categoryBody.id = `body-${category.category_id}`;
+        if (category.activities.length > 0) {
+            category.activities.forEach(activity => {
+                const activityRow = document.createElement("tr");
+                activityRow.innerHTML = renderActivity(activity);
+                activityRow.addEventListener("click", (e) => {
+                    window.location = `./view.html?activity_id=${activity.activity_id}`;
+                });
+                activityRow.style.cursor = "pointer";
+                categoryBody.appendChild(activityRow);
+            })
+        } else {
+            categoryBody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <i>No activities...</i>
+                    </td>
+                </tr>
+            `;
+        }
+        activitiesTable.appendChild(categoryBody);
+    }
+
+    function renderActivity(activity) {
+        return `
+            <tr>
+                <td></td>
+                <td>${activity.title}</td>
+                <td>${activity.subtitle || ""}</td>
+                <td>${activity.tag ? makeTag(activity.tag.name) : ""}</td>
+            </tr>
+        `;
+    }
+
+    async function saveActivity() {
+
+        const activity = {
+            title: document.getElementById("activityTitle").value,
+            category_id: categorySelect.value,
+            tag_id: tagSelect.value
+        };
+        console.log(activity)
+        await api.createActivity(activity);
 
 
+        closeModal(document.getElementById("activityModal"));
+        await init();
     }
 
 </script>

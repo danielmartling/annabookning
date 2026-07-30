@@ -32,23 +32,23 @@ import createActivityTag from "./activitytag.js";
 export const ActivityTag = createActivityTag(sequelize);
 
 ActivityCategory.hasMany(Activity, {
-    foreignKey: "activity_id",
+    foreignKey: "category_id",
     as: "activities",
 });
 
 Activity.belongsTo(ActivityCategory, {
-    foreignKey: "activity_id",
-    as: "activity_category",
+    foreignKey: "category_id",
+    as: "category",
 });
 
 ActivityTag.hasMany(Activity, {
-    foreignKey: "activity_id",
+    foreignKey: "tag_id",
     as: "activities",
 });
 
 Activity.belongsTo(ActivityTag, {
-    foreignKey: "activity_id",
-    as: "activity_tag",
+    foreignKey: "tag_id",
+    as: "tag",
 });
 
 
