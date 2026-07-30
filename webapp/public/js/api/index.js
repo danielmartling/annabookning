@@ -1,5 +1,38 @@
 // /webapp/public/js/api/index.js
 
+// Template method for api fetches.
+// url: eg. /api/users/
+// options: eg. {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(user)
+// }
+export async function apiFetch(url, options = {}) {
+    const response = await fetch(url, options);
+
+    let data;
+    try {
+        data = await response.json();
+    } catch {
+        data = null;
+    }
+
+    if (!response.ok) {
+        const error = new Error(
+            data?.message ||
+            `Request failed (${response.status})`
+        );
+
+        error.status = response.status;
+        error.code = data?.code;
+        error.field = data?.field;
+        error.url = url;
+        
+        throw error;
+    }
+
+    return data;
+}
 
 import * as auth from "./auth.js";
 import * as groups from "./groups.js";
@@ -13,6 +46,7 @@ import * as activityCategories from "./activityCategories.js";
 import * as activityTags from "./activityTags.js";
 
 window.api = {
+    // apiFetch,
     ...auth,
     ...groups,
     ...subgroups,

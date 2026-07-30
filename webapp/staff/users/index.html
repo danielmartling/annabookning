@@ -346,15 +346,15 @@
     // Create user form submit handler
     const form = document.getElementById("form-create-user");
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const data = new FormData(form);
         const permission = data.get("permission");
 
         const user = {
-            username: data.get("username"),
-            displayname: data.get("displayname"),
+            username: data.get("username").trim().toLoweCase(),
+            displayname: data.get("displayname").trim(),
             phone: data.get("phone"),
             email: data.get("email"),
             active: data.get("active") === "true",
@@ -363,12 +363,17 @@
             password: data.get("password"),
             repeatpassword: data.get("repeatpassword")
         };
-        api.createUser(user);
 
-        form.reset();
-
-        const modal = form.closest(".modal");
-        modal.classList.remove("is-active");
+        try {
+            await api.createUser(user);
+            form.reset();
+            const modal = form.closest(".modal");
+            modal.classList.remove("is-active");
+            showSuccess("User created.");
+        } catch (error) {
+            console.error(error);
+            showWarning(error.message);
+        }
     });
 
     const roleRadios = document.querySelectorAll('input[name="role"]');

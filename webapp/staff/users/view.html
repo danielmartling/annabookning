@@ -547,7 +547,6 @@
 
 
     async function init() {
-makeTag
         me = await api.getMe();
 
         const urlParam = new URLSearchParams(window.location.search).get("user_id");
@@ -562,7 +561,7 @@ makeTag
                 try {
                     user = await api.getUser(userId);
                 } catch (err) {
-                    showWarning("Couldn't find user!", err)
+                    showWarning("Couldn't find user! " + err)
                 }
             }
 
@@ -600,7 +599,7 @@ makeTag
                     phone: data.get("phone") === "" ? null : data.get("phone"),
                     email: data.get("email") === "" ? null : data.get("email"),
                 };
-                
+
                 try {
                     if (editingSelf) {
                         await api.updateMyInfo(user);
@@ -636,7 +635,7 @@ makeTag
                         await api.updateMyPassword(user);
                         showSuccess("Password changed!");
                     } catch (err) {
-                        showWarning("Could not change password!, err")
+                        showWarning(err.message)
                     }
                 } else {
                     const user = {
@@ -647,7 +646,7 @@ makeTag
                         await api.updateUserPassword(userId, user);
                         showSuccess("Password updated!")
                     } catch (err) {
-                        showWarning("Could not change password!, err")
+                        showWarning(err.message)
                     }
                 }
 
@@ -679,7 +678,7 @@ makeTag
                         const modal = roleForm.closest(".modal");
                         modal.classList.remove("is-active");
                     } catch (err) {
-                        showWarning("Could not update user!", err)
+                        showWarning("Could not update user! ", err)
                     }
                 }
             });
