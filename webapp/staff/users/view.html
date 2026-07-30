@@ -558,10 +558,12 @@
             } else {
                 userId = urlParam;
                 editingSelf = false;
-                try {
-                    user = await api.getUser(userId);
-                } catch (err) {
-                    showWarning("Couldn't find user! " + err)
+
+                user = await api.getUser(userId);
+
+                if (!user) {
+                    showWarning("Couldn't find user!");
+                    return;
                 }
             }
 
@@ -581,8 +583,7 @@
                 showWarning("You may not change certain properties of yourself.")
                 roleButton.style.display = "none";
             }
-            // editButton.onclick = populateForm(editForm, user);
-            // roleButton.onclick = populateForm(roleForm, user);
+
             editButton.onclick = () => populateForm(editForm, user);
             roleButton.onclick = () => populateForm(roleForm, user);
             adaptForms(editingSelf);

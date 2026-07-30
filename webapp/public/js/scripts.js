@@ -72,10 +72,12 @@ function initHTML() {
     });
 }
 
-function showWarning(message) {
+function showWarning(message, error = null) {
     const box = document.getElementById('warning-box');
     const msg = document.getElementById('warning-message');
-    msg.innerHTML = message;
+    msg.innerHTML = `
+        ${message}
+        ${error ? "<br>" + error : ""}`;
     box.classList.remove('is-hidden');
 }
 
@@ -83,7 +85,7 @@ function hideWarning() {
     document.getElementById('warning-box').classList.add('is-hidden');
 }
 
-function showSuccess(message) {
+function showSuccess(messageshowWa) {
     const box = document.getElementById('success-box');
     const msg = document.getElementById('success-message');
     box.classList.remove('is-hidden');
