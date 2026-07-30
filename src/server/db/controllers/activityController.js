@@ -15,9 +15,6 @@ export async function getActivities(req, res) {
 // GET /activities/bycategory
 export async function getActivitiesByCategory(req, res) {
     const activities = await ActivityCategory.findAll({
-        order: [
-            ['order', 'ASC'],
-        ],
         include: [
             {
                 model: Activity,
@@ -37,6 +34,10 @@ export async function getActivitiesByCategory(req, res) {
                 ]
             }
         ],
+        order: [
+            ['order', 'ASC'],
+            [{ model: Activity, as: 'activities' }, 'order', 'ASC']
+        ],
     });
 
     res.json(activities);
@@ -47,14 +48,18 @@ export async function getActivitiesByCategory(req, res) {
 export async function createActivity(req, res) {
     const {
         title,
+        subtitle,
         category_id,
-        tag_id
+        tag_id,
+        order
     } = req.body;
     
     const activity = await Activity.create({
-        title: title,
-        category_id: category_id,
-        tag_id: tag_id
+        title,
+        subtitle,
+        category_id,
+        tag_id,
+        order
     });
     res.json(activity);
 

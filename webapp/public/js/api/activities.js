@@ -33,6 +33,8 @@ export async function createActivity(activity) {
                 category_id: activity.category_id.trim(),
                 tag_id: activity.tag_id.trim(),
                 title: activity.title,
+                subtitle: activity.subtitle,
+                order: activity.order,
                 // subtitle: activity.subtitle.trim(),
                 // desc_short: activity.desc_short.trim(),
                 // desc_staff: activity.desc_staff.trim(),
