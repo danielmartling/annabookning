@@ -85,7 +85,7 @@ function hideWarning() {
     document.getElementById('warning-box').classList.add('is-hidden');
 }
 
-function showSuccess(messageshowWa) {
+function showSuccess(message) {
     const box = document.getElementById('success-box');
     const msg = document.getElementById('success-message');
     box.classList.remove('is-hidden');

@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { getAllUsers, getUser, createUser, updateUserInfo, updateUserPassword, updateUserRoles } from "../controllers/userController.js";
+import * as user from "../controllers/userController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
@@ -9,7 +9,7 @@ router.get(
     requireLogin, 
     requireRoles(["staff"]), 
     requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]), 
-    getAllUsers
+    user.getAllUsers
 );
 
 router.get(
@@ -17,7 +17,7 @@ router.get(
     requireLogin, 
     requireRoles(["staff"]), 
     requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]), 
-    getUser
+    user.getUser
 );
 
 router.post(
@@ -25,28 +25,28 @@ router.post(
     requireLogin,
     requireRoles(["staff"]),
     requirePermission(["program-booker", "program-admin", "system-admin"]),
-    createUser
+    user.createUser
 )
 
 router.put(
     "/info/:id",
     requireRoles(["staff"]),
     requirePermission(["program-booker", "program-admin", "system-admin"]),
-    updateUserInfo
+    user.updateUserInfo
 )
 
 router.put(
     "/password/:id",
     requireRoles(["staff"]),
     requirePermission(["program-booker", "program-admin", "system-admin"]),
-    updateUserPassword
+    user.updateUserPassword
 )
 
 router.put(
     "/roles/:id",
     requireRoles(["staff"]),
     requirePermission(["program-booker", "program-admin", "system-admin"]),
-    updateUserRoles
+    user.updateUserRoles
 )
 
 

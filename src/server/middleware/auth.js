@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { User, History } from "../db/models/index.js";
 
 
-async function loginHandler(req, res) {
+export async function loginHandler(req, res) {
     try {
         const { username, password } = req.body;
 
@@ -42,21 +42,21 @@ async function loginHandler(req, res) {
     }
 };
 
-async function logoutHandler(req, res) {
+export async function logoutHandler(req, res) {
     req.session.destroy(() => {
         res.clearCookie("connect.sid");
         res.json({ success: true });
     });
 };
 
-function requireLogin(req, res, next) {
+export function requireLogin(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/login.html?message=notloggedin");
     }
     next();
 }
 
-function requireRoles(roles) {
+export function requireRoles(roles) {
     return (req, res, next) => {
         if (!req.session.user) {
             return res.status(401).json({ error: 'Not logged in' });
@@ -72,7 +72,7 @@ function requireRoles(roles) {
     }
 }
 
-function requirePermission(permissions) {
+export function requirePermission(permissions) {
     return (req, res, next) => {
         if (!req.session.user) {
             return res.status(401).json({ error: 'Not logged in' });
@@ -87,5 +87,3 @@ function requirePermission(permissions) {
         next();
     }
 }
-
-export { loginHandler, logoutHandler, requireLogin, requireRoles, requirePermission }

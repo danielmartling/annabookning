@@ -353,7 +353,7 @@
         const permission = data.get("permission");
 
         const user = {
-            username: data.get("username").trim().toLoweCase(),
+            username: data.get("username").trim().toLowerCase(),
             displayname: data.get("displayname").trim(),
             phone: data.get("phone"),
             email: data.get("email"),

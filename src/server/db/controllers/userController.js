@@ -1,30 +1,36 @@
 // src/server/db/controllers/userController.js
 
-import { User, History } from "../models/index.js";
+import { User } from "../models/index.js";
 import bcrypt from "bcrypt";
 
-import { UniqueConstraintError } from "sequelize";
-
+import { userError } from "../errorHandlers/users.js";
+import { findUser, userUpdated, userCreated } from "../helpers/users.js";
+import { log } from "../helpers/history.js";
+import * as validator from "../validators/users.js";
 
 // GET /users
 export async function getAllUsers(req, res) {
     try {
         const users = await User.findAll({
+            attributes: [
+                "user_id",
+                "username",
+                "displayname",
+                "email",
+                "phone",
+                "role",
+                "permission",
+                "active"
+            ],
             order: [
                 ['role', 'ASC'],
                 ['active', 'DESC'],
                 ['username', 'ASC'],
             ],
         });
-
         return res.json(users);
     } catch (err) {
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
 
@@ -32,15 +38,10 @@ export async function getAllUsers(req, res) {
 // GET /users/:id
 export async function getUser(req, res) {
     try {
-        const user = await User.findByPk(req.params.id);
+        const user = await findUser(req.params.id, res);
         return res.json(user);
     } catch (err) {
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
 
@@ -60,25 +61,14 @@ export async function createUser(req, res) {
             phone
         } = req.body;
 
-        if (!username || /\s/.test(username)) {
-            return res.status(400).json({
-                code: "INVALID_USERNAME",
-                message: "Username may not contain spaces."
-            });
+        const usernameError = validator.username(username);
+        if (usernameError) {
+            return res.status(400).json(usernameError);
         }
 
-        if (!password || password.length < 4) {
-            return res.status(400).json({
-                code: "PASSWORD_TOO_SHORT",
-                message: "Password must be at least 4 characters."
-            });
-        }
-
-        if (password !== repeatpassword) {
-            return res.status(400).json({
-                code: "PASSWORD_MISMATCH",
-                message: "Passwords do not match."
-            });
+        const passwordError = validator.password(password, repeatpassword);
+        if (passwordError) {
+            return res.status(400).json(passwordError);
         }
 
         const password_hash = await bcrypt.hash(password, 12);
@@ -94,29 +84,12 @@ export async function createUser(req, res) {
             phone
         });
 
-        await History.create({ table_name: "users", record_id: user.user_id, action: "create", user_id: req.session.user.id });
+        await log(req, "users", user.user_id, "create");
 
-        return res.status(201).json({
-            user_id: user.user_id,
-            username: user.username
-        });
+        return userCreated(res, user);
 
     } catch (err) {
-
-        if (err instanceof UniqueConstraintError) {
-            return res.status(409).json({
-                code: "USERNAME_EXISTS",
-                field: "username",
-                message: "Username already exists."
-            });
-        }
-
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
 
@@ -131,20 +104,12 @@ export async function updateUserInfo(req, res) {
             phone
         } = req.body;
 
-        const user = await User.findByPk(req.params.id);
+        const user = await findUser(req.params.id, res);
+        if (!user) return;
 
-        if (!user) {
-            return res.status(404).json({
-                code: "USER_NOT_FOUND",
-                message: "User not found."
-            });
-        }
-
-        if (!username || /\s/.test(username)) {
-            return res.status(400).json({
-                code: "INVALID_USERNAME",
-                message: "Username may not contain spaces."
-            });
+        const usernameError = validator.username(username);
+        if (usernameError) {
+            return res.status(400).json(usernameError);
         }
 
         await user.update({
@@ -154,34 +119,12 @@ export async function updateUserInfo(req, res) {
             phone
         });
 
-        await History.create({ table_name: "users", record_id: user.user_id, action: "change", changes: "info", user_id: req.session.user.id });
+        await log(req, "users", user.user_id, "change", "info");
 
-        return res.status(200).json({
-            message: "User updated successfully",
-            user: {
-                user_id: user.user_id,
-                username: user.username,
-                displayname: user.displayname,
-                email: user.email,
-                phone: user.phone
-            }
-        });
+        return userUpdated(res, user);
 
     } catch (err) {
-        if (err instanceof UniqueConstraintError) {
-            return res.status(409).json({
-                code: "USERNAME_EXISTS",
-                field: "username",
-                message: "Username already exists."
-            });
-        }
-
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
 
@@ -195,14 +138,8 @@ export async function updateUserRoles(req, res) {
             permission
         } = req.body;
 
-        const user = await User.findByPk(req.params.id);
-
-        if (!user) {
-            return res.status(404).json({
-                code: "USER_NOT_FOUND",
-                message: "User not found."
-            });
-        }
+        const user = await findUser(req.params.id, res);
+        if (!user) return;
 
         await user.update({
             active,
@@ -210,23 +147,12 @@ export async function updateUserRoles(req, res) {
             permission,
         });
 
-        await History.create({ table_name: "users", record_id: user.user_id, action: "change", changes: "roles", user_id: req.session.user.id });
+        await log(req, "users", user.user_id, "change", "roles");
 
-        return res.status(200).json({
-            message: "User updated successfully",
-            user: {
-                user_id: user.user_id,
-                username: user.username
-            }
-        });
+        return userUpdated(res, user);
 
     } catch (err) {
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
 
@@ -239,27 +165,12 @@ export async function updateUserPassword(req, res) {
             repeatpassword
         } = req.body;
 
-        const user = await User.findByPk(req.params.id);
+        const user = await findUser(req.params.id, res, true);
+        if (!user) return;
 
-        if (!user) {
-            return res.status(404).json({
-                code: "USER_NOT_FOUND",
-                message: "User not found."
-            });
-        }
-
-        if (!newpassword || newpassword.length < 4) {
-            return res.status(400).json({
-                code: "PASSWORD_TOO_SHORT",
-                message: "Password must be at least 4 characters."
-            });
-        }
-
-        if (newpassword !== repeatpassword) {
-            return res.status(400).json({
-                code: "PASSWORD_MISMATCH",
-                message: "Passwords do not match."
-            });
+        const passwordError = validator.password(newpassword, repeatpassword);
+        if (passwordError) {
+            return res.status(400).json(passwordError);
         }
 
         const password_hash = await bcrypt.hash(newpassword, 12);
@@ -268,22 +179,11 @@ export async function updateUserPassword(req, res) {
             password_hash,
         });
 
-        await History.create({ table_name: "users", record_id: user.user_id, action: "change", changes: "password", user_id: req.session.user.id });
+        await log(req, "users", user.user_id, "change", "password");
 
-        return res.status(200).json({
-            message: "User updated successfully",
-            user: {
-                user_id: user.user_id,
-                username: user.username
-            }
-        });
+        return userUpdated(res, user);
 
     } catch (err) {
-        console.error(err);
-
-        return res.status(500).json({
-            code: "INTERNAL_ERROR",
-            message: "Internal server error."
-        });
+        return userError(res, err);
     }
 }
