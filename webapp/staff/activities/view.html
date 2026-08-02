@@ -55,20 +55,20 @@
                     </button>
                 </div>
                 <div class="columns">
-                    <div class="column">
+                    <div class="column is-one-third">
 
                         <article class="message is-petrol-green">
                             <div class="message-header">
-                                <p>Activity info</p>
+                                <p>System info</p>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
-                                    <div class="cell">
+                                    <div class="cell is-col-span-2">
                                         <dt>Title:</dt>
                                         <dd data-field="title" data-type="text"></dd>
                                     </div>
 
-                                    <div class="cell">
+                                    <div class="cell is-col-span-2">
                                         <dt>Subtitle:</dt>
                                         <dd data-field="subtitle" data-type="text"></dd>
                                     </div>
@@ -82,6 +82,21 @@
                                         <dt>Tag:</dt>
                                         <dd data-field="tag" data-type="tag"></dd>
                                     </div>
+
+                                    <div class="cell">
+                                        <dt>Order:</dt>
+                                        <dd data-field="order" data-type="text"></dd>
+                                    </div>
+
+                                    <div class="cell is-row-start-5">
+                                        <dt>Created at:</dt>
+                                        <dd data-field="createdAt" data-type="date"></dd>
+                                    </div>
+
+                                    <div class="cell is-row-start-5">
+                                        <dt>Last updated at:</dt>
+                                        <dd data-field="updatedAt" data-type="date"></dd>
+                                    </div>
                                 </dl>
                             </div>
                         </article>
@@ -89,43 +104,39 @@
                     <div class="column">
                         <article class="message is-petrol-green">
                             <div class="message-header">
-                                <p>System data</p>
+                                <p>About the activity</p>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
 
-                                    <div class="cell">
-                                        <dt>Active:</dt>
-                                        <dd data-field="active" data-type="check"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>Short description:</dt>
+                                        <dd data-field="desc_short" data-type="textarea"></dd>
                                     </div>
 
-                                    <div class="cell">
-                                        <dt>Role:</dt>
-                                        <dd data-field="role" data-type="tag"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>For staff:</dt>
+                                        <dd data-field="desc_staff" data-type="textarea"></dd>
                                     </div>
 
-                                    <div class="cell">
-                                        <dt>Permission:</dt>
-                                        <dd data-field="permission" data-type="tag"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>For guests:</dt>
+                                        <dd data-field="desc_guest" data-type="textarea"></dd>
                                     </div>
 
-                                    <div class="cell">
-                                        <dt>Created at:</dt>
-                                        <dd data-field="createdAt" data-type="date"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>Place:</dt>
+                                        <dd data-field="place" data-type="textarea"></dd>
                                     </div>
 
-                                    <div class="cell">
-                                        <dt>Last login:</dt>
-                                        <dd data-field="last_login" data-type="date"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>Material:</dt>
+                                        <dd data-field="material" data-type="textarea"></dd>
                                     </div>
 
-                                    <div class="cell">
-                                        <dt>Login count:</dt>
-                                        <dd data-field="login_count" data-type="text"></dd>
-                                    </div>
-                                    <div class="cell">
-                                        <dt>User ID:</dt>
-                                        <dd data-field="user_id" data-type="text"></dd>
+                                    <div class="cell is-col-span-2">
+                                        <dt>Languages:</dt>
+                                        <dd data-field="languages" data-type="textarea"></dd>
                                     </div>
                                 </dl>
                             </div>
@@ -252,7 +263,7 @@
     });
 
     let activity;
-    
+
     const pagetitle = document.getElementById("pagetitle");
 
     const editButton = document.getElementById("editButton");
@@ -262,7 +273,8 @@
         text: value => value ?? "-",
         date: value => renderDateTime(value),
         tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
-        check: value => makeCheck(value)
+        check: value => makeCheck(value),
+        textarea: value => makeTextArea(value ? value : "")
     };
 
 
@@ -270,7 +282,7 @@
 
         const urlParam = new URLSearchParams(window.location.search).get("activity_id");
         if (urlParam) {
-            activity = api.getActivity(urlParam);
+            activity = await api.getActivity(urlParam);
 
             renderActivityTable(activity);
             pagetitle.innerHTML = "View activity:&nbsp;" + activity.title;
@@ -314,7 +326,12 @@
 
     function renderActivityTable(activity) {
         document.querySelectorAll("dd[data-field]").forEach(dd => {
-            const value = activity[dd.dataset.field];
+            let value;
+            if (dd.dataset.field === "category" || dd.dataset.field === "tag") {
+                value = activity[dd.dataset.field]?.name;
+            } else {
+                value = activity[dd.dataset.field];
+            }
             const renderer = renderers[dd.dataset.type ?? "text"];
             dd.innerHTML = renderer(value);
         });

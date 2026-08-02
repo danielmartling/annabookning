@@ -47,14 +47,7 @@
 
                 <div class="column is-narrow">
                     <aside class="menu">
-                        <ul class="menu-list">
-                            <li>
-                                <label class="button js-modal-trigger" data-target="activityModal">
-                                    <span class="iconify" data-icon="mdi-add"></span>&nbsp; New activity
-                                </label>
-                            </li>
-                        </ul>
-                        <p class="menu-label">Search</p>
+                        <!-- <p class="menu-label">Search</p>
                         <ul class="menu-list">
                             <li>
                                 <div class="field">
@@ -84,13 +77,22 @@
                                         <li><label><input type="checkbox" checked> Distriktsläger</label></li>
                                     </ul>
                             </li>
-                        </ul>
+                        </ul> -->
 
                         <p class="menu-label">Navigation</p>
                         <ul class="menu-list">
                             <li><a href="./index.html">Activities list</a></li>
                             <li><a href="./categories.html">Categories</a></li>
                             <li><a href="./tags.html">Tags</a></li>
+                        </ul>
+
+                        <p class="menu-label">Actions</p>
+                        <ul class="menu-list">
+                            <li>
+                                <button class="button js-modal-trigger" data-target="activityModal">
+                                    <span class="iconify" data-icon="mdi-add"></span>&nbsp; New activity
+                                </button>
+                            </li>
                         </ul>
 
                     </aside>
@@ -106,6 +108,7 @@
                                     <th class="is-narrow"></th>
                                     <th>Title</th>
                                     <th>Subtitle</th>
+                                       <th>Short description</th>
                                     <th class="is-narrow">Tag</th>
                                 </tr>
                             </thead>
@@ -267,7 +270,6 @@
             });
 
             tagSelect.innerHTML = `<option value=null>none</option>`;
-            console.log(tags);
             tags.forEach(tag => {
                 tagSelect.innerHTML += `<option value="${tag.tag_id}">${tag.name}</option>`;
             })
@@ -286,7 +288,7 @@
                 <td style="vertical-align: middle" id="chevron-${category.category_id}">
                     <span class="iconify" data-icon="mdi-chevron-down" style="font-size: 32px;">></span>
                 </td>
-                <th colspan="3">
+                <th colspan="4">
                     <div class="tag is-large is-white">
                         ${category.name}
                     </div>
@@ -325,7 +327,7 @@
         } else {
             categoryBody.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align: center;">
+                    <td colspan="5" style="text-align: center;">
                         <i>No activities...</i>
                     </td>
                 </tr>
@@ -340,6 +342,7 @@
                 <td></td>
                 <td>${activity.title}</td>
                 <td>${activity.subtitle || ""}</td>
+                <td>${activity.desc_short || ""}</td>
                 <td>${activity.tag ? makeTag(activity.tag.name) : ""}</td>
             </tr>
         `;

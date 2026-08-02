@@ -15,7 +15,18 @@ export async function getActivities(req, res) {
 // GET /activities/:id
 export async function getActivity(req, res) {
     try {
-        const activity = await Activity.findByPk(req.params.id);
+        const activity = await Activity.findByPk(req.params.id, {
+            include: [
+                {
+                    model: ActivityCategory,
+                    as: "category"
+                },
+                {
+                    model: ActivityTag,
+                    as: "tag"
+                },
+            ]
+        });
         return res.json(activity);
     } catch (err) {
         console.error("Get activity error:", err);
