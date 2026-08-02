@@ -12,6 +12,21 @@ export async function getActivities(req, res) {
     res.json(activities);
 }
 
+// GET /activities/:id
+export async function getActivity(req, res) {
+    try {
+        const activity = await Activity.findByPk(req.params.id);
+        return res.json(activity);
+    } catch (err) {
+        console.error("Get activity error:", err);
+
+        return res.status(404).json({
+            message: "Failed to get activity",
+            error: err.message
+        });
+    }
+}
+
 // GET /activities/bycategory
 export async function getActivitiesByCategory(req, res) {
     const activities = await ActivityCategory.findAll({
@@ -19,14 +34,7 @@ export async function getActivitiesByCategory(req, res) {
             {
                 model: Activity,
                 as: "activities",
-                order: [
-                    ['order', 'ASC'],
-                ],
                 include: [
-                    {
-                        model: ActivityCategory,
-                        as: "category",
-                    },
                     {
                         model: ActivityTag,
                         as: "tag",
@@ -53,7 +61,7 @@ export async function createActivity(req, res) {
         tag_id,
         order
     } = req.body;
-    
+
     const activity = await Activity.create({
         title,
         subtitle,

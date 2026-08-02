@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang='en' data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/icons/hollyrosa.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View activity | Anna Bookning</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/modal.js"></script>
+    <script type="module" src="/js/api/index.js"></script>
+
+
+</head>
+
+<style>
+    dt {
+        font-weight: bold;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+</style>
+
+<body class="has-navbar-fixed-top">
+    <nav id="common-staff-navbar" class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    </nav>
+
+    <div class="container">
+        <section class="section is-fullheight">
+
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class=""><a href="/activities/" aria-current="page">Activities</a></li>
+                    <li class="is-active"><a href="/activities/view.html" aria-current="page">View activity</a></li>
+                </ul>
+            </nav>
+
+            <div class="block">
+                <div class="container" id="notification-container"></div>
+                <h1 id="pagetitle" class="title">View activity</h1>
+                <!-- <h3 class="subtitle"></h3> -->
+
+                <div class="buttons">
+                    <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-activity">
+                        <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity
+                    </button>
+                </div>
+                <div class="columns">
+                    <div class="column">
+
+                        <article class="message is-petrol-green">
+                            <div class="message-header">
+                                <p>Activity info</p>
+                            </div>
+                            <div class="message-body">
+                                <dl class="grid">
+                                    <div class="cell">
+                                        <dt>Title:</dt>
+                                        <dd data-field="title" data-type="text"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Subtitle:</dt>
+                                        <dd data-field="subtitle" data-type="text"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Category:</dt>
+                                        <dd data-field="category" data-type="tag"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Tag:</dt>
+                                        <dd data-field="tag" data-type="tag"></dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="column">
+                        <article class="message is-petrol-green">
+                            <div class="message-header">
+                                <p>System data</p>
+                            </div>
+                            <div class="message-body">
+                                <dl class="grid">
+
+                                    <div class="cell">
+                                        <dt>Active:</dt>
+                                        <dd data-field="active" data-type="check"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Role:</dt>
+                                        <dd data-field="role" data-type="tag"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Permission:</dt>
+                                        <dd data-field="permission" data-type="tag"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Created at:</dt>
+                                        <dd data-field="createdAt" data-type="date"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Last login:</dt>
+                                        <dd data-field="last_login" data-type="date"></dd>
+                                    </div>
+
+                                    <div class="cell">
+                                        <dt>Login count:</dt>
+                                        <dd data-field="login_count" data-type="text"></dd>
+                                    </div>
+                                    <div class="cell">
+                                        <dt>User ID:</dt>
+                                        <dd data-field="user_id" data-type="text"></dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <footer class="footer" id="common-footer"></footer>
+
+    <!-- Edit ctivity modal -->
+    <div id="modal-edit-activity" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-edit-activity">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity
+                    </h3>
+
+                    <!-- Username -->
+                    <div class="field is-horizontal" id="usernameField">
+                        <div class="field-label">
+                            <label class="label">Username*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input " type="text" name="username" placeholder="Username" required>
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-account"></span>
+                                    </span>
+                                </div>
+                                <p class="help">Used to log in. 3-50 letters, lower case, no blank spaces.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Displayname -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Displayname*</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input " type="text" name="displayname" placeholder="Displayname"
+                                        required>
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-account"></span>
+                                    </span>
+                                </div>
+                                <p class="help">User friendly name. Preferably full name of user.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Contact info</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <p class="control is-expanded has-icons-left">
+                                        <input class="input" type="tel" name="phone"
+                                            placeholder="Phone number (+46...)">
+                                        <span class="icon is-small is-left">
+                                            <span class="iconify" data-icon="mdi-phone"></span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left">
+                                    <input class="input" type="email" name="email" placeholder="Email">
+                                    <span class="icon is-small is-left">
+                                        <span class="iconify" data-icon="mdi-email"></span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Update user
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initHTML();
+        init();
+    });
+
+    let activity;
+    
+    const pagetitle = document.getElementById("pagetitle");
+
+    const editButton = document.getElementById("editButton");
+    const editForm = document.getElementById("form-edit-activity");
+
+    const renderers = {
+        text: value => value ?? "-",
+        date: value => renderDateTime(value),
+        tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
+        check: value => makeCheck(value)
+    };
+
+
+    async function init() {
+
+        const urlParam = new URLSearchParams(window.location.search).get("activity_id");
+        if (urlParam) {
+            activity = api.getActivity(urlParam);
+
+            renderActivityTable(activity);
+            pagetitle.innerHTML = "View activity:&nbsp;" + activity.title;
+
+            editButton.onclick = () => populateForm(editForm, activity);
+
+            // Create form submit handlers
+            editForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const data = new FormData(editForm);
+
+                const user = {
+                    username: data.get("username"),
+                    displayname: data.get("displayname"),
+                    phone: data.get("phone") === "" ? null : data.get("phone"),
+                    email: data.get("email") === "" ? null : data.get("email"),
+                };
+
+                try {
+                    if (editingSelf) {
+                        await api.updateMyInfo(user);
+                    } else {
+                        await api.updateUserInfo(userId, user);
+                    }
+                    showSuccess("User updated!");
+                    editForm.reset();
+                    init();
+                } catch (err) {
+                    showWarning("Could not update user!", err)
+                }
+
+
+
+
+                const modal = editForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+        }
+    }
+
+    function renderActivityTable(activity) {
+        document.querySelectorAll("dd[data-field]").forEach(dd => {
+            const value = activity[dd.dataset.field];
+            const renderer = renderers[dd.dataset.type ?? "text"];
+            dd.innerHTML = renderer(value);
+        });
+    }
+
+    function populateForm(form, data) {
+        for (const [key, value] of Object.entries(data)) {
+            const field = form.elements[key];
+            if (!field) continue;
+
+            if (field instanceof RadioNodeList) {
+                field.value = String(value);
+            } else {
+                field.value = value ?? "";
+            }
+        }
+    }
+
+
+</script>

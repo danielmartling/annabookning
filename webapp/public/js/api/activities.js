@@ -20,6 +20,16 @@ export async function getActivitiesByCategory() {
     }
 }
 
+export async function getActivity(activityId) {
+    try {
+        const response = await fetch(`/api/activities/${activityId}`);
+        if (!response.ok) throw new Error("Request failed");
+        const activity = await response.json();
+        return activity;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 export async function createActivity(activity) {
     try {

@@ -23,9 +23,9 @@ import activities from "./activities.js";
 router.use("/api/activities/", activities)
 
 import categories from "./activitycategories.js";
-router.use("/api/activities/categories", categories);
+router.use("/api/activitycategories", categories);
 
 import tags from "./activitytags.js";
-router.use("/api/activities/tags", tags);
+router.use("/api/activitytags", tags);
 
 export default router;

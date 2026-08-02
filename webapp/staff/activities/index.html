@@ -267,6 +267,7 @@
             });
 
             tagSelect.innerHTML = `<option value=null>none</option>`;
+            console.log(tags);
             tags.forEach(tag => {
                 tagSelect.innerHTML += `<option value="${tag.tag_id}">${tag.name}</option>`;
             })
@@ -311,7 +312,7 @@
     function renderActivities(category) {
         const categoryBody = document.createElement("tbody");
         categoryBody.id = `body-${category.category_id}`;
-        if (category.activities.length > 0) {
+        if (category.activities && category.activities.length > 0) {
             category.activities.forEach(activity => {
                 const activityRow = document.createElement("tr");
                 activityRow.innerHTML = renderActivity(activity);

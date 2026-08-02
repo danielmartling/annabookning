@@ -1,14 +1,13 @@
 import express from "express";
 const router = express.Router();
 
-import { getActivities, getActivitiesByCategory, createActivity, updateActivity } from "../controllers/activityController.js";
+import { getActivities, getActivity, getActivitiesByCategory, createActivity, updateActivity } from "../controllers/activityController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
     "/", 
     requireLogin, 
     requireRoles(["guest", "staff"]), 
-    requirePermission(["program-viewer", "program-jour", "program-booker", "program-admin", "system-admin"]), 
     getActivities
 );
 
@@ -19,6 +18,13 @@ router.get(
     getActivitiesByCategory
 )
 
+
+router.get(
+    "/:id", 
+    requireLogin, 
+    requireRoles(["guest", "staff"]), 
+    getActivity
+);
 router.post(
     "/",
     requireLogin,
