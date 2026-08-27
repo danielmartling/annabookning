@@ -17,6 +17,7 @@ export default (sequelize) =>
             material: { type: DataTypes.STRING },
             place: { type: DataTypes.STRING },
             languages: { type: DataTypes.STRING },
+            geometry: { type: DataTypes.GEOMETRY('POINT') },
         },
         {
             timestamps: true,

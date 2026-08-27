@@ -1,0 +1,11 @@
+#map {
+	/* height: 100%; */
+	/* width: 100vw; */
+	z-index: 0;
+	height: 300px;
+	width: 100%;
+}
+
+.message-body.map-body {
+	padding: 0px;
+}

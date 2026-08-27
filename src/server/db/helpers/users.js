@@ -9,7 +9,8 @@ export async function findUser(id, res, getHash = false) {
         "phone",
         "role",
         "permission",
-        "active"
+        "active",
+        "login_count"
     ];
     const user = await User.findByPk(id, {
         attributes: [

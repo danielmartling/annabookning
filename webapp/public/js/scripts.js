@@ -125,7 +125,6 @@ function makeTextArea(text) {
     return `<textarea class="textarea" placeholder="..." readonly>${text}</textarea>`;
 }
 
-
 function renderRecord(entry) {
     if (entry.record) {
         if (entry.table_name === "users") {
@@ -139,7 +138,7 @@ function renderRecord(entry) {
         } else if (entry.table_name === "program_days") {
             // return `<a href="../bookings/view.html?day_id=${entry.record.day}">${entry.record.day}</a>`;
             return entry.record.day;
-        } else if (entry.table_name === "activity") {
+        } else if (entry.table_name === "activities") {
             return `<a href="../activities/view.html?activity_id=${entry.record.activity_id}">${entry.record.title}</a>`;
         } else {
             return entry.record_id;
@@ -147,7 +146,6 @@ function renderRecord(entry) {
     } else {
         return entry.record_id;
     }
-
 }
 
 function renderParticipants(kids, leaders, sum = false) {

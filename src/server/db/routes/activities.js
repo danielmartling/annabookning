@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { getActivities, getActivity, getActivitiesByCategory, createActivity, updateActivity } from "../controllers/activityController.js";
+import { getActivities, getActivity, getActivitiesByCategory, createActivity, updateActivity, updateActivityGeometry, updateActivityAbout } from "../controllers/activityController.js";
 import { requireLogin, requireRoles, requirePermission } from "../../middleware/auth.js";
 
 router.get(
@@ -38,6 +38,20 @@ router.put(
     requireRoles(["staff"]),
     requirePermission(["program-admin", "system-admin"]),
     updateActivity
+)
+
+router.put(
+    "/about/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-admin", "system-admin"]),
+    updateActivityAbout
+)
+
+router.put(
+    "/geometry/:id",
+    requireRoles(["staff"]),
+    requirePermission(["program-admin", "system-admin"]),
+    updateActivityGeometry
 )
 
 export default router;

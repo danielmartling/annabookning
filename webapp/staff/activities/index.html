@@ -340,8 +340,11 @@
         return `
             <tr>
                 <td></td>
-                <td>${activity.title}</td>
-                <td>${activity.subtitle || ""}</td>
+                <td>
+                    ${activity.title}<br>
+                    ${activity.subtitle ? "//&nbsp;" + activity.subtitle || "" : ""}
+                </td>
+                <td></td>
                 <td>${activity.desc_short || ""}</td>
                 <td>${activity.tag ? makeTag(activity.tag.name) : ""}</td>
             </tr>

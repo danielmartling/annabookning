@@ -116,3 +116,70 @@ export async function updateActivity(req, res) {
         });
     }
 }
+
+// PUT /activities/geometry/:id
+export async function updateActivityGeometry(req, res) {
+    try {
+
+        const {lng, lat} = req.body;
+        const activity = await Activity.findByPk(req.params.id);
+
+        if (!activity) {
+            return res.status(404).json({
+                message: "Activity not found"
+            });
+        }
+
+        const point = { 
+            type: 'Point', 
+            coordinates: [lng, lat]
+        };
+        await activity.update({geometry: point});
+
+        const logentry = await History.create({ table_name: "activities", record_id: activity.activity_id, action: "change", changes: "geometry", user_id: req.session.user.id });
+
+        return res.status(200).json({
+            message: "Activity updated successfully",
+            activity: activity
+        });
+
+    } catch (error) {
+        console.error("Update activity error:", error);
+
+        return res.status(500).json({
+            message: "Failed to update activity",
+            error: error.message
+        });
+    }
+}
+
+// PUT /activities/about/:id
+export async function updateActivityAbout(req, res) {
+    try {
+
+        const payload = req.body;
+        const id = req.params.id;
+        const activity = await Activity.findByPk(id);
+        if (!activity) {
+            return res.status(404).json({
+                message: "Activity not found"
+            });
+        }
+        await activity.update(payload);
+
+        const logentry = await History.create({ table_name: "activities", record_id: id, action: "change", changes: "about", user_id: req.session.user.id });
+
+        return res.status(200).json({
+            message: "Activity updated successfully",
+            activity: activity
+        });
+
+    } catch (error) {
+        console.error("Update activity error:", error);
+
+        return res.status(500).json({
+            message: "Failed to update activity",
+            error: error.message
+        });
+    }
+}

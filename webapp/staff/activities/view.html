@@ -13,6 +13,13 @@
         integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'
+        rel='stylesheet' />
+    <link rel="stylesheet" href="/css/leaflet.css">
+
     <script src="/js/scripts.js"></script>
     <script src="/js/modal.js"></script>
     <script type="module" src="/js/api/index.js"></script>
@@ -49,17 +56,15 @@
                 <h1 id="pagetitle" class="title">View activity</h1>
                 <!-- <h3 class="subtitle"></h3> -->
 
-                <div class="buttons">
-                    <button id="editButton" class="button js-modal-trigger" data-target="modal-edit-activity">
-                        <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity
-                    </button>
-                </div>
                 <div class="columns">
                     <div class="column is-one-third">
-
                         <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>System info</p>
+                                <button id="editButton" class="button js-modal-trigger"
+                                    data-target="modal-edit-activity">
+                                    <span class="iconify" data-icon="mdi-edit"></span>
+                                </button>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
@@ -105,40 +110,62 @@
                         <article class="message is-petrol-green">
                             <div class="message-header">
                                 <p>About the activity</p>
+                                <button id="editAboutButton" class="button js-modal-trigger"
+                                    data-target="modal-edit-activity-about">
+                                    <span class="iconify" data-icon="mdi-edit"></span>
+                                </button>
                             </div>
                             <div class="message-body">
                                 <dl class="grid">
 
                                     <div class="cell is-col-span-2">
                                         <dt>Short description:</dt>
-                                        <dd data-field="desc_short" data-type="textarea"></dd>
+                                        <dd data-field="desc_short" data-type="text"></dd>
                                     </div>
 
                                     <div class="cell is-col-span-2">
                                         <dt>For staff:</dt>
-                                        <dd data-field="desc_staff" data-type="textarea"></dd>
+                                        <dd data-field="desc_staff" data-type="text"></dd>
                                     </div>
 
                                     <div class="cell is-col-span-2">
                                         <dt>For guests:</dt>
-                                        <dd data-field="desc_guest" data-type="textarea"></dd>
+                                        <dd data-field="desc_guest" data-type="text"></dd>
                                     </div>
 
                                     <div class="cell is-col-span-2">
                                         <dt>Place:</dt>
-                                        <dd data-field="place" data-type="textarea"></dd>
+                                        <dd data-field="place" data-type="text"></dd>
                                     </div>
 
                                     <div class="cell is-col-span-2">
                                         <dt>Material:</dt>
-                                        <dd data-field="material" data-type="textarea"></dd>
+                                        <dd data-field="material" data-type="text"></dd>
                                     </div>
 
                                     <div class="cell is-col-span-2">
                                         <dt>Languages:</dt>
-                                        <dd data-field="languages" data-type="textarea"></dd>
+                                        <dd data-field="languages" data-type="text"></dd>
                                     </div>
                                 </dl>
+                            </div>
+                        </article>
+
+                        <article class="message is-petrol-green" id="map-message">
+                            <div class="message-header">
+                                <p>Location</p>
+                                <button id="editLocationButton" class="button js-modal-trigger"
+                                    data-target="modal-edit-location">
+                                    <span class="iconify" data-icon="mdi-edit"></span>
+                                </button>
+                            </div>
+                            <div class="message-body map-body">
+                                <div id="map" style="display: none;"></div>
+                            </div>
+                            <div class="message-body" id="mapError">
+                                <p>
+                                    <i>There are no coordinates...</i>
+                                </p>
                             </div>
                         </article>
                     </div>
@@ -149,7 +176,7 @@
     </div>
     <footer class="footer" id="common-footer"></footer>
 
-    <!-- Edit ctivity modal -->
+    <!-- Edit activity system info modal -->
     <div id="modal-edit-activity" class="modal">
         <div class="modal-background"></div>
 
@@ -160,66 +187,289 @@
                         <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity
                     </h3>
 
-                    <!-- Username -->
+                    <!-- Title -->
                     <div class="field is-horizontal" id="usernameField">
                         <div class="field-label">
-                            <label class="label">Username*</label>
+                            <label class="label">Title*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input " type="text" name="username" placeholder="Username" required>
+                                    <input class="input" type="text" name="title" placeholder="Title" required>
                                     <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-account"></span>
+                                        <span class="iconify" data-icon="mdi-run"></span>
                                     </span>
                                 </div>
-                                <p class="help">Used to log in. 3-50 letters, lower case, no blank spaces.</p>
+                                <p class="help">Name of activity. Usually in Swedish.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Displayname -->
+                    <!-- Subtitle -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Displayname*</label>
+                            <label class="label">Subtitle</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input class="input " type="text" name="displayname" placeholder="Displayname"
-                                        required>
+                                    <input class="input" type="text" name="subtitle" placeholder="Subtitle" required>
                                     <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-account"></span>
+                                        <span class="iconify" data-icon="mdi-run"></span>
                                     </span>
                                 </div>
-                                <p class="help">User friendly name. Preferably full name of user.</p>
+                                <p class="help">Usually clarification or English translation.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contact -->
+                    <!-- Category -->
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Contact info</label>
+                            <label class="label">Category*</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
-                                <div class="field has-addons">
-                                    <p class="control is-expanded has-icons-left">
-                                        <input class="input" type="tel" name="phone"
-                                            placeholder="Phone number (+46...)">
-                                        <span class="icon is-small is-left">
-                                            <span class="iconify" data-icon="mdi-phone"></span>
-                                        </span>
-                                    </p>
+                                <div class="select">
+                                    <select id="categorySelect"></select>
                                 </div>
+                                <p class="help">Used to sort activities.</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Order -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Order</label>
+                        </div>
+                        <div class="field-body">
                             <div class="field">
-                                <p class="control is-expanded has-icons-left">
-                                    <input class="input" type="email" name="email" placeholder="Email">
-                                    <span class="icon is-small is-left">
-                                        <span class="iconify" data-icon="mdi-email"></span>
-                                    </span>
+                                <p class="control">
+                                    <input class="input" type="number" name="order" id="activityOrder"
+                                        placeholder="Order">
+                                <p class="help">Used to order activities inside categories.</p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Tag</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="select">
+                                    <select id="tagSelect"></select>
+                                </div>
+                                <p class="help">Used to create schedule views.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note... -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label"></label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p>More fields will be available in the activity view page.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Update activity
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!-- Edit activity about info modal -->
+    <div id="modal-edit-activity-about" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-edit-activity-about">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity
+                    </h3>
+
+                    <!-- Short decription -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Short description</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="descshortField" class="textarea" name="desc_short"
+                                    placeholder="Short description"></textarea>
+                                <p class="help">Short info.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staff decription -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Staff description</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="descstaffField" class="textarea" name="desc_staff"
+                                    placeholder="Staff description"></textarea>
+                                <p class="help">Info for staff members.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guest decription -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Guest description</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="descguestField" class="textarea" name="desc_guest"
+                                    placeholder="Guest description"></textarea>
+                                <p class="help">Info for guests.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Place -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Place</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="placeField" class="textarea" name="place" placeholder="Place"></textarea>
+                                <p class="help"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Material -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Material</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="materialField" class="textarea" name="material"
+                                    placeholder="Material"></textarea>
+                                <p class="help">What equipment the groups can pick up at program or are expected to
+                                    bring themselves.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Languages -->
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Languages</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <textarea id="langueagesField" class="textarea" name="languages"
+                                    placeholder="Languages"></textarea>
+                                <p class="help">Languages the activity is available in.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-horizontal is-grouped is-grouped-right">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
+                                        Update activity
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-danger modal-cancel">
+                                        <span class="iconify" data-icon="mdi-times"></span>&nbsp;
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!-- Edit activity location modal -->
+    <div id="modal-edit-location" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <form id="form-edit-location">
+                <div class="box" style="border: 1px solid black">
+                    <h3 class="subtitle">
+                        <span class="iconify" data-icon="mdi-edit"></span>&nbsp;Update activity location
+                    </h3>
+
+                    <!-- Coordinates -->
+                    <div class="field is-horizontal" id="usernameField">
+                        <div class="field-label">
+                            <label class="label">Coordinates</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <a class="button is-static">
+                                        N
+                                    </a>
+                                </p>
+                                <p class="control">
+                                    <input class="input" type="float" name="lat" placeholder="Lat" id="latField">
+                                </p>
+                            </div>
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <a class="button is-static">
+                                        E
+                                    </a>
+                                </p>
+                                <p class="control">
+                                    <input class="input" type="float" name="lng" placeholder="Lng" id="lngField">
                                 </p>
                             </div>
                         </div>
@@ -234,7 +484,7 @@
                                 <p class="control">
                                     <button type="submit" class="button is-primary">
                                         <span class="iconify" data-icon="mdi-content-save"></span>&nbsp;
-                                        Update user
+                                        Update activity
                                     </button>
                                 </p>
                                 <p class="control">
@@ -256,6 +506,8 @@
 
 </body>
 
+<script src="../../js/leaflet.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         initHTML();
@@ -269,16 +521,41 @@
     const editButton = document.getElementById("editButton");
     const editForm = document.getElementById("form-edit-activity");
 
+    const editAboutButton = document.getElementById("editAboutButton");
+    const editAboutForm = document.getElementById("form-edit-activity-about");
+
+    const editLocationButton = document.getElementById("editLocationButton");
+    const editLocationForm = document.getElementById("form-edit-location");
+
+    const latField = document.getElementById("latField");
+    const lngField = document.getElementById("lngField");
+
+
     const renderers = {
         text: value => value ?? "-",
         date: value => renderDateTime(value),
         tag: value => value ? makeTag(value, `is-${value}`) : makeTag("<i>none</i>"),
         check: value => makeCheck(value),
-        textarea: value => makeTextArea(value ? value : "")
+        // textarea: value => makeTextArea(value ? value : "")
     };
 
 
     async function init() {
+
+        const categories = await api.getActivitiesByCategory();
+        const tags = await api.getTags();
+
+        const categorySelect = document.getElementById("categorySelect");
+        const tagSelect = document.getElementById("tagSelect");
+
+        categories.forEach(category => {
+            categorySelect.innerHTML += `<option value="${category.category_id}">${category.name}</option>`;
+        });
+
+        tagSelect.innerHTML = `<option value=null>none</option>`;
+        tags.forEach(tag => {
+            tagSelect.innerHTML += `<option value="${tag.tag_id}">${tag.name}</option>`;
+        })
 
         const urlParam = new URLSearchParams(window.location.search).get("activity_id");
         if (urlParam) {
@@ -288,31 +565,94 @@
             pagetitle.innerHTML = "View activity:&nbsp;" + activity.title;
 
             editButton.onclick = () => populateForm(editForm, activity);
+            editAboutButton.onclick = () => populateForm(editAboutForm, activity);
+            editLocationButton.onclick = () => {
+                latField.value = activity.geometry.coordinates[0];
+                lngField.value = activity.geometry.coordinates[1];
+            };
+
+
+            lfmap.setView(activity.geometry.coordinates, 15);
 
             // Create form submit handlers
             editForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
 
                 const data = new FormData(editForm);
+                console.log(data)
 
-                const user = {
-                    username: data.get("username"),
-                    displayname: data.get("displayname"),
-                    phone: data.get("phone") === "" ? null : data.get("phone"),
-                    email: data.get("email") === "" ? null : data.get("email"),
+                const payload = {
+                    title: data.get("title"),
+                    subtitle: data.get("subtitle"),
+                    category_id: categorySelect.value,
+                    tag_id: tagSelect.value
                 };
+                console.log(activity)
+
 
                 try {
-                    if (editingSelf) {
-                        await api.updateMyInfo(user);
-                    } else {
-                        await api.updateUserInfo(userId, user);
-                    }
-                    showSuccess("User updated!");
+                    await api.updateActivity(activity.activity_id, payload);
+                    showSuccess("Activity updated!");
                     editForm.reset();
                     init();
                 } catch (err) {
-                    showWarning("Could not update user!", err)
+                    showWarning("Could not update activity!", err)
+                }
+
+                await init();
+
+                const modal = editForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+
+            editAboutForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const data = new FormData(editAboutForm);
+
+                const payload = {
+                    desc_short: data.get("desc_short") === "" ? null : data.get("desc_short"),
+                    desc_staff: data.get("desc_staff") === "" ? null : data.get("desc_staff"),
+                    desc_guest: data.get("desc_guest") === "" ? null : data.get("desc_guest"),
+                    languages: data.get("languages") === "" ? null : data.get("languages"),
+                    material: data.get("material") === "" ? null : data.get("material"),
+                    place: data.get("place") === "" ? null : data.get("place"),
+                };
+                try {
+                    await api.updateActivityAbout(activity.activity_id, payload);
+                    showSuccess("Activity updated!");
+                    editAboutForm.reset();
+                    init();
+
+                    editAboutForm.closest(".modal").classList.remove("is-active");
+                } catch (err) {
+                    showWarning("Could not update activity!", err)
+                }
+
+
+
+
+                const modal = editForm.closest(".modal");
+                modal.classList.remove("is-active");
+            });
+
+            editLocationForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const data = new FormData(editLocationForm);
+
+                const lng = data.get("lng") === "" ? null : data.get("lng");
+                const lat = data.get("lat") === "" ? null : data.get("lat");
+
+                try {
+                    await api.updateActivityGeometry(activity.activity_id, lat, lng);
+                    showSuccess("Activity updated!");
+                    editLocationForm.reset();
+                    init();
+
+                    editLocationForm.closest(".modal").classList.remove("is-active");
+                } catch (err) {
+                    showWarning("Could not update activity!", err)
                 }
 
 
@@ -335,6 +675,7 @@
             const renderer = renderers[dd.dataset.type ?? "text"];
             dd.innerHTML = renderer(value);
         });
+        renderMapMessage(activity);
     }
 
     function populateForm(form, data) {
@@ -348,6 +689,9 @@
                 field.value = value ?? "";
             }
         }
+
+        categorySelect.value = data.category_id;
+        tagSelect.value = data.tag_id;
     }
 
 

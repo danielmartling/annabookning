@@ -20,7 +20,8 @@ export async function getAllUsers(req, res) {
                 "phone",
                 "role",
                 "permission",
-                "active"
+                "active",
+                "login_count"
             ],
             order: [
                 ['role', 'ASC'],
